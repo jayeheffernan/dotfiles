@@ -1,0 +1,9 @@
+[user]
+	name = Jaye Heffernan
+	email = jpeheffernan@gmail.com
+[alias]
+	co = checkout
+	b = branch
+	s = status
+	l = log --pretty=oneline --abbrev-commit
+    a = add
