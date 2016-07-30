@@ -1,0 +1,7 @@
+map j navigate
+map J scroll down
+map k navigate previous
+map K scroll up
+set guioptions s
+set recolor true
+set selection-clipboard clipboard
