@@ -5,7 +5,11 @@ home: FORCE
 
 root: FORCE
 
-clean: FORCE
+clean-home: FORCE
 	stow -D home -t ~
+
+clean-root: FORCE
+
+clean: clean-home clean-root
 
 FORCE:
