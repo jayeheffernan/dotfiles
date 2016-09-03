@@ -50,6 +50,8 @@ let g:ctrlp_custom_ignore = {
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader=","
 
+nnoremap <leader>m :!make<cr>
+
 nnoremap <leader>v :e ~/.vimrc<cr>
 
 nnoremap <leader>d :bd<cr>
