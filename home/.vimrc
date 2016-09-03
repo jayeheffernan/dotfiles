@@ -104,8 +104,12 @@ let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set mouse=a
+
 " Show line number in margin
 set number
+
+set ruler
 
 set tabstop=4
 "Backspacing an expanded tab deletes space of tab, not just a single space
@@ -144,10 +148,11 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 " Required for transparent background:
 highlight Normal ctermbg=NONE
+
 set autoindent
-"set foldmethod=manual
+
 set foldmethod=manual
-set ruler
+
 " So we don't have to save before changing buffers:
 set hidden
 " How many spelling-suggestions to offer
