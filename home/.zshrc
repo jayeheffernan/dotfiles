@@ -83,7 +83,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias pms="sudo pacman -Ss"
+alias pms="pacman -Ss"
 alias pmi="sudo pacman -S"
 alias pmu="sudo pacman -Syu"
 alias pmr="sudo pacman -Rns"
