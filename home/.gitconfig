@@ -3,7 +3,12 @@
 	email = jpeheffernan@gmail.com
 [alias]
 	co = checkout
+    com = commit
+    rb = rebase
 	b = branch
 	s = status
 	l = log --pretty=oneline --abbrev-commit
+    g = log --pretty=oneline --abbrev-commit --graph --decorate
     a = add
+[core]
+	editor = /usr/bin/vim
