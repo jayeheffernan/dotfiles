@@ -4,7 +4,7 @@ This repository contains my personal dotfiles for configuring my system.  Notabl
 
 ## How it works
 
-The files are managed with git and [ stow ](https://www.gnu.org/software/stow/).  Stow is used for mass symlinking.  Most nice [ Zsh ](https://github.com/zsh-users/zsh) configuration is done automatically by [ Oh My Zsh ](https://github.com/robbyrussell/oh-my-zsh).  [ Vim ](http://www.vim.org/) plugins are managed by the excellent [ Vundle ](https://github.com/VundleVim/Vundle.vim).  Vim plugins are kept under version control only by their entry in `.vimrc`, with the exception of Vundle.  The structure, at the top level, is the following:
+The files are managed with git and [ stow ](https://www.gnu.org/software/stow/).  Stow is used for mass symlinking.  Most nice [ Zsh ](https://github.com/zsh-users/zsh) configuration is done automatically by [ Oh My Zsh ](https://github.com/robbyrussell/oh-my-zsh).  [ Vim ](http://www.vim.org/) plugins are managed by the excellent [ Vundle ](https://github.com/VundleVim/Vundle.vim).  Vim plugins are kept under version control only by their entry in `.vimrc`, with the exception of Vundle.  Tmux configuration is handled mostly by a TPM, the Tmux Plugin Manager, and a small `.tmux.conf` listing plugins and setting prefix to `ctrl-t`.  The structure, at the top level, is the following:
 
 - .gitignore
 - .gitmodules
@@ -49,3 +49,7 @@ To remove symlinks for a particular package:
 - [ Vim ](http://www.vim.org/) plugins
 
  Run [ Vundle's ](https://github.com/VundleVim/Vundle.vim) plugin install command.  From within vim: `:PluginInstall`
+
+- [ tmux ](https://tmux.github.io/) plugins
+
+ Hit `prefix-I` from within tmux to install tmux plugins

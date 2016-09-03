@@ -2,3 +2,4 @@ home/.vim/bundle/*
 !home/.vim/bundle/Vundle.vim
 **/*.swp
 **/*.netrwhist
+home/.tmux/plugins
