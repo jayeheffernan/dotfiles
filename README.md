@@ -16,7 +16,17 @@ The files are managed with git and [ stow ](https://www.gnu.org/software/stow/).
 
 ## Deploying
 
-To deploy all config file symlinks in to place:
+First, clone this repo.  From inside the repo, run
+
+`git submodule init`
+
+and
+
+`git submodule update`
+
+This will fetch Vundle and TPM.
+
+To deploy all config file symlinks:
 
 `make`
 
