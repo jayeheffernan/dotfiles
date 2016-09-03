@@ -9,7 +9,7 @@ Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
                      , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
                      , Run Memory ["-t","Mem: <usedratio>%"] 10
                      , Run Swap [] 10
-                     , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                     , Run Date "%a %b %d %Y %H:%M:%S" "date" 10
                      , Run Com "ponymix" ["get-volume"] "vol" 10
                      , Run Com "xbacklight" [] "backlight" 10
                      , Run CoreTemp       [ "--template" , "Temp: <core0>:<core1>:<core2>"
@@ -38,5 +38,5 @@ Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
                      ]
         , sepChar = "%"
         , alignSep = "}{"
-        , template = "%cpu% %coretemp% | %memory% * %swap% | %wlp1s0% | %vol% }{<fc=#ee9a00>%date%</fc> | %kbd% | %YMML% | %backlight% | %battery% "
+        , template = "%cpu% %coretemp% | %memory% * %swap% | %wlp1s0% | %vol% }{<fc=#ee9a00>%date%</fc> | %YMML% | %backlight% | %battery% "
         }

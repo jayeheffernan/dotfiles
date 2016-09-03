@@ -55,4 +55,6 @@ myStartupHook = do
     runOrRaise "stalonetray" (className =? "stalonetray")
     spawn "nm-applet"
     spawn "xxkb"
-    spawn "setxkbmap -option ctrl:nocaps"
+    spawn "udiskie"
+    spawn "feh --bg-fill ~/.wallpaper"
+    {-spawn "setxkbmap -option ctrl:nocaps"-}
