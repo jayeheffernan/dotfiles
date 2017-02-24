@@ -1,9 +1,24 @@
 [user]
 	name = Jaye Heffernan
 	email = jpeheffernan@gmail.com
+[push]
+	default = simple
 [alias]
 	co = checkout
+	tco = checkout
 	b = branch
+	tb = branch
 	s = status
-	l = log --pretty=oneline --abbrev-commit
-    a = add
+	ts = status
+	l = log --oneline
+	tl = log --oneline
+	a = add
+	ta = add
+	g = log --graph --oneline --decorate
+	tg = log --graph --oneline --decorate
+	ga = log --graph --oneline --decorate --all
+	tga = log --graph --oneline --decorate --all
+	d = diff -w
+	td = diff -w
+[core]
+	editor = /usr/local/bin/vim

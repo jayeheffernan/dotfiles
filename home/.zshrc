@@ -1,5 +1,8 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/jaye/.oh-my-zsh
+  export ZSH=/Users/jaye/.oh-my-zsh
+
+# Export go path (for go get)
+export GOPATH=~/.go
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -12,7 +15,7 @@ ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
@@ -30,7 +33,7 @@ ZSH_THEME="robbyrussell"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -49,11 +52,11 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmuxinator docker docker-compose aws docker-machine)
+plugins=(git docker docker-compose aws docker-machine)
 
 # User configuration
 
-export PATH="/home/jaye/.local/bin:/home/jaye/perl5/bin:/home/jaye/.dotfiles/my_scripts:/home/jaye/.cabal/bin/:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/jaye/.rvm/bin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jaye/.scripts"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -83,12 +86,13 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias pms="sudo pacman -Ss"
-alias pmi="sudo pacman -S"
-alias pmu="sudo pacman -Syu"
-alias pmr="sudo pacman -Rns"
 alias gi="git"
 alias g="git"
+alias suod=sudo
+alias sduo=sudo
+
+# source autojump
+[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh ]]
 
 function change_dir() {
     DIR=$1
