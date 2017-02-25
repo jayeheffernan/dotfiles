@@ -9,3 +9,48 @@ endsnippet
 snippet r "require" b
 const $1 = require('${1:module}');
 endsnippet
+
+snippet d "mocha describe" b
+describe('${1:what it is}', function() {
+
+	$0
+
+});
+endsnippet
+
+snippet it "mocha it" b
+it('${1:what it does}', function(done) {
+	${0:throw new Error("not yet implemented");}
+	done();
+});
+endsnippet
+
+snippet /// "Big comment" b
+//******************************************************************************
+// $0
+//******************************************************************************
+endsnippet
+
+snippet cls "console.log a string"
+console.log('${0:string}');
+endsnippet
+
+snippet clt "console.log a template literal"
+console.log(\`${0:string}\`);
+endsnippet
+
+snippet $ "substitution stuff for template literal"
+${$1}$0
+endsnippet
+
+snippet cll "console.log an expression"
+console.log(\`$1: ${${1:expr}}\`)$0
+endsnippet
+
+snippet json "json stringify"
+JSON.stringify($0, null, 4)
+endsnippet
+
+snippet clj "console.log some json"
+console.log(JSON.stringify($0, null, 4))
+endsnippet

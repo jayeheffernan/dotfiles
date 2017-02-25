@@ -12,32 +12,121 @@ snippet @r "jsdoc style return"
 @return {${1:type}} ${2:description}
 endsnippet
 
+# Function
+snippet fun
+function ${1:function_name}(${2}) {
+	${0}
+}
+endsnippet
+
+# Anonymous Function
+snippet f "" w
+function(${1}) {
+	${0}
+}
+endsnippet
+
+snippet if
+if (${1:true}) {
+	${0}
+}
+endsnippet
+
+# Else if
+snippet elif
+else if (${1:true}) {
+	${0}
+}
+endsnippet
+
+# Else
+snippet e
+else {
+	${0}
+}
+endsnippet
+
+# if ... else
+snippet ife
+if (${1:true}) {
+	${2}
+} else {
+	${0}
+}
+endsnippet
+
+# tertiary conditional
+snippet ter
+${1:/* condition */} ? ${2:/* if true */} : ${0:/* if false */}
+endsnippet
+
+# switch
+snippet switch
+switch (${1:expression}) {
+	case '${3:case}':
+		${4}
+		break;
+	${0}
+	default:
+		${2}
+}
+endsnippet
+
+# case
+snippet case
+case '${1:case}':
+	${2}
+	break;
+${0}
+endsnippet
+
+# try
+snippet try
+try {
+	${1}
+} catch (${2:e}) {
+	${0:/* handle error */}
+}
+endsnippet
+
 snippet sl "server.log" b
-server.log($0)
+server.log($0);
+endsnippet
+
+snippet se "server.error" b
+server.error($0);
+endsnippet
+
+snippet sls "server.log" b
+server.log("$0");
 endsnippet
 
 snippet slf "server.log format" b
-server.log(format("$1"$0))
-endsnippet
-
-snippet sls "server.log string" b
-server.log("$0")
+server.log(format("$1"$0));
 endsnippet
 
 snippet sld "server.log debug" b
-server.log("${1}: " + $1)
+server.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + (${1}) + "::: is a " + typeof ($1));
 endsnippet
 
-snippet try "try catch" b
-try {
-	$0
-} catch (e) {
-
-}
+snippet sed "server.log debug" b
+server.error("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + ${1} + "::: is a " + typeof $1);
 endsnippet
 
-snippet if "if"
-if ($1) {
-	$0
-}
+snippet /** "Description" b
+/**
+ * ${0:description}
+ */
+endsnippet
+
+snippet @a "Description"
+@arg {${1:type}} ${2:name} - ${0:description}
+endsnippet
+
+snippet @r "Description"
+@returns {${1:type}} ${0:description}
+endsnippet
+
+snippet @s "Description"
+@summary ${0:description}
 endsnippet

@@ -1,6 +1,9 @@
 # Path to your oh-my-zsh installation.
   export ZSH=/home/jaye/.oh-my-zsh
 
+# Export go path (for go get)
+export GOPATH=~/.go
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -12,7 +15,7 @@ ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
@@ -30,7 +33,7 @@ ZSH_THEME="robbyrussell"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -49,7 +52,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmuxinator docker docker-compose aws docker-machine systemd stack cabal)
+plugins=(git tmuxinator docker docker-compose aws docker-machine systemd)
 
 # User configuration
 
@@ -91,6 +94,8 @@ alias gi="git"
 alias g="git"
 alias sc="systemctl"
 alias tmux="tmux -2"
+alias suod=sudo
+alias sduo=sudo
 
 function change_dir() {
     DIR=$1

@@ -1,14 +1,13 @@
 [user]
 	name = Jaye Heffernan
 	email = jpeheffernan@gmail.com
+[push]
+	default = simple
 [alias]
 	co = checkout
-    com = commit
-    rb = rebase
 	b = branch
 	s = status
 	l = log --pretty=oneline --abbrev-commit
     g = log --pretty=oneline --abbrev-commit --graph --decorate
-    a = add
 [core]
 	editor = /usr/bin/vim
