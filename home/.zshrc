@@ -49,7 +49,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmuxinator docker docker-compose aws docker-machine systemd)
+plugins=(git tmuxinator docker docker-compose aws docker-machine systemd stack cabal)
 
 # User configuration
 
@@ -90,6 +90,7 @@ alias pmr="sudo pacman -Rns"
 alias gi="git"
 alias g="git"
 alias sc="systemctl"
+alias tmux="tmux -2"
 
 function change_dir() {
     DIR=$1

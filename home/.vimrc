@@ -16,13 +16,16 @@ Plugin 'tpope/vim-surround'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-Plugin 'scrooloose/syntastic'
+"Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'sickill/vim-monokai'
+"Plugin 'josuegaleas/jay'
 Plugin 'justinj/vim-react-snippets'
 Plugin 'mileszs/ack.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'aquach/vim-http-client'
+Plugin 'xevz/vim-squirrel'
+"Plugin 'othree/eregex.vim'
 call vundle#end()
 "For plugin manager
 filetype plugin indent on
@@ -66,7 +69,9 @@ nnoremap <Space> :
 vnoremap <Space> :
 nnoremap <leader>w :w<return>
 
-nnoremap <leader>a :Ack 
+nnoremap <leader>W :!wrench build && wrench upload<return>
+
+nnoremap <leader>a :Ack ""OD
 
 nnoremap <leader>s :source %<CR>
 
@@ -100,6 +105,8 @@ nnoremap <leader>; mzA;`z
 let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+let g:UltiSnipsSnippetDirectories = ['~/.vim/UltiSnips', 'UltiSnips']
+nnoremap <leader>u :UltiSnipsEdit<cr>
 " 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options
@@ -142,14 +149,17 @@ set nospell
 "added/removed in one buffer, as in default)
 set diffopt=filler,vertical
 
+set background=light
 colorscheme monokai
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 " Required for transparent background:
-highlight Normal ctermbg=NONE
+"highlight Normal ctermbg=NONE
 
 set autoindent
+" Lines broken over multiple lines should retain their indentation
+set breakindent
 
 set foldmethod=manual
 

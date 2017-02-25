@@ -1,0 +1,43 @@
+snippet /** "jsdoc style comment" b
+/**
+ * $0
+ */
+endsnippet
+
+snippet @p "jsdoc style param"
+@param {${2:type}} ${1:name} ${3:description}
+endsnippet
+
+snippet @r "jsdoc style return"
+@return {${1:type}} ${2:description}
+endsnippet
+
+snippet sl "server.log" b
+server.log($0)
+endsnippet
+
+snippet slf "server.log format" b
+server.log(format("$1"$0))
+endsnippet
+
+snippet sls "server.log string" b
+server.log("$0")
+endsnippet
+
+snippet sld "server.log debug" b
+server.log("${1}: " + $1)
+endsnippet
+
+snippet try "try catch" b
+try {
+	$0
+} catch (e) {
+
+}
+endsnippet
+
+snippet if "if"
+if ($1) {
+	$0
+}
+endsnippet
