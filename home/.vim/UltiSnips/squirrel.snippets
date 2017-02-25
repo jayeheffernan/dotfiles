@@ -101,6 +101,10 @@ snippet sls "server.log" b
 server.log("$0");
 endsnippet
 
+snippet slm "server.log memory" b
+server.log("$0" + imp.getmemoryfree());
+endsnippet
+
 snippet slf "server.log format" b
 server.log(format("$1"$0));
 endsnippet
