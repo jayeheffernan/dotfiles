@@ -1,4 +1,5 @@
 home/.vim/bundle/*
 !home/.vim/bundle/Vundle.vim
+home/.tmux/plugins
 **/*.swp
 **/*.netrwhist
