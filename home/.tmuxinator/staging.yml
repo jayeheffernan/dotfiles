@@ -1,0 +1,62 @@
+# ~/.tmuxinator/staging.yml
+
+name: staging
+root: ~/
+
+windows:
+  - data-logs:
+      layout: tiled
+      panes:
+          - AWS_DEFAULT_PROFILE=conctr-staging-logs awslogs get -s 1h staging consumer/ingestion --watch --filter-pattern "<%= @args[0] %>"
+          - AWS_DEFAULT_PROFILE=conctr-staging-logs awslogs get -s 1h staging consumer/ingestion --watch --filter-pattern "error"
+          - AWS_DEFAULT_PROFILE=conctr-staging-logs awslogs get -s 1h staging consumer/enrichment --watch --filter-pattern "<%= @args[0] %>"
+          - AWS_DEFAULT_PROFILE=conctr-staging-logs awslogs get -s 1h staging consumer/enrichment --watch --filter-pattern "error"
+          - AWS_DEFAULT_PROFILE=conctr-staging-logs awslogs get -s 1h staging_api-data_data ALL --watch --filter-pattern "<%= @args[0] %>"
+          - AWS_DEFAULT_PROFILE=conctr-staging-logs awslogs get -s 1h staging_api-data_data ALL --watch --filter-pattern "error"
+  - consumers:
+      layout: tiled
+      panes:
+          - machine.1:
+              - ssh-add
+              - ssh -A conctr-stage
+              - export IP=$(find-ip | perl -ne 'push @ips, $1 if /(10\.15\.\d+\.\d+)\s+\| staging-kafka-consumer/; END { print $ips[0] }')
+              - ssh $IP
+              - sudo -i
+              - docker ps -a
+          - machine.2:
+              - ssh-add
+              - ssh -A conctr-stage
+              - export IP=$(find-ip | perl -ne 'push @ips, $1 if /(10\.15\.\d+\.\d+)\s+\| staging-kafka-consumer/; END { print $ips[1] }')
+              - ssh $IP
+              - sudo -i
+              - docker ps -a
+  - kafka:
+      layout: tiled
+      panes:
+          - logs:
+              - AWS_DEFAULT_PROFILE=conctr-staging-logs awslogs get -s 1h staging_kafka_kafka ALL --watch
+          - offsets:
+              - ssh-add
+              - ssh -A conctr-stage
+              - export IP=$(find-ip | perl -ne 'push @ips, $1 if /(10\.15\.\d+\.\d+)\s+\| staging-kafka-0/; END { print $ips[0] }')
+              - ssh $IP
+              - sudo -i
+              - docker ps -a
+              - docker exec -it kafka bash
+              - cd /opt/kafka/bin
+              - export ZK=zookeeper:2181
+              - export ZKO="--zookeeper $ZK"
+              - export BROKER="localhost:9092"
+              - while true; do ./kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group kafka --new-consumer | perl -ne 'if (/^kafka, (\w*), (\d*), (\d*), (\d*), (\d*)/){ printf("%-24s %-1s   -   %9s / %9s (-%s)\n", $1, $2, $3, $4, $5) }' | sort; date; sleep 2; done
+          - ssh:
+              - ssh-add
+              - ssh -A conctr-stage
+              - export IP=$(find-ip | perl -ne 'push @ips, $1 if /(10\.15\.\d+\.\d+)\s+\| staging-kafka-0/; END { print $ips[0] }')
+              - ssh $IP
+              - sudo -i
+              - docker ps -a
+              - docker exec -it kafka bash
+              - cd /opt/kafka/bin
+              - export ZK=zookeeper:2181
+              - export ZKO="--zookeeper $ZK"
+              - export BROKER="localhost:9092"
