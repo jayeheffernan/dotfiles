@@ -110,11 +110,11 @@ server.log(format("$1"$0));
 endsnippet
 
 snippet sld "server.log debug" b
-server.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + (${1}) + "::: is a " + typeof ($1));
+server.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().hex[:4]` $1: :::" + (${1}) + "::: is a " + typeof ($1));
 endsnippet
 
 snippet sed "server.log debug" b
-server.error("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + ${1} + "::: is a " + typeof $1);
+server.error("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().hex[:4]` $1: :::" + ${1} + "::: is a " + typeof $1);
 endsnippet
 
 snippet /** "Description" b

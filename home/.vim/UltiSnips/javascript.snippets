@@ -54,3 +54,7 @@ endsnippet
 snippet clj "console.log some json"
 console.log(JSON.stringify($0, null, 4))
 endsnippet
+
+snippet e "expect" b
+expect($1, ${2:'$1'}).to.$0;
+endsnippet

@@ -105,6 +105,8 @@ nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>b :CtrlPBuffer<return>
 nnoremap <leader>r :CtrlPMRUFiles<return>
 
+nnoremap <leader>R :redraw!<return>
+
 "Reflow paragraph
 " nnoremap <Leader>f gqip
 " Note this does not work well
