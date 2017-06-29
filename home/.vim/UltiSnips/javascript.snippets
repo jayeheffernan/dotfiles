@@ -16,6 +16,9 @@ snippet /// "Big comment" b
 // $0
 //******************************************************************************
 endsnippet
+snippet cl "console.log"
+console.log($0);
+endsnippet
 snippet cls "console.log a string"
 console.log('${0:string}');
 endsnippet
@@ -33,4 +36,16 @@ JSON.stringify($0, null, 4)
 endsnippet
 snippet clj "console.log some json"
 console.log(JSON.stringify($0, null, 4))
+endsnippet
+snippet	=> "arrow function"
+($1) => {
+	$0
+}
+endsnippet
+snippet	try "try catch"
+try {
+	$0
+} catch (e) {
+
+}
 endsnippet
