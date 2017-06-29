@@ -27,6 +27,9 @@ Plugin 'jiangmiao/auto-pairs'
 Plugin 'aquach/vim-http-client'
 Plugin 'othree/yajs.vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'ternjs/tern_for_vim'
+Plugin 'kana/vim-textobj-user'
+Plugin 'rhysd/vim-textobj-conflict'
 call vundle#end()
 "For plugin manager
 filetype plugin indent on
@@ -55,8 +58,15 @@ let mapleader=","
 " yank overwritten visual text
 vnoremap p <esc>pgvd
 
+nnoremap <leader>R :redraw!<cr>
+
 " edit a todo file
-noremap <leader>t :e TODO.md<cr>
+" noremap <leader>t :e TODO.md<cr>
+nnoremap <leader>tt :TernType<cr>
+nnoremap <leader>td :TernDef<cr>
+nnoremap <leader>tr :TernRefs<cr>
+" Close preview window when done completing
+autocmd CompleteDone * pclose
 
 nnoremap <leader>l :set list!<CR>
 
@@ -128,10 +138,16 @@ nnoremap <leader>h :HTTPClientDoRequest<cr>
 " Easy insert ; for javascript
 nnoremap <leader>; mzA;`z
 
-let g:UltiSnipsSnippetDirectories = ['~/.vim/UltiSnips', 'UltiSnips']
+let g:UltiSnipsEnableSnipMate = 0
+let g:UltiSnipsSnippetDirectories = [ 'UltiSnips', $HOME.'/.vim/UltiSnips/', $HOME.'/.vim/bundle/vim-snippets/UltiSnips/']
 let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+
+autocmd FileType javascript UltiSnipsAddFiletypes javascript-jsdoc
+autocmd FileType javascript UltiSnipsAddFiletypes javascript
+autocmd FileType squirrel UltiSnipsAddFiletypes javascript-jsdoc
+autocmd FileType squirrel UltiSnipsAddFiletypes squirrel
 " 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options
@@ -155,7 +171,7 @@ set mouse=a
 "set expandtab
 "set shiftwidth=4
 
-set colorcolumn=80
+set colorcolumn=100
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -200,7 +216,4 @@ set sps=best,6
 set hls
 
 " Indent the rest of broken lines
-" set breakindent
-"
-" Scroll to show search results
-set scrolloff=5
+set breakindent
