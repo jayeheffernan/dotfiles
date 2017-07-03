@@ -1,5 +1,8 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/jaye/.oh-my-zsh
+export ZSH=/home/jaye/.oh-my-zsh
+
+# Export go path (for go get)
+export GOPATH=~/.go
 
 # Export go path (for go get)
 export GOPATH=~/.go
@@ -52,11 +55,11 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmuxinator docker docker-compose aws docker-machine systemd npm)
+plugins=(git npm aws docker docker-compose docker-machine tmuxinator systemd)
 
 # User configuration
 
-export PATH="/home/jaye/.local/bin:/home/jaye/perl5/bin:/home/jaye/.dotfiles/my_scripts:/home/jaye/.cabal/bin/:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/jaye/.rvm/bin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jaye/.scripts"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -70,6 +73,8 @@ source $ZSH/oh-my-zsh.sh
 # else
 #   export EDITOR='mvim'
 # fi
+#
+[[ -s "$HOME/.rvm/scripts/rvm"  ]] && source "$HOME/.rvm/scripts/rvm"
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -107,3 +112,9 @@ function change_dir() {
 }
 
 alias cd=change_dir
+
+alias mux=tmuxinator
+export DISABLE_AUTO_TITLE=true
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

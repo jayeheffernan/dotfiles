@@ -27,6 +27,9 @@ Plugin 'jiangmiao/auto-pairs'
 Plugin 'aquach/vim-http-client'
 Plugin 'othree/yajs.vim'
 Plugin 'tpope/vim-fugitive'
+" Plugin 'ternjs/tern_for_vim'
+Plugin 'kana/vim-textobj-user'
+Plugin 'rhysd/vim-textobj-conflict'
 call vundle#end()
 "For plugin manager
 filetype plugin indent on
@@ -54,15 +57,20 @@ let mapleader=","
 
 nnoremap <leader>m :!make<cr>
 
-nnoremap <leader>v :e ~/.vimrc<cr>
-
 " yank overwritten visual text
 vnoremap p <esc>pgvd
 
-" edit a todo file
-noremap <leader>t :e TODO.md<cr>
-
 nnoremap <leader>l :set list!<CR>
+
+nnoremap <leader>R :redraw!<cr>
+
+" edit a todo file
+" noremap <leader>t :e TODO.md<cr>
+" nnoremap <leader>tt :TernType<cr>
+" nnoremap <leader>td :TernDef<cr>
+" nnoremap <leader>tr :TernRefs<cr>
+" Close preview window when done completing
+autocmd CompleteDone * pclose
 
 " nnoremap <BS> mzA<BS><ESC>`z
 nnoremap  
@@ -79,10 +87,9 @@ nnoremap <Space> :
 vnoremap <Space> :
 nnoremap <leader>w :w<return>
 
+nnoremap <leader>v :e ~/.vimrc<CR>
 nnoremap <leader>s :source %<CR>
 nnoremap <leader>d :bd<CR>
-
-nnoremap <leader>u :UltiSnipsEdit<return>
 
 "Switch to alternate buffer
 nnoremap <leader><space> :buffer #<return>
@@ -107,18 +114,6 @@ nnoremap <leader>r :CtrlPMRUFiles<return>
 
 nnoremap <leader>R :redraw!<return>
 
-"Reflow paragraph
-" nnoremap <Leader>f gqip
-" Note this does not work well
-if !exists("*ToggleFold")
-  function ToggleFold()
-    let &foldmethod = (&foldmethod == "manual") ?  "indent" : "manual"
-    echo &foldmethod
-  endfunction
-endif
-
-nnoremap <Leader>f :call ToggleFold()<CR>
-
 "Toggle rainbow parens plugin
 nnoremap <leader><leader>r :RainbowParenthesesToggle<CR>
 
@@ -134,12 +129,17 @@ nnoremap <leader>h :HTTPClientDoRequest<cr>
 " Easy insert ; for javascript
 nnoremap <leader>; mzA;`z
 
-let g:UltiSnipsSnippetDirectories = ['~/.vim/UltiSnips', 'UltiSnips']
+let g:UltiSnipsEnableSnipMate = 0
+let g:UltiSnipsSnippetDirectories = [ 'UltiSnips', $HOME.'/.vim/UltiSnips/', $HOME.'/.vim/bundle/vim-snippets/UltiSnips/']
 let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
-let g:UltiSnipsSnippetDirectories = ['~/.vim/UltiSnips', 'UltiSnips']
 nnoremap <leader>u :UltiSnipsEdit<cr>
+
+autocmd FileType javascript UltiSnipsAddFiletypes javascript-jsdoc
+autocmd FileType javascript UltiSnipsAddFiletypes javascript
+autocmd FileType squirrel UltiSnipsAddFiletypes javascript-jsdoc
+autocmd FileType squirrel UltiSnipsAddFiletypes squirrel
 " 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options
@@ -158,7 +158,16 @@ set number
 
 set ruler
 
-set colorcolumn=80
+"set tabstop=4
+"Backspacing an expanded tab deletes space of tab, not just a single space
+"set softtabstop=4
+"set expandtab
+"set shiftwidth=4
+
+set colorcolumn=100
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -194,7 +203,6 @@ au Syntax * RainbowParenthesesLoadBraces
 
 " Lines broken over multiple lines should retain their indentation
 set breakindent
-
 set smartindent
 
 set foldmethod=manual
@@ -206,4 +214,5 @@ set sps=best,8
 
 set hls
 
-" Scroll to show search results
+" Indent the rest of broken lines
+set breakindent

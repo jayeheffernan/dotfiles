@@ -5,9 +5,11 @@
 	default = simple
 [alias]
 	co = checkout
+	tco = checkout
 	b = branch
+	tb = branch
 	s = status
 	l = log --pretty=oneline --abbrev-commit
-    g = log --pretty=oneline --abbrev-commit --graph --decorate
+	g = log --pretty=oneline --abbrev-commit --graph --decorate
 [core]
 	editor = /usr/bin/vim
