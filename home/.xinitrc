@@ -24,5 +24,7 @@ urxvtd &
 #feh --bg-scale /home/jaye/.wallpaper &
 chromium &
 
+fix-dns
+
 (conky | while read LINE; do xsetroot -name "$LINE"; done) &
 exec dwm
