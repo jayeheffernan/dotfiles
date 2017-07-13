@@ -90,6 +90,7 @@ alias gi="git"
 alias g="git"
 alias suod=sudo
 alias sduo=sudo
+alias c=clear
 
 # source autojump
 [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh ]]
