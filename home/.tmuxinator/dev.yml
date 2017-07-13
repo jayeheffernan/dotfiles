@@ -1,0 +1,54 @@
+# ~/.tmuxinator/dev.yml
+
+name: dev
+root: ~/
+
+windows:
+  - data-logs:
+      layout: tiled
+      panes:
+          - AWS_DEFAULT_PROFILE=conctr-dev-logs awslogs get -s 1h dev consumer/validation --watch --filter-pattern "<%= @args[0] %>"
+          - AWS_DEFAULT_PROFILE=conctr-dev-logs awslogs get -s 1h dev consumer/ingestion --watch --filter-pattern "<%= @args[0] %>"
+          - AWS_DEFAULT_PROFILE=conctr-dev-logs awslogs get -s 1h dev consumer/enrichment --watch --filter-pattern "<%= @args[0] %>"
+          - AWS_DEFAULT_PROFILE=conctr-dev-logs awslogs get -s 1h dev-data_data ALL --watch --filter-pattern "<%= @args[0] %>"
+  - ssh:
+      layout: tiled
+      panes:
+          - consumers:
+              - ssh-add
+              - ssh -A conctr-dev
+              - export IP=$(find-ip | perl -ne 'push @ips, $1 if /(10\.0\.\d+\.\d+)\s+\| dev-kafka-consumer/; END { print $ips[0] }')
+              - ssh $IP
+              - sudo -i
+              - docker ps -a
+  - kafka:
+      layout: tiled
+      panes:
+          - ssh:
+              - ssh-add
+              - ssh -A conctr-stage
+              - export IP=$(find-ip | perl -ne 'push @ips, $1 if /(10\.0\.\d+\.\d+)\s+\| dev-kafka-0/; END { print $ips[0] }')
+              - ssh $IP
+              - sudo -i
+              - docker ps -a
+              - docker exec -it kafka bash
+              - cd /opt/kafka/bin
+              - export ZK=zookeeper:2181
+              - export ZKO="--zookeeper $ZK"
+              - export BROKER="localhost:9092"
+          - offsets:
+              - ssh-add
+              - ssh -A conctr-stage
+              - export IP=$(find-ip | perl -ne 'push @ips, $1 if /(10\.0\.\d+\.\d+)\s+\| dev-kafka-0/; END { print $ips[0] }')
+              - ssh $IP
+              - sudo -i
+              - docker ps -a
+              - docker exec -it kafka bash
+              - cd /opt/kafka/bin
+              - export ZK=zookeeper:2181
+              - export ZKO="--zookeeper $ZK"
+              - export BROKER="localhost:9092"
+              - ./kafka-consumer-offset-checker.sh $ZKO --topic default_ingestion
+              # - while true; do ./kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group kafka --new-consumer | perl -ne 'if (/^kafka, (\w*), (\d*), (\d*), (\d*), (\d*)/){ printf("%-24s %-1s   -   %9s / %9s (-%s)\n", $1, $2, $3, $4, $5) }' | sort; date; sleep 2; done
+          - logs:
+              - AWS_DEFAULT_PROFILE=conctr-dev-logs awslogs get -s 1h dev_kafka_kafka ALL --watch
