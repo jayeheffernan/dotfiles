@@ -16,6 +16,9 @@ snippet /// "Big comment" b
 // $0
 //******************************************************************************
 endsnippet
+snippet ce "console.error"
+console.error($0);
+endsnippet
 snippet cl "console.log"
 console.log($0);
 endsnippet
@@ -48,4 +51,13 @@ try {
 } catch (e) {
 
 }
+endsnippet
+
+snippet field "Conctr field JSON"
+{
+    access_level: ["admin"],
+    reference: "${2:`!p snip.rv='_'.join(t[1].lower().split())`}",
+    title: "${1:Title}",
+    type: "${3:number}",
+},$0
 endsnippet
