@@ -1,5 +1,30 @@
+snippet json "JSON stringify a thing" i
+JSON.stringify(${VISUAL}$0, null, 4)
+endsnippet
+snippet prom "promise constructor" w
+new Promise((resolve, reject) => {
+	${VISUAL}$0
+});
+endsnippet
+snippet before "mocha before" b
+before(function(done) {
+	${0:throw new Error("not yet implemented");}
+});
+endsnippet
+snippet after "mocha after" b
+after(function(done) {
+	${0:throw new Error("not yet implemented");}
+});
+endsnippet
 snippet d "mocha describe" b
 describe('${1:what it is}', function() {
+
+	$0
+
+});
+endsnippet
+snippet dv "mocha describe visual" b
+describe('${VISUAL}', function() {
 
 	$0
 
@@ -8,7 +33,6 @@ endsnippet
 snippet it "mocha it" b
 it('${1:what it does}', function(done) {
 	${0:throw new Error("not yet implemented");}
-	done();
 });
 endsnippet
 snippet /// "Big comment" b
@@ -34,8 +58,8 @@ endsnippet
 snippet cll "console.log an expression"
 console.log(\`$1: ${${1:expr}}\`)$0
 endsnippet
-snippet json "json stringify"
-JSON.stringify($0, null, 4)
+snippet cllj "console.log an expression JSON stringified"
+console.log(\`$1: ${JSON.stringify(${1:expr}, null, 4)}\`)$0
 endsnippet
 snippet clj "console.log some json"
 console.log(JSON.stringify($0, null, 4))
