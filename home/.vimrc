@@ -30,6 +30,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'ternjs/tern_for_vim'
 Plugin 'kana/vim-textobj-user'
 Plugin 'rhysd/vim-textobj-conflict'
+Plugin 'AndrewRadev/linediff.vim'
 call vundle#end()
 "For plugin manager
 filetype plugin indent on
@@ -139,6 +140,8 @@ nnoremap <leader>h :HTTPClientDoRequest<cr>
 
 " Easy insert ; for javascript
 nnoremap <leader>; mzA;`z
+
+vnoremap <leader>d :Linediff<enter>
 
 let g:UltiSnipsEnableSnipMate = 0
 let g:UltiSnipsSnippetDirectories = [ 'UltiSnips', $HOME.'/.vim/UltiSnips/', $HOME.'/.vim/bundle/vim-snippets/UltiSnips/']
