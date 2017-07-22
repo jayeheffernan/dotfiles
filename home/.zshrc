@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/jaye/.oh-my-zsh
+export ZSH="$HOME/.oh-my-zsh"
 
 # Export go path (for go get)
 export GOPATH=~/.go
@@ -54,8 +54,6 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git npm aws docker docker-compose tmuxinator systemd)
 
-# User configuration
-
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/home/jaye/.scripts"
 
 source $ZSH/oh-my-zsh.sh
@@ -91,10 +89,11 @@ alias pms="pacman -Ss"
 alias pmi="sudo pacman -S"
 alias pmu="sudo pacman -Syu"
 alias pmr="sudo pacman -Rns"
-alias gi="git"
-alias g="git"
 alias sc="systemctl"
 alias tmux="tmux -2"
+
+alias gi="git"
+alias g="git"
 alias s=sudo
 alias c=clear
 
@@ -111,8 +110,5 @@ alias cd=change_dir
 
 alias mux=tmuxinator
 export DISABLE_AUTO_TITLE=true
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-# export PATH="$PATH:$HOME/.rvm/bin"
 
 export PROMPT='${ret_status}%T%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'

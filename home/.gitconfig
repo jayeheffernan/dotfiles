@@ -5,7 +5,9 @@
 	default = simple
 [alias]
 	co = checkout
+	tco = checkout
 	b = branch
+	tb = branch
 	s = status
 	l = log --oneline --abbrev-commit
 	a = add

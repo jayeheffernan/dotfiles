@@ -107,6 +107,19 @@ nnoremap <leader>A :Ack -F ''OD
 "Toggle spell-check 
 nnoremap <leader>S :set spell!<CR>
 
+nnoremap <leader>d :bd<CR>
+
+"ack.vim
+if executable('ag')
+  "let g:ackprg = 'ag --vimgrep'
+  let g:ackprg='ag --nogroup --nocolor --column'
+endif
+nnoremap <leader>a :Ack ''OD
+nnoremap <leader>A :Ack -F ''OD
+
+"Toggle spell-check 
+nnoremap <leader>S :set spell!<CR>
+
 "Toggle highlighting of search results
 nnoremap <leader>h :set hlsearch!<CR>
 
@@ -128,11 +141,11 @@ nnoremap <Leader>f :call ToggleFold()<CR>
 "Toggle rainbow parens plugin
 nnoremap <leader><leader>r :RainbowParenthesesToggle<CR>
 
-"Easy window switching
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+" "Easy window switching
+" nnoremap <C-h> <C-w>h
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
+" nnoremap <C-l> <C-w>l
 
 nnoremap <leader>t :NERDTreeToggle<cr>
 nnoremap <leader>h :HTTPClientDoRequest<cr>
@@ -149,10 +162,9 @@ let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 nnoremap <leader>u :UltiSnipsEdit<cr>
-
 autocmd FileType javascript UltiSnipsAddFiletypes javascript.javascript-jsdoc
 autocmd FileType squirrel UltiSnipsAddFiletypes squirrel.javascript-jsdoc
-" 
+ 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -160,7 +172,6 @@ set mouse=a
 
 " Show line number in margin
 set number
-
 set ruler
 
 "set tabstop=4
