@@ -17,7 +17,7 @@ Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'scrooloose/syntastic'
-Plugin 'scrooloose/nerdcommenter'
+Plugin 'manasthakur/vim-commentor'
 Plugin 'xevz/vim-squirrel'
 Plugin 'sickill/vim-monokai'
 Plugin 'justinj/vim-react-snippets'
@@ -157,13 +157,6 @@ autocmd FileType squirrel UltiSnipsAddFiletypes squirrel.javascript-jsdoc
 " Options
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set mouse=a
-
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
 
 " Show line number in margin
 set number
