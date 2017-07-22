@@ -143,16 +143,15 @@ nnoremap <leader>; mzA;`z
 vnoremap <leader>d :Linediff<enter>
 
 let g:UltiSnipsEnableSnipMate = 0
+let g:UltiSnipsSnippetsDir = $HOME.'/.vim/UltiSnips/'
 let g:UltiSnipsSnippetDirectories = [ 'UltiSnips', $HOME.'/.vim/UltiSnips/', $HOME.'/.vim/bundle/vim-snippets/UltiSnips/']
 let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 nnoremap <leader>u :UltiSnipsEdit<cr>
 
-autocmd FileType javascript UltiSnipsAddFiletypes javascript-jsdoc
-autocmd FileType javascript UltiSnipsAddFiletypes javascript
-autocmd FileType squirrel UltiSnipsAddFiletypes javascript-jsdoc
-autocmd FileType squirrel UltiSnipsAddFiletypes squirrel
+autocmd FileType javascript UltiSnipsAddFiletypes javascript.javascript-jsdoc
+autocmd FileType squirrel UltiSnipsAddFiletypes squirrel.javascript-jsdoc
 " 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options
