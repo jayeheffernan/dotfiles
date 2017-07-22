@@ -4,9 +4,6 @@ export ZSH=/home/jaye/.oh-my-zsh
 # Export go path (for go get)
 export GOPATH=~/.go
 
-# Export go path (for go get)
-export GOPATH=~/.go
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -59,7 +56,7 @@ plugins=(git npm aws docker docker-compose docker-machine tmuxinator systemd)
 
 # User configuration
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jaye/.scripts"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/home/jaye/.scripts"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
