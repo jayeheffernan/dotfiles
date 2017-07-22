@@ -1,17 +1,3 @@
-snippet /** "jsdoc style comment" b
-/**
- * $0
- */
-endsnippet
-
-snippet @p "jsdoc style param"
-@param {${2:type}} ${1:name} ${3:description}
-endsnippet
-
-snippet @r "jsdoc style return"
-@return {${1:type}} ${2:description}
-endsnippet
-
 # Function
 snippet fun
 function ${1:function_name}(${2}) {
@@ -97,12 +83,9 @@ snippet se "server.error" b
 server.error($0);
 endsnippet
 
-snippet sls "server.log" b
+>>>>>>> macmini
+snippet sls "server.log string" b
 server.log("$0");
-endsnippet
-
-snippet slm "server.log memory" b
-server.log("$0" + imp.getmemoryfree());
 endsnippet
 
 snippet slf "server.log format" b
@@ -124,21 +107,26 @@ endsnippet
 snippet sed "server.log debug" b
 server.error("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + ${1} + "::: is a " + typeof $1);
 endsnippet
+
 snippet br "breadcrumb" b
 _breadcrumbs.push("`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`"); _breadcrumbs.remove(0);
 endsnippet
+
 snippet slms "server.log memory short" b
 server.log(format("MEM %7d (%4dk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    $0", imp.getmemoryfree(), imp.getmemoryfree()/1000));
 endsnippet
+
 snippet slm "server.log memory detailed" b
 ::__memnote <- "$0"; ::__mem <- imp.getmemoryfree(); ::__memd <- "__memp" in ::getroottable() ? (::__mem - ::__memp) : 0; server.log(format("MEM %7d (%7s), %4dk (%7sk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__mem, format("%+d", ::__memd), ::__mem/1000, format("%+5.2f", ::__memd/1000.0), ::__memnote)); ::__memp <- ::__mem;
 
 snippet ll "server.log" b
 server.log($0);
 endsnippet
+
 snippet le "logger.error" b
 logger.error($0);
 endsnippet
+
 snippet lls "logger.log" b
 logger.log("$0");
 endsnippet
@@ -159,12 +147,10 @@ snippet llde "logger.log debug empty" b
 logger.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`");
 endsnippet
 
-snippet led "logger.log debug" b
-logger.error("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + ${1} + "::: is a " + typeof $1);
-endsnippet
 snippet llms "logger.log memory short" b
 logger.log(format("MEM %7d (%4dk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    $0", imp.getmemoryfree(), imp.getmemoryfree()/1000));
 endsnippet
+
 snippet llm "logger.log memory detailed" b
 ::__memnote <- "$0"; ::__mem <- imp.getmemoryfree(); ::__memd <- "__memp" in ::getroottable() ? (::__mem - ::__memp) : 0; logger.log(format("MEM %7d (%7s), %4dk (%7sk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__mem, format("%+d", ::__memd), ::__mem/1000, format("%+5.2f", ::__memd/1000.0), ::__memnote)); ::__memp <- ::__mem;
 endsnippet
@@ -173,18 +159,6 @@ snippet /** "Description" b
 /**
  * ${0:description}
  */
-endsnippet
-
-snippet @a "Description"
-@arg {${1:type}} ${2:name} - ${0:description}
-endsnippet
-
-snippet @r "Description"
-@returns {${1:type}} ${0:description}
-endsnippet
-
-snippet @s "Description"
-@summary ${0:description}
 endsnippet
 
 snippet wu "imp.wakeup" w

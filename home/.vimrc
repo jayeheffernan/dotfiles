@@ -27,9 +27,10 @@ Plugin 'jiangmiao/auto-pairs'
 Plugin 'aquach/vim-http-client'
 Plugin 'othree/yajs.vim'
 Plugin 'tpope/vim-fugitive'
-" Plugin 'ternjs/tern_for_vim'
+Plugin 'ternjs/tern_for_vim'
 Plugin 'kana/vim-textobj-user'
 Plugin 'rhysd/vim-textobj-conflict'
+Plugin 'AndrewRadev/linediff.vim'
 call vundle#end()
 "For plugin manager
 filetype plugin indent on
@@ -50,27 +51,28 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll|swp)$',
   \ }
 
+let g:syntastic_javascript_checkers=['eslint']
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader=","
 
 nnoremap <leader>m :!make<cr>
-
 " yank overwritten visual text
 vnoremap p <esc>pgvd
-
-nnoremap <leader>l :set list!<CR>
 
 nnoremap <leader>R :redraw!<cr>
 
 " edit a todo file
 " noremap <leader>t :e TODO.md<cr>
-" nnoremap <leader>tt :TernType<cr>
-" nnoremap <leader>td :TernDef<cr>
-" nnoremap <leader>tr :TernRefs<cr>
+nnoremap <leader>tt :TernType<cr>
+nnoremap <leader>td :TernDef<cr>
+nnoremap <leader>tr :TernRefs<cr>
 " Close preview window when done completing
 autocmd CompleteDone * pclose
+
+nnoremap <leader>l :set list!<CR>
 
 " nnoremap <BS> mzA<BS><ESC>`z
 nnoremap  
@@ -112,7 +114,16 @@ nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>b :CtrlPBuffer<return>
 nnoremap <leader>r :CtrlPMRUFiles<return>
 
-nnoremap <leader>R :redraw!<return>
+"Reflow paragraph
+" nnoremap <Leader>f gqip
+if !exists("*ToggleFold")
+  function ToggleFold()
+    let &foldmethod = (&foldmethod == "manual") ?  "indent" : "manual"
+    echo &foldmethod
+  endfunction
+endif
+
+nnoremap <Leader>f :call ToggleFold()<CR>
 
 "Toggle rainbow parens plugin
 nnoremap <leader><leader>r :RainbowParenthesesToggle<CR>
@@ -128,6 +139,8 @@ nnoremap <leader>h :HTTPClientDoRequest<cr>
 
 " Easy insert ; for javascript
 nnoremap <leader>; mzA;`z
+
+vnoremap <leader>d :Linediff<enter>
 
 let g:UltiSnipsEnableSnipMate = 0
 let g:UltiSnipsSnippetDirectories = [ 'UltiSnips', $HOME.'/.vim/UltiSnips/', $HOME.'/.vim/bundle/vim-snippets/UltiSnips/']
@@ -165,9 +178,6 @@ set ruler
 "set shiftwidth=4
 
 set colorcolumn=100
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -213,6 +223,3 @@ set hidden
 set sps=best,8
 
 set hls
-
-" Indent the rest of broken lines
-set breakindent

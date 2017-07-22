@@ -52,12 +52,11 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git npm aws docker docker-compose docker-machine tmuxinator systemd)
+plugins=(git npm aws docker docker-compose tmuxinator systemd)
 
 # User configuration
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/home/jaye/.scripts"
-# export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -71,7 +70,7 @@ source $ZSH/oh-my-zsh.sh
 #   export EDITOR='mvim'
 # fi
 #
-[[ -s "$HOME/.rvm/scripts/rvm"  ]] && source "$HOME/.rvm/scripts/rvm"
+# [[ -s "$HOME/.rvm/scripts/rvm"  ]] && source "$HOME/.rvm/scripts/rvm"
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -96,8 +95,8 @@ alias gi="git"
 alias g="git"
 alias sc="systemctl"
 alias tmux="tmux -2"
-alias suod=sudo
-alias sduo=sudo
+alias s=sudo
+alias c=clear
 
 function change_dir() {
     DIR=$1
@@ -114,4 +113,6 @@ alias mux=tmuxinator
 export DISABLE_AUTO_TITLE=true
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+# export PATH="$PATH:$HOME/.rvm/bin"
+
+export PROMPT='${ret_status}%T%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
