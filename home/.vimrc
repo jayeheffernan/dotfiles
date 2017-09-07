@@ -97,10 +97,10 @@ nnoremap <leader>d :bd<CR>
 nnoremap <leader><space> :buffer #<return>
 "
 "ack.vim
-if executable('ag')
+"if executable('ag')
   "let g:ackprg = 'ag --vimgrep'
-  let g:ackprg='ag --nogroup --nocolor --column'
-endif
+  let g:ackprg='ag --nogroup --nocolor --column -p ./.agignore'
+"endif
 nnoremap <leader>a :Ack ''OD
 nnoremap <leader>A :Ack -F ''OD
 
