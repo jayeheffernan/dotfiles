@@ -54,7 +54,7 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git npm aws docker docker-compose tmuxinator systemd)
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/home/jaye/.scripts"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/home/jaye/.scripts:/home/jaye/.rvm/gems/ruby-2.4.1/bin"
 
 source $ZSH/oh-my-zsh.sh
 
