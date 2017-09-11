@@ -31,6 +31,7 @@ Plugin 'ternjs/tern_for_vim'
 Plugin 'kana/vim-textobj-user'
 Plugin 'rhysd/vim-textobj-conflict'
 Plugin 'AndrewRadev/linediff.vim'
+Plugin 'wakatime/vim-wakatime'
 call vundle#end()
 "For plugin manager
 filetype plugin indent on
@@ -92,6 +93,8 @@ nnoremap <leader>v :e ~/.vimrc<CR>
 nnoremap <leader>s :source %<CR>
 nnoremap <leader>d :bd<CR>
 
+nnoremap <leader># :.!sh<CR>
+
 nnoremap <leader>u :UltiSnipsEdit<return>
 
 "Switch to alternate buffer
@@ -100,7 +103,7 @@ nnoremap <leader><space> :buffer #<return>
 "ack.vim
 if executable('ag')
   "let g:ackprg = 'ag --vimgrep'
-  let g:ackprg='ag --nogroup --nocolor --column'
+  let g:ackprg='ag --nogroup --nocolor --column --path-to-ignore ./.agignore'
 endif
 nnoremap <leader>a :Ack ''OD
 nnoremap <leader>A :Ack -F ''OD
@@ -153,6 +156,15 @@ autocmd FileType javascript UltiSnipsAddFiletypes javascript-jsdoc
 autocmd FileType javascript UltiSnipsAddFiletypes javascript
 autocmd FileType squirrel UltiSnipsAddFiletypes javascript-jsdoc
 autocmd FileType squirrel UltiSnipsAddFiletypes squirrel
+
+nnoremap gy "*y
+vnoremap gy "*y
+nnoremap gd "*d
+vnoremap gd "*d
+nnoremap gp "*p
+vnoremap gp "*p
+nnoremap gP "*P
+vnoremap gP "*P
 " 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options
