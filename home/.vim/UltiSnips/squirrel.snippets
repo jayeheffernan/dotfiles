@@ -12,7 +12,7 @@ function(${1}) {
 endsnippet
 snippet if
 if (${1:true}) {
-	${0}
+	${VISUAL}${0}
 }
 endsnippet
 # Else if
@@ -60,7 +60,7 @@ endsnippet
 # try
 snippet try
 try {
-	${1}
+	${VISUAL}${1}
 } catch (${2:e}) {
 	${0:/* handle error */}
 }
