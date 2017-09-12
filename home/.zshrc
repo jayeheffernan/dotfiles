@@ -30,6 +30,19 @@ antigen theme robbyrussell
 # Tell antigen that you're done.
 antigen apply
 
+# fzf stuff
+# Make fzf use ag and ignore rubbish
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --ignore node_modules -g ""'
+# To apply the command to CTRL-T as well
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="command find -L . -mindepth 1 \\( -path '*/\\.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune -o -type d -print 2> /dev/null | cut -b3- | ag -v node_modules | ag -v .git"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Bind ^F to what's usually ^T
+bindkey '^F' fzf-file-widget
+bindkey '^J' fzf-cd-widget
+
 bindkey '' history-substring-search-up
 bindkey '' history-substring-search-down
 

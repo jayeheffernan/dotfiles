@@ -103,7 +103,7 @@ nnoremap <leader><space> :buffer #<return>
 "ack.vim
 if executable('ag')
   "let g:ackprg = 'ag --vimgrep'
-  let g:ackprg='ag --nogroup --nocolor --column --path-to-ignore ./.agignore'
+  let g:ackprg='ag --nogroup --nocolor --column --path-to-ignore ./.agignore --hidden --ignore .git --ignore node_modules'
 endif
 nnoremap <leader>a :Ack ''OD
 nnoremap <leader>A :Ack -F ''OD
