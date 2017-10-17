@@ -56,7 +56,13 @@ alias suod=sudo
 alias sduo=sudo
 alias dp="sh -c 'docker ps -a --format "'"table {{.Names}}\t{{.Command}}\t{{.Status}}"'" | tail -n +2 | sort'"
 alias dr="docker restart"
-alias watch='watch '
+# alias watch='watch '
+alias s='googler'
+
+# Conctr find-ip clone
+find-ip() {
+    AWS_DEFAULT_PROFILE=conctr-staging-logs aws ec2 describe-instances --query 'Reservations[*].Instances[*].[PrivateIpAddress,Tags[?Key==`Name`].Value]' --region us-west-2 --output text | perl -pe 'if ($. %2){ chomp  }else{ s/^/\t/  }' | perl -pe 's/(.*)\t(.*)/sprintf "%-26s %-18s", $2, $1/e' | sort
+}
 
 function change_dir() {
     DIR=$1
