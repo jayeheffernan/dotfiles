@@ -1,3 +1,6 @@
+snippet	mr "math.rand" w
+math.rand()$0
+endsnippet
 # Function
 snippet fun
 function ${1:function_name}(${2}) {
@@ -65,6 +68,14 @@ try {
 	${0:/* handle error */}
 }
 endsnippet
+snippet tryd "try debug"
+try {
+	${VISUAL}${1}
+} catch (error) {
+	server.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` error: :::" + (error) + "::: is a " + typeof (error));
+	throw error;
+}
+endsnippet
 snippet sl "server.log" b
 server.log($0);
 endsnippet
@@ -109,12 +120,19 @@ endsnippet
 snippet le "logger.error" b
 logger.error($0);
 endsnippet
+snippet ll "logger.log" b
+logger.log($0);
+endsnippet
 snippet lls "logger.log" b
 logger.log("$0");
 endsnippet
 
 snippet llf "logger.log format" b
 logger.log(format("$1"$0));
+endsnippet
+
+snippet llp "logger.log pformat" b
+logger.log(pformat($0));
 endsnippet
 
 snippet lld "logger.log debug" b
@@ -138,6 +156,14 @@ endsnippet
 snippet llm "logger.log memory detailed" b
 ::__memnote <- "$0"; ::__mem <- imp.getmemoryfree(); ::__memd <- "__memp" in ::getroottable() ? (::__mem - ::__memp) : 0; logger.log(format("MEM %7d (%7s), %4dk (%7sk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__mem, format("%+d", ::__memd), ::__mem/1000, format("%+5.2f", ::__memd/1000.0), ::__memnote)); ::__memp <- ::__mem;
 endsnippet
+snippet llt "logger.log time detailed" b
+::__timenote <- "$0"; ::__time <- hardware.millis(); ::__timed <- "__timep" in ::getroottable() ? (::__time - ::__timep) : 0; logger.log(format("TIME %7d (%7s), %4ds (%7ss) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__time, format("%+d", ::__timed), ::__time/1000000, format("%+5.2f", ::__timed/1000000.0), ::__timenote)); ::__timep <- ::__time;
+endsnippet
+
+snippet note "note time and memory" b
+::__note <- format("$0"); ::__mem <- imp.getmemoryfree(); ::__memd <- "__memp" in ::getroottable() ? (::__mem - ::__memp) : 0; ::__time <- hardware.millis(); ::__timed <- "__timep" in ::getroottable() ? (::__time - ::__timep) : 0; logger.log(format("TIME %7d (%7s), %4ds (%7ss) MEM %7d (%7s), %4dk (%7sk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__time, format("%+d", ::__timed), ::__time/1000000, format("%+5.2f", ::__timed/1000000.0), ::__mem, format("%+d", ::__memd), ::__mem/1000, format("%+5.2f", ::__memd/1000.0), ::__note)); ::__timep <- ::__time; ::__memp <- ::__mem; 
+endsnippet
+
 snippet /** "Description" b
 /**
  * ${0:description}
