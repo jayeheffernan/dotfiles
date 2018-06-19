@@ -31,6 +31,8 @@ Plugin 'ternjs/tern_for_vim'
 Plugin 'kana/vim-textobj-user'
 Plugin 'rhysd/vim-textobj-conflict'
 Plugin 'AndrewRadev/linediff.vim'
+Plugin 'wakatime/vim-wakatime'
+Plugin 'drmingdrmer/vim-syntax-markdown'
 call vundle#end()
 "For plugin manager
 filetype plugin indent on
