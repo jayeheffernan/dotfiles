@@ -1,97 +1,47 @@
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# From `curl -L git.io/antigen > ~/antigen.zsh`
+source $HOME/antigen.zsh
+    
+# Load the oh-my-zsh's library
+antigen use oh-my-zsh
+
+# Bundles from the default repo (robbyrussell's oh-my-zsh)
+antigen bundle git
+
+# Syntax highlighting bundle.
+antigen bundle zsh-users/zsh-syntax-highlighting
+
+# Fish-like auto suggestions
+antigen bundle zsh-users/zsh-autosuggestions
+
+# Extra zsh completions
+antigen bundle zsh-users/zsh-completions
+
+# My additions from the quick-start
+# Just sources the file! autojump must be installed on system separately
+antigen bundle autojump
+antigen bundle hcgraf/zsh-sudo
+antigen bundle taskwarrior
+
+# Load the theme
+antigen theme robbyrussell
+
+# Tell antigen that you're done
+antigen apply
 
 # Export go path (for go get)
 export GOPATH=~/.go
-
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git npm aws docker docker-compose tmuxinator systemd)
-
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/home/jaye/.scripts:/home/jaye/.rvm/gems/ruby-2.4.1/bin"
 
-source $ZSH/oh-my-zsh.sh
+export EDITOR='vim'
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-#
-# [[ -s "$HOME/.rvm/scripts/rvm"  ]] && source "$HOME/.rvm/scripts/rvm"
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
- if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+# Start an SSH agent
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
     ssh-agent > ~/.ssh-agent-thing
 fi
 if [[ "$SSH_AGENT_PID" == "" ]]; then
     eval "$(<~/.ssh-agent-thing)"
 fi
 
-# Start an SSH agent
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
     ssh-agent > ~/.ssh-agent-thing
 fi
@@ -99,18 +49,28 @@ if [[ "$SSH_AGENT_PID" == "" ]]; then
     eval "$(<~/.ssh-agent-vars)"
 fi
 
+# Aliases
 alias pms="pacman -Ss"
 alias pmi="sudo pacman -S"
 alias pmu="sudo pacman -Syu"
 alias pmr="sudo pacman -Rns"
 alias sc="systemctl"
 alias tmux="tmux -2"
+alias mux=tmuxinator
 
 alias gi="git"
 alias g="git"
 alias s=sudo
 alias c=clear
 
+alias wordfreq="tr '[A-Z]' '[a-z]' | tr -cd '[A-Za-z0-9_ \012]' | tr -s '[  ]' '\012' | sort | uniq -c | sort -nr"
+
+# Get Conctr ips
+find-ip() {
+    AWS_DEFAULT_PROFILE=conctr-staging-logs aws ec2 describe-instances --query 'Reservations[*].Instances[*].[PrivateIpAddress,Tags[?Key==`Name`].Value]' --region us-west-2 --output text | perl -pe 'if ($. %2){ chomp  }else{ s/^/\t/  }' | perl -pe 's/(.*)\t(.*)/sprintf "%-26s %-18s", $2, $1/e' | sort
+}
+
+# Improved cd command with autojump
 function change_dir() {
     DIR=$1
     cd $DIR 2> /dev/null
@@ -119,10 +79,8 @@ function change_dir() {
         j $DIR
     fi
 }
-
 alias cd=change_dir
 
-alias mux=tmuxinator
 export DISABLE_AUTO_TITLE=true
-
-export PROMPT='${ret_status}%T%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
+#export PROMPT='${ret_status}%T%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
+source /usr/share/nvm/init-nvm.sh
