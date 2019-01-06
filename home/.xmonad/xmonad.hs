@@ -15,7 +15,6 @@ import XMonad.Actions.WindowGo (runOrRaise)
 {-For full screen Chromium-}
 import XMonad.Hooks.EwmhDesktops
 
-
 main = do
     xmproc <- spawnPipe "xmobar"
 
@@ -34,14 +33,13 @@ main = do
         , ("S-<Print>", spawn "sleep 0.2; scrot -s -e 'mkdir -p ~/Pictures/scrots; mv $f ~/Pictures/scrots'")
         , ("<Print>", spawn "scrot -e 'mkdir -p ~/Pictures/scrots; mv $f ~/Pictures/scrots'")
         , ("M-<Tab>", cycleRecentWS [xK_Alt_L] xK_Tab xK_grave)
-        , ("M-<Enter>", spawn "lilyterm")
-		, ("<XF86AudioMute>", spawn "ponymix toggle")
-		, ("<XF86AudioLowerVolume>", spawn "ponymix decrease 5")
-		, ("<XF86AudioRaiseVolume>", spawn "ponymix increase 5")
-		, ("<XF86AudioMicMute>", spawn "pavucontrol")
-		, ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 2")
-		, ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 2")
-		, ("<XF86Display>", spawn "sleep 0.2 && xset dpms force off")
+        , ("<XF86AudioMute>", spawn "ponymix toggle")
+        , ("<XF86AudioLowerVolume>", spawn "ponymix decrease 5")
+        , ("<XF86AudioRaiseVolume>", spawn "ponymix increase 5")
+        , ("<XF86AudioMicMute>", spawn "pavucontrol")
+        , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 2")
+        , ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 2")
+        , ("<XF86Display>", spawn "sleep 0.2 && xset dpms force off")
         , ("M-m e", pasteString "jpeheffernan@gmail.com")
         , ("M-m j", do
                         sendKey noModMask xK_J
@@ -55,16 +53,13 @@ main = do
 {-XF86LaunchA-}
 {-XF86Explorer-}
 
-
 myStartupHook :: X ()
 myStartupHook = do
     setDefaultCursor xC_arrow
     runOrRaise "chromium" (className =? "chromium")
-    runOrRaise "xmobar" (className =? "xmobar")
     runOrRaise "stalonetray" (className =? "stalonetray")
     spawn "nm-applet"
     spawn "xxkb"
-    spawn "udiskie --tray"
     spawn "feh --bg-fill ~/.wallpaper"
     spawn "setxkbmap -option ctrl:nocaps"
-    spawn "tmux"
+    spawn "clipit"
