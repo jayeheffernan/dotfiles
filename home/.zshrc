@@ -30,7 +30,7 @@ antigen apply
 
 # Export go path (for go get)
 export GOPATH=~/.go
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/home/jaye/.scripts:/home/jaye/.rvm/gems/ruby-2.4.1/bin"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/home/jaye/.scripts:/home/jaye/.rvm/gems/ruby-2.4.1/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools"
 
 export EDITOR='vim'
 
@@ -63,6 +63,10 @@ alias g="git"
 alias s=sudo
 alias c=clear
 
+alias R="R --quiet --no-save --no-restore"
+
+alias mz=minizinc
+
 alias wordfreq="tr '[A-Z]' '[a-z]' | tr -cd '[A-Za-z0-9_ \012]' | tr -s '[  ]' '\012' | sort | uniq -c | sort -nr"
 
 # Get Conctr ips
@@ -84,3 +88,5 @@ alias cd=change_dir
 export DISABLE_AUTO_TITLE=true
 #export PROMPT='${ret_status}%T%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
 source /usr/share/nvm/init-nvm.sh
+
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
