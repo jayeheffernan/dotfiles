@@ -1,35 +1,65 @@
+snippet heartbeat "Add a heartbeat function/loop" b
+function __heartbeat() {
+	server.log("bip");
+	imp.wakeup(${1:5}, __heartbeat);
+}
+__heartbeat();
+endsnippet
+
+snippet {
+{
+	$0
+}
+endsnippet
+
 snippet	mr "math.rand" w
 math.rand()$0
 endsnippet
+
 # Function
-snippet fun
+snippet fn "function definition" wm
 function ${1:function_name}(${2}) {
 	${0}
 }
 endsnippet
+
 # Anonymous Function
-snippet f "" w
+snippet f "anon function" wm
 function(${1}) {
 	${0}
-}${2:.bindenv(this)}
+}
 endsnippet
+
+snippet fb "anon function, bound" wm
+function(${1}) {
+	${0}
+}.bindenv(${2:this})
+endsnippet
+
+snippet .b
+.bindenv(${1:this})
+endsnippet
+
 snippet if
 if (${1:true}) {
 	${VISUAL}${0}
 }
 endsnippet
+
 # Else if
 snippet elif
 else if (${1:true}) {
 	${0}
 }
 endsnippet
+
 # Else
 snippet e
 else {
 	${0}
 }
 endsnippet
+
 # if ... else
 snippet ife
 if (${1:true}) {
@@ -38,10 +68,12 @@ if (${1:true}) {
 	${0}
 }
 endsnippet
+
 # tertiary conditional
 snippet ter
 ${1:/* condition */} ? ${2:/* if true */} : ${0:/* if false */}
 endsnippet
+
 # switch
 snippet switch
 switch (${1:expression}) {
@@ -53,6 +85,7 @@ switch (${1:expression}) {
 		${2}
 }
 endsnippet
+
 # case
 snippet case
 case '${1:case}':
@@ -60,6 +93,7 @@ case '${1:case}':
 	break;
 ${0}
 endsnippet
+
 # try
 snippet try
 try {
@@ -68,6 +102,7 @@ try {
 	${0:/* handle error */}
 }
 endsnippet
+
 snippet tryd "try debug"
 try {
 	${VISUAL}${1}
@@ -76,18 +111,29 @@ try {
 	throw error;
 }
 endsnippet
+
 snippet sl "server.log" b
 server.log($0);
 endsnippet
+
 snippet se "server.error" b
 server.error($0);
 endsnippet
-snippet sls "server.log" b
+
+snippet sls "server.log string" b
 server.log("$0");
+endsnippet
+
+snippet ses "server.error string" b
+server.error("$0");
 endsnippet
 
 snippet slf "server.log format" b
 server.log(format("$1"$0));
+endsnippet
+
+snippet sef "server.error format" b
+server.error(format("$1"$0));
 endsnippet
 
 snippet sld "server.log debug" b
@@ -113,7 +159,7 @@ server.log(format("MEM %7d (%4dk) (`!p import uuid; snip.rv = snip.c if snip.c e
 endsnippet
 snippet slm "server.log memory detailed" b
 ::__memnote <- "$0"; ::__mem <- imp.getmemoryfree(); ::__memd <- "__memp" in ::getroottable() ? (::__mem - ::__memp) : 0; server.log(format("MEM %7d (%7s), %4dk (%7sk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__mem, format("%+d", ::__memd), ::__mem/1000, format("%+5.2f", ::__memd/1000.0), ::__memnote)); ::__memp <- ::__mem;
-
+endsnippet
 snippet ll "server.log" b
 server.log($0);
 endsnippet
@@ -160,6 +206,10 @@ snippet llt "logger.log time detailed" b
 ::__timenote <- "$0"; ::__time <- hardware.millis(); ::__timed <- "__timep" in ::getroottable() ? (::__time - ::__timep) : 0; logger.log(format("TIME %7d (%7s), %4ds (%7ss) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__time, format("%+d", ::__timed), ::__time/1000000, format("%+5.2f", ::__timed/1000000.0), ::__timenote)); ::__timep <- ::__time;
 endsnippet
 
+snippet slt "server.log time detailed" b
+::__timenote <- "$0"; ::__time <- hardware.millis(); ::__timed <- "__timep" in ::getroottable() ? (::__time - ::__timep) : 0; server.log(format("TIME %7d (%7s), %4ds (%7ss) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__time, format("%+d", ::__timed), ::__time/1000000, format("%+5.2f", ::__timed/1000000.0), ::__timenote)); ::__timep <- ::__time;
+endsnippet
+
 snippet note "note time and memory" b
 ::__note <- format("$0"); ::__mem <- imp.getmemoryfree(); ::__memd <- "__memp" in ::getroottable() ? (::__mem - ::__memp) : 0; ::__time <- hardware.millis(); ::__timed <- "__timep" in ::getroottable() ? (::__time - ::__timep) : 0; logger.log(format("TIME %7d (%7s), %4ds (%7ss) MEM %7d (%7s), %4dk (%7sk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__time, format("%+d", ::__timed), ::__time/1000000, format("%+5.2f", ::__timed/1000000.0), ::__mem, format("%+d", ::__memd), ::__mem/1000, format("%+5.2f", ::__memd/1000.0), ::__note)); ::__timep <- ::__time; ::__memp <- ::__mem; 
 endsnippet
@@ -169,20 +219,21 @@ snippet /** "Description" b
  * ${0:description}
  */
 endsnippet
+
 snippet @a "Description"
 @arg {${1:type}} ${2:name} - ${0:description}
 endsnippet
+
 snippet @r "Description"
 @returns {${1:type}} ${0:description}
 endsnippet
+
 snippet @s "Description"
 @summary ${0:description}
 endsnippet
 
 snippet wu "imp.wakeup" w
-imp.wakeup(${1:0}, ${3:function() {
-	${VISUAL}$0
-}}${2:.bindenv(this)});
+imp.wakeup(${1:0}, $0);
 endsnippet
 
 snippet	t "TIME macro" b

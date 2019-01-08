@@ -12,12 +12,12 @@ new Promise((resolve, reject) => {
 });
 endsnippet
 snippet before "mocha before" b
-before(function(done) {
+before(function() {
 	${0:throw new Error("not yet implemented");}
 });
 endsnippet
 snippet after "mocha after" b
-after(function(done) {
+after(function() {
 	${0:throw new Error("not yet implemented");}
 });
 endsnippet
@@ -36,7 +36,7 @@ describe('${VISUAL}', function() {
 });
 endsnippet
 snippet it "mocha it" b
-it('${1:what it does}', function(done) {
+it('${1:what it does}', function() {
 	${0:throw new Error("not yet implemented");}
 });
 endsnippet

@@ -1,5 +1,5 @@
 " Clear autocommands to avoid running twice
-" 
+"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -16,14 +16,17 @@ Plugin 'tpope/vim-surround'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
+Plugin 'w0rp/ale'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'xevz/vim-squirrel'
 Plugin 'sickill/vim-monokai'
 Plugin 'justinj/vim-react-snippets'
 Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-sleuth'
-Plugin 'jiangmiao/auto-pairs'
+" NB: This plugin broke my completion (it would remove the completion unless I
+" typed something after it on my Mac
+" Plugin 'Townk/vim-autoclose'
 Plugin 'aquach/vim-http-client'
 Plugin 'othree/yajs.vim'
 Plugin 'tpope/vim-fugitive'
@@ -32,6 +35,7 @@ Plugin 'kana/vim-textobj-user'
 Plugin 'rhysd/vim-textobj-conflict'
 Plugin 'AndrewRadev/linediff.vim'
 Plugin 'wakatime/vim-wakatime'
+Plugin 'glts/vim-cottidie'
 call vundle#end()
 "For plugin manager
 filetype plugin indent on
@@ -83,11 +87,11 @@ nnoremap K mzkJ`z
 let g:yankstack_map_keys = 0
 call yankstack#setup()
 nmap <leader>p <Plug>yankstack_substitute_older_paste
-nmap <leader>P <Plug>yankstack_substitute_newer_paste 
+nmap <leader>P <Plug>yankstack_substitute_newer_paste
 
 nnoremap <Space> :
 vnoremap <Space> :
-nnoremap <leader>w :w<return>
+nnoremap <leader>w :update<return>
 
 nnoremap <leader>v :e ~/.vimrc<CR>
 nnoremap <leader>s :source %<CR>
@@ -99,16 +103,16 @@ nnoremap <leader>u :UltiSnipsEdit<return>
 
 "Switch to alternate buffer
 nnoremap <leader><space> :buffer #<return>
-"
+
 "ack.vim
 if executable('ag')
   "let g:ackprg = 'ag --vimgrep'
   let g:ackprg='ag --nogroup --nocolor --column --path-to-ignore ./.agignore --hidden --ignore .git --ignore node_modules'
 endif
-nnoremap <leader>a :Ack ''OD
-nnoremap <leader>A :Ack -F ''OD
+nnoremap <leader>a :Ack! ''OD
+nnoremap <leader>A :Ack! -F ''OD
 
-"Toggle spell-check 
+"Toggle spell-check
 nnoremap <leader>S :set spell!<CR>
 
 "Toggle highlighting of search results
@@ -118,16 +122,15 @@ nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>b :CtrlPBuffer<return>
 nnoremap <leader>r :CtrlPMRUFiles<return>
 
-"Reflow paragraph
-" nnoremap <Leader>f gqip
-if !exists("*ToggleFold")
-  function ToggleFold()
-    let &foldmethod = (&foldmethod == "manual") ?  "indent" : "manual"
-    echo &foldmethod
-  endfunction
-endif
+nnoremap <Leader>f :let &foldmethod = (&foldmethod == "manual" ? "indent" : "manual") <bar> set foldmethod? <CR>
 
-nnoremap <Leader>f :call ToggleFold()<CR>
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Options
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+nnoremap <Leader>f !!js-beautify<CR>
+vnoremap <Leader>f !js-beautify<CR>
 
 "Toggle rainbow parens plugin
 nnoremap <leader><leader>r :RainbowParenthesesToggle<CR>
@@ -143,6 +146,7 @@ nnoremap <leader>h :HTTPClientDoRequest<cr>
 
 " Easy insert ; for javascript
 nnoremap <leader>; mzA;`z
+nnoremap <leader>, mzA,`z
 
 vnoremap <leader>d :Linediff<enter>
 
@@ -157,15 +161,11 @@ autocmd FileType javascript UltiSnipsAddFiletypes javascript
 autocmd FileType squirrel UltiSnipsAddFiletypes javascript-jsdoc
 autocmd FileType squirrel UltiSnipsAddFiletypes squirrel
 
-nnoremap gy "*y
-vnoremap gy "*y
-nnoremap gd "*d
-vnoremap gd "*d
-nnoremap gp "*p
-vnoremap gp "*p
-nnoremap gP "*P
-vnoremap gP "*P
-" 
+autocmd BufRead,BufNewFile */temp/*.nut setlocal nomodifiable
+autocmd BufRead,BufNewFile */builds/*.nut setlocal nomodifiable
+
+nnoremap <Leader>ve :let &virtualedit = (&virtualedit == "" ? "all" : "") <bar> set virtualedit? <CR>
+"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Options
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -176,6 +176,9 @@ let g:NERDSpaceDelims = 1
 let g:NERDDefaultAlign = 'left'
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
+
+" To make resizing splits with mouse work
+set ttymouse=xterm2
 
 " Show line number in margin
 set number
@@ -234,3 +237,12 @@ set hls
 
 " Indent the rest of broken lines
 set breakindent
+
+" Always report number of lines changed by ex commands
+set report=0
+
+" Get tips
+autocmd VimEnter,BufWritePost * CottidieTip
+
+let g:ale_linters = { 'javascript': [ 'eslint' ] }
+let g:ale_fixers = { 'javascript': [ 'eslint' ] }
