@@ -10,15 +10,16 @@
 	tb = branch
 	s = status
 	ts = status
-	l = log --oneline
 	tl = log --oneline
 	a = add
 	ta = add
-	g = log --graph --oneline --decorate
-	tg = log --graph --oneline --decorate
-	ga = log --graph --oneline --decorate --all
-	tga = log --graph --oneline --decorate --all
 	d = diff -w
 	td = diff -w
+	c = commit
+	ca = commit --amend
+	cane = commit --amend --no-edit
+	g = log --graph --oneline --decorate
+	ga = log --graph --oneline --decorate --all
+	l = log --oneline
 [core]
-	editor = /usr/local/bin/vim
+	editor = /usr/bin/vim
