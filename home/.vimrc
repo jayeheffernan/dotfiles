@@ -13,7 +13,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
-Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'luochen1990/rainbow'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 " Plugin 'scrooloose/syntastic'
@@ -133,16 +133,7 @@ nnoremap <Leader>f !!js-beautify<CR>
 vnoremap <Leader>f !js-beautify<CR>
 
 "Toggle rainbow parens plugin
-nnoremap <leader><leader>r :RainbowParenthesesToggle<CR>
-
-" "Easy window switching
-" nnoremap <C-h> <C-w>h
-" nnoremap <C-j> <C-w>j
-" nnoremap <C-k> <C-w>k
-" nnoremap <C-l> <C-w>l
-
-nnoremap <leader>t :NERDTreeToggle<cr>
-nnoremap <leader>h :HTTPClientDoRequest<cr>
+nnoremap <leader><leader>r :RainbowToggle<CR>
 
 " Easy insert ; for javascript
 nnoremap <leader>; mzA;`z
@@ -220,9 +211,7 @@ set nospell
 set diffopt=filler,vertical
 
 colorscheme monokai
-" au Syntax * RainbowParenthesesLoadRound
-" au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+
 " Required for transparent background:
 " highlight Normal ctermbg=NONE
 set smartindent
@@ -240,6 +229,8 @@ set breakindent
 
 " Always report number of lines changed by ex commands
 set report=0
+
+let g:rainbow_active = 1
 
 " Get tips
 autocmd VimEnter,BufWritePost * CottidieTip
