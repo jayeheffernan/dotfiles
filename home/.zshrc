@@ -42,19 +42,7 @@ bindkey "OB" down-line-or-beginning-search # Down
 bindkey '' history-substring-search-up
 bindkey '' history-substring-search-down
 
-# fzf stuff
-# Make fzf use ag and ignore rubbish
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --ignore node_modules -g ""'
-# To apply the command to CTRL-T as well
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="command find -L . -mindepth 1 \\( -path '*/\\.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune -o -type d -print 2> /dev/null | cut -b3- | ag -v node_modules | ag -v .git"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# Bind ^F to what's usually ^T
-bindkey '^F' fzf-file-widget
-bindkey '^J' fzf-cd-widget
-
-export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jaye/.scripts"
+export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jaye/.scripts:/Users/jaye/.builds/squirrel/bin"
 export EDITOR='vim'
 
 alias gi="git"
@@ -72,6 +60,8 @@ export COMPOSE_HTTP_TIMEOUT=300
 alias dcud="docker-compose up && docker-compose down"
 alias d="docker"
 alias dc="docker-compose"
+
+alias ap="ansible-playbook"
 
 # Conctr find-ip clone
 find-ip() {
@@ -104,10 +94,14 @@ alias cd=change_dir
 alias mux=tmuxinator
 export DISABLE_AUTO_TITLE=true
 
+export HOMEBREW_NO_AUTO_UPDATE=1
+
 export PROMPT='${ret_status}%T%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+export ASK_DEFAULT_DEVICE_LOCALE=en-AU
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
@@ -115,3 +109,9 @@ export PATH="$PATH:$HOME/.rvm/bin"
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+
+# tabtab source for slss package
+# uninstall by removing these lines or running `tabtab uninstall slss`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh
+
+eval "$(pyenv init -)"
