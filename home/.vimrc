@@ -16,17 +16,13 @@ Plugin 'tpope/vim-surround'
 Plugin 'luochen1990/rainbow'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-" Plugin 'scrooloose/syntastic'
 Plugin 'w0rp/ale'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'xevz/vim-squirrel'
-Plugin 'sickill/vim-monokai'
+Plugin 'patstockwell/vim-monokai-tasty'
 Plugin 'justinj/vim-react-snippets'
 Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-sleuth'
-" NB: This plugin broke my completion (it would remove the completion unless I
-" typed something after it on my Mac
-" Plugin 'Townk/vim-autoclose'
 Plugin 'aquach/vim-http-client'
 Plugin 'othree/yajs.vim'
 Plugin 'tpope/vim-fugitive'
@@ -36,6 +32,8 @@ Plugin 'rhysd/vim-textobj-conflict'
 Plugin 'AndrewRadev/linediff.vim'
 Plugin 'wakatime/vim-wakatime'
 Plugin 'glts/vim-cottidie'
+Plugin 'mattn/emmet-vim'
+Plugin 'prettier/vim-prettier'
 call vundle#end()
 "For plugin manager
 filetype plugin indent on
@@ -46,14 +44,15 @@ syntax on
 "For CtrlP plugin
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_working_path_mode = '~'
+let g:ctrlp_user_command = 'ag %s --files-with-matches --nocolor --column --path-to-ignore ./.agignore --ignore .git --ignore node_modules --hidden -g ""'
 
 " Disable "sorting" in most recently used mode so that most recent is
 " first selected by default
 let g:ctrlp_mruf_default_order = 1
 
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules)$',
-  \ 'file': '\v\.(exe|so|dll|swp)$',
+  \ 'dir':  '\v[\/](\.(git|hg|svn|gradle|idea)|node_modules|build|builds)$',
+  \ 'file': '\v\.(exe|so|dll|swp|swo|pyc)$',
   \ }
 
 let g:syntastic_javascript_checkers=['eslint']
@@ -106,11 +105,24 @@ nnoremap <leader><space> :buffer #<return>
 
 "ack.vim
 if executable('ag')
-  "let g:ackprg = 'ag --vimgrep'
-  let g:ackprg='ag --nogroup --nocolor --column --path-to-ignore ./.agignore --hidden --ignore .git --ignore node_modules'
+  " let g:ackprg = 'ag --vimgrep'
+  let g:ackprg="ag --nogroup --nocolor --column --path-to-ignore ./.agignore --hidden --ignore .git --ignore node_modules --mmap"
 endif
 nnoremap <leader>a :Ack! ''OD
 nnoremap <leader>A :Ack! -F ''OD
+let g:ack_mappings = {
+    \"t": "<C-W><CR><C-W>T",
+    \"T": "<C-W><CR><C-W>TgT<C-W>j",
+    \"o": "<CR>",
+    \"O": "<CR><C-W><C-W>:ccl<CR>",
+    \"go": "<CR><C-W>j",
+    \"h": "<C-W><CR><C-W>K",
+    \"H": "<C-W><CR><C-W>K<C-W>b",
+    \"v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
+    \"gv": "<C-W><CR><C-W>H<C-W>b<C-W>J",
+    \"m": '<CR>zz',
+    \}
+
 
 "Toggle spell-check
 nnoremap <leader>S :set spell!<CR>
@@ -124,13 +136,7 @@ nnoremap <leader>r :CtrlPMRUFiles<return>
 
 nnoremap <Leader>f :let &foldmethod = (&foldmethod == "manual" ? "indent" : "manual") <bar> set foldmethod? <CR>
 
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Options
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-nnoremap <Leader>f !!js-beautify<CR>
-vnoremap <Leader>f !js-beautify<CR>
+nnoremap <Leader>f :PrettierAsync<CR>
 
 "Toggle rainbow parens plugin
 nnoremap <leader><leader>r :RainbowToggle<CR>
@@ -141,25 +147,21 @@ nnoremap <leader>, mzA,`z
 
 vnoremap <leader>d :Linediff<enter>
 
+nnoremap <leader>B :e builds/device.nut<enter>l
+
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Options
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 let g:UltiSnipsEnableSnipMate = 0
 let g:UltiSnipsSnippetDirectories = [ 'UltiSnips', $HOME.'/.vim/UltiSnips/', $HOME.'/.vim/bundle/vim-snippets/UltiSnips/']
 let g:UltiSnipsExpandTrigger="<Tab>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 
-autocmd FileType javascript UltiSnipsAddFiletypes javascript-jsdoc
-autocmd FileType javascript UltiSnipsAddFiletypes javascript
-autocmd FileType squirrel UltiSnipsAddFiletypes javascript-jsdoc
-autocmd FileType squirrel UltiSnipsAddFiletypes squirrel
-
 autocmd BufRead,BufNewFile */temp/*.nut setlocal nomodifiable
 autocmd BufRead,BufNewFile */builds/*.nut setlocal nomodifiable
-
-nnoremap <Leader>ve :let &virtualedit = (&virtualedit == "" ? "all" : "") <bar> set virtualedit? <CR>
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Options
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -175,12 +177,6 @@ set ttymouse=xterm2
 set number
 
 set mouse=a
-
-"set tabstop=4
-"Backspacing an expanded tab deletes space of tab, not just a single space
-"set softtabstop=4
-"set expandtab
-"set shiftwidth=4
 
 set colorcolumn=100
 
@@ -210,7 +206,7 @@ set nospell
 "added/removed in one buffer, as in default)
 set diffopt=filler,vertical
 
-colorscheme monokai
+colorscheme vim-monokai-tasty
 
 " Required for transparent background:
 " highlight Normal ctermbg=NONE
@@ -237,3 +233,5 @@ autocmd VimEnter,BufWritePost * CottidieTip
 
 let g:ale_linters = { 'javascript': [ 'eslint' ] }
 let g:ale_fixers = { 'javascript': [ 'eslint' ] }
+
+let g:prettier#config#tab_width = 4
