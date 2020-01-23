@@ -107,106 +107,103 @@ snippet tryd "try debug"
 try {
 	${VISUAL}${1}
 } catch (error) {
-	server.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` error: :::" + (error) + "::: is a " + typeof (error));
+	server.log("debuggg `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` error: :::" + (error) + "::: is a " + typeof (error));
 	throw error;
 }
 endsnippet
 
-snippet sl "server.log" b
+snippet sl "server.log" w
 server.log($0);
 endsnippet
 
-snippet se "server.error" b
+snippet se "server.error" w
 server.error($0);
 endsnippet
 
-snippet sls "server.log string" b
+snippet sls "server.log string" w
 server.log("$0");
 endsnippet
 
-snippet ses "server.error string" b
+snippet ses "server.error string" w
 server.error("$0");
 endsnippet
 
-snippet slf "server.log format" b
+snippet slf "server.log format" w
 server.log(format("$1"$0));
 endsnippet
 
-snippet sef "server.error format" b
+snippet sef "server.error format" w
 server.error(format("$1"$0));
 endsnippet
 
-snippet sld "server.log debug" b
-server.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + (${1}) + "::: is a " + typeof ($1));
+snippet sld "server.log debug" w
+server.log("debuggg `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + (${1}) + "::: is a " + typeof ($1));
 endsnippet
 
-snippet slds "server.log debug string" b
-server.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` ${1}");
+snippet slds "server.log debug string" w
+server.log("debuggg `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` ${1}");
 endsnippet
 
-snippet slde "server.log debug empty" b
-server.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`");
+snippet slde "server.log debug empty" w
+server.log("debuggg `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`");
 endsnippet
 
-snippet sed "server.log debug" b
-server.error("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + ${1} + "::: is a " + typeof $1);
+snippet sed "server.log debug" w
+server.error("debuggg `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + ${1} + "::: is a " + typeof $1);
 endsnippet
-snippet br "breadcrumb" b
+snippet br "breadcrumb" w
 _breadcrumbs.push("`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`"); _breadcrumbs.remove(0);
 endsnippet
-snippet slms "server.log memory short" b
+snippet slms "server.log memory short" w
 server.log(format("MEM %7d (%4dk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    $0", imp.getmemoryfree(), imp.getmemoryfree()/1000));
 endsnippet
-snippet slm "server.log memory detailed" b
+snippet slm "server.log memory detailed" w
 ::__memnote <- "$0"; ::__mem <- imp.getmemoryfree(); ::__memd <- "__memp" in ::getroottable() ? (::__mem - ::__memp) : 0; server.log(format("MEM %7d (%7s), %4dk (%7sk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__mem, format("%+d", ::__memd), ::__mem/1000, format("%+5.2f", ::__memd/1000.0), ::__memnote)); ::__memp <- ::__mem;
 endsnippet
-snippet ll "server.log" b
-server.log($0);
-endsnippet
-snippet le "logger.error" b
+snippet le "logger.error" w
 logger.error($0);
 endsnippet
-snippet ll "logger.log" b
+snippet ll "logger.log" w
 logger.log($0);
 endsnippet
-snippet lls "logger.log" b
+snippet lls "logger.log" w
 logger.log("$0");
 endsnippet
 
-snippet llf "logger.log format" b
+snippet llf "logger.log format" w
 logger.log(format("$1"$0));
 endsnippet
 
-snippet llp "logger.log pformat" b
+snippet llp "logger.log pformat" w
 logger.log(pformat($0));
 endsnippet
 
-snippet lld "logger.log debug" b
-logger.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + (${1}) + "::: is a " + typeof ($1));
+snippet lld "logger.log debug" w
+logger.log("debuggg `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + (${1}) + "::: is a " + typeof ($1));
 endsnippet
 
-snippet llds "logger.log debug string" b
-logger.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` ${1}");
+snippet llds "logger.log debug string" w
+logger.log("debuggg `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` ${1}");
 endsnippet
 
-snippet llde "logger.log debug empty" b
-logger.log("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`");
+snippet llde "logger.log debug empty" w
+logger.log("debuggg `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`");
 endsnippet
 
-snippet led "logger.log debug" b
-logger.error("debug `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + ${1} + "::: is a " + typeof $1);
+snippet led "logger.log debug" w
+logger.error("debuggg `!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]` $1: :::" + ${1} + "::: is a " + typeof $1);
 endsnippet
-snippet llms "logger.log memory short" b
+snippet llms "logger.log memory short" w
 logger.log(format("MEM %7d (%4dk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    $0", imp.getmemoryfree(), imp.getmemoryfree()/1000));
 endsnippet
-snippet llm "logger.log memory detailed" b
+snippet llm "logger.log memory detailed" w
 ::__memnote <- "$0"; ::__mem <- imp.getmemoryfree(); ::__memd <- "__memp" in ::getroottable() ? (::__mem - ::__memp) : 0; logger.log(format("MEM %7d (%7s), %4dk (%7sk) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__mem, format("%+d", ::__memd), ::__mem/1000, format("%+5.2f", ::__memd/1000.0), ::__memnote)); ::__memp <- ::__mem;
 endsnippet
-snippet llt "logger.log time detailed" b
+snippet llt "logger.log time detailed" w
 ::__timenote <- "$0"; ::__time <- hardware.millis(); ::__timed <- "__timep" in ::getroottable() ? (::__time - ::__timep) : 0; logger.log(format("TIME %7d (%7s), %4ds (%7ss) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__time, format("%+d", ::__timed), ::__time/1000000, format("%+5.2f", ::__timed/1000000.0), ::__timenote)); ::__timep <- ::__time;
 endsnippet
 
-snippet slt "server.log time detailed" b
+snippet slt "server.log time detailed" w
 ::__timenote <- "$0"; ::__time <- hardware.millis(); ::__timed <- "__timep" in ::getroottable() ? (::__time - ::__timep) : 0; server.log(format("TIME %7d (%7s), %4ds (%7ss) (`!p import uuid; snip.rv = snip.c if snip.c else uuid.uuid4().get_hex()[:4]`)    %s", ::__time, format("%+d", ::__timed), ::__time/1000000, format("%+5.2f", ::__timed/1000000.0), ::__timenote)); ::__timep <- ::__time;
 endsnippet
 
