@@ -1,6 +1,6 @@
-# The .dotfiles of Jaye Heffernan
+# My .dotfiles
 
-This repository contains my personal dotfiles for configuring my system.  Notably, my Vim and Zsh configurations are maintained here.
+Including Vim, Zsh, and helpful utilities.
 
 ## How it works
 
@@ -32,20 +32,38 @@ To remove symlinks for a particular package:
 
 `make clean-home`
 
-## Pre/Post Requisites
+## Dependencies
 
-- [ Curl ](https://github.com/curl/curl)
+```sh
+mkdir -p ~/.config
+mkdir -p ~/.builds
 
- `sudo apt-get install curl`
+curl https://sh.rustup.rs -sSf | sh
 
-- [ Autojump ](https://github.com/wting/autojump)
+brew install neovim fzf ripgrep moreutils autojump tree bat 
 
- `sudo apt-get install autojump`
+gem install neovim
+npm install -g neovim
+python3 -m pip install --user --upgrade pynvim
+python2 -m pip install --user --upgrade pynvim
 
-- [ Oh My Zsh ](https://github.com/robbyrussell/oh-my-zsh)
+git clone 'https://github.com/alacritty/alacritty/' ~/.builds
+cd ~/.builds/alacritty
+make
+cp -r target/release/osx/Alacritty.app /Applications/
 
- `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
+git clone 'https://github.com/aaron-williamson/base16-alacritty' ~/.config
+git clone 'https://github.com/chriskempson/base16-shell.git' ~/.config
+git clone 'https://github.com/fnune/base16-fzf' ~/.config
 
-- [ Vim ](http://www.vim.org/) plugins
+base_16_material
+```
 
- Run [ Vundle's ](https://github.com/VundleVim/Vundle.vim) plugin install command.  From within vim: `:PluginInstall`
+## Updating base16 colors
+
+To update to "ocean":
+
+- Run `base_16_ocean` 
+- Update `~/.config/alacritty/alacritty.yml`
+- Update `~/.zshrc` with `source ~/.config/base16-fzf/bash/base16-ocean.config`
+- `Preferences: Color Theme` in VSCode

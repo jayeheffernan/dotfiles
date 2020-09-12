@@ -1,237 +1,255 @@
-" Clear autocommands to avoid running twice
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
-Plugin 'maxbrunsfeld/vim-yankstack'
-Plugin 'kien/ctrlp.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'luochen1990/rainbow'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'w0rp/ale'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'xevz/vim-squirrel'
-Plugin 'patstockwell/vim-monokai-tasty'
-Plugin 'justinj/vim-react-snippets'
-Plugin 'mileszs/ack.vim'
-Plugin 'tpope/vim-sleuth'
-Plugin 'aquach/vim-http-client'
-Plugin 'othree/yajs.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'ternjs/tern_for_vim'
-Plugin 'kana/vim-textobj-user'
-Plugin 'rhysd/vim-textobj-conflict'
-Plugin 'AndrewRadev/linediff.vim'
-Plugin 'wakatime/vim-wakatime'
-Plugin 'glts/vim-cottidie'
-Plugin 'mattn/emmet-vim'
-Plugin 'prettier/vim-prettier'
-call vundle#end()
-"For plugin manager
+let g:yankstack_map_keys = 0
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !mkdir -p ~/.vim/autoload
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+call plug#begin()
+
+Plug 'chriskempson/base16-vim'
+
+" Utilities
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'wellle/targets.vim'
+Plug 'tmsvg/pear-tree'
+
+Plug 'wakatime/vim-wakatime'
+
+" Cool stuff
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'junegunn/vim-easy-align'
+Plug 'simnalamburt/vim-mundo'
+Plug 'lifepillar/vim-cheat40'
+" note: install sharkdp/bat for syntax-highlighted fzf preview 
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
+" COC
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" COC plugins
+Plug 'neoclide/coc-snippets', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-emmet', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-jest', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-rls', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
+" TODO: consider tabnine
+
+Plug 'sheerun/vim-polyglot'
+call plug#end()
+
+call yankstack#setup()
+let g:pear_tree_repeatable_expand = 0
+let g:pear_tree_smart_backspace   = 1
+let g:pear_tree_smart_closers     = 1
+let g:pear_tree_smart_openers     = 1
+
+let g:cheat40_use_default = 0
+
+" Load base16-shell colors
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+
+syntax on
 filetype plugin indent on
 
-"For snipmate plugin
-syntax on
-
-"For CtrlP plugin
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_working_path_mode = '~'
-let g:ctrlp_user_command = 'ag %s --files-with-matches --nocolor --column --path-to-ignore ./.agignore --ignore .git --ignore node_modules --hidden -g ""'
-
-" Disable "sorting" in most recently used mode so that most recent is
-" first selected by default
-let g:ctrlp_mruf_default_order = 1
-
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn|gradle|idea)|node_modules|build|builds)$',
-  \ 'file': '\v\.(exe|so|dll|swp|swo|pyc)$',
-  \ }
-
-let g:syntastic_javascript_checkers=['eslint']
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader=","
-
-" yank overwritten visual text
-vnoremap p <esc>pgvd
-
-nnoremap <leader>R :redraw!<cr>
-
-" edit a todo file
-" noremap <leader>t :e TODO.md<cr>
-nnoremap <leader>tt :TernType<cr>
-nnoremap <leader>td :TernDef<cr>
-nnoremap <leader>tr :TernRefs<cr>
-" Close preview window when done completing
-autocmd CompleteDone * pclose
-
-nnoremap <leader>l :set list!<CR>
-
-" nnoremap <BS> mzA<BS><ESC>`z
-nnoremap  
-cnoremap  
-
-nnoremap K mzkJ`z
-"For yankstack plugin
-let g:yankstack_map_keys = 0
-call yankstack#setup()
-nmap <leader>p <Plug>yankstack_substitute_older_paste
-nmap <leader>P <Plug>yankstack_substitute_newer_paste
-
 nnoremap <Space> :
 vnoremap <Space> :
 nnoremap <leader>w :update<return>
 
-nnoremap <leader>v :e ~/.vimrc<CR>
-nnoremap <leader>s :source %<CR>
+nnoremap <leader>ev :e ~/.vimrc<CR>
+nnoremap <leader>et :e ~/.tmux.conf<CR>
+nnoremap <leader>ez :e ~/.zshrc<CR>
+nnoremap <leader>ec :CocConfig<CR>
+" Open new file adjacent to current file
+nnoremap <leader>en :e <C-R>=expand("%:p:h") . "/" <CR>
+
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_preview_window = 'up:40%'
+nnoremap <C-p> :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>r :History<CR>
+nnoremap <leader>s :Rg<Space>
+nnoremap <leader><Up> :buffer #<CR>
 nnoremap <leader>d :bd<CR>
+nnoremap <leader>D :bd!<CR>
 
-nnoremap <leader># :.!sh<CR>
+nnoremap <leader>l :set list!<CR>
 
-nnoremap <leader>u :UltiSnipsEdit<return>
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+nmap gA :EasyAlign
+xmap gA :EasyAlign
 
-"Switch to alternate buffer
-nnoremap <leader><space> :buffer #<return>
+nnoremap Y "+y
+nnoremap YY "+yy
+vnoremap Y "+y
+nnoremap <leader><leader>p "+p
+nnoremap <leader><leader>P "+P
+vnoremap <leader><leader>p "+p
+vnoremap <leader><leader>P "+P
+nmap <leader>p <Plug>yankstack_substitute_older_paste
+nmap <leader>P <Plug>yankstack_substitute_newer_paste
 
-"ack.vim
-if executable('ag')
-  " let g:ackprg = 'ag --vimgrep'
-  let g:ackprg="ag --nogroup --nocolor --column --path-to-ignore ./.agignore --hidden --ignore .git --ignore node_modules --mmap"
-endif
-nnoremap <leader>a :Ack! ''OD
-nnoremap <leader>A :Ack! -F ''OD
-let g:ack_mappings = {
-    \"t": "<C-W><CR><C-W>T",
-    \"T": "<C-W><CR><C-W>TgT<C-W>j",
-    \"o": "<CR>",
-    \"O": "<CR><C-W><C-W>:ccl<CR>",
-    \"go": "<CR><C-W>j",
-    \"h": "<C-W><CR><C-W>K",
-    \"H": "<C-W><CR><C-W>K<C-W>b",
-    \"v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
-    \"gv": "<C-W><CR><C-W>H<C-W>b<C-W>J",
-    \"m": '<CR>zz',
-    \}
+nnoremap <leader>u :MundoToggle<CR>
 
+let g:oppositedirection = { 'h': 'l', 'l': 'h', 'j': 'k', 'k': 'j' }
+function! s:JumpWindow(dir)
+  let l:prev = winnr()
+  execute 'wincmd ' . a:dir
+  if winnr() == l:prev
+    execute '999wincmd ' . g:oppositedirection[a:dir]
+  endif
+endfunction
 
-"Toggle spell-check
-nnoremap <leader>S :set spell!<CR>
+nnoremap <silent> <C-j> :<C-u>call <SID>JumpWindow('j')<CR>
+nnoremap <silent> <C-h> :<C-u>call <SID>JumpWindow('h')<CR>
+nnoremap <silent> <C-l> :<C-u>call <SID>JumpWindow('l')<CR>
+nnoremap <silent> <C-k> :<C-u>call <SID>JumpWindow('k')<CR>
 
-"Toggle highlighting of search results
-nnoremap <leader>h :set hlsearch!<CR>
-
-
-nnoremap <leader>b :CtrlPBuffer<return>
-nnoremap <leader>r :CtrlPMRUFiles<return>
-
-nnoremap <Leader>f :let &foldmethod = (&foldmethod == "manual" ? "indent" : "manual") <bar> set foldmethod? <CR>
-
-nnoremap <Leader>f :PrettierAsync<CR>
-
-"Toggle rainbow parens plugin
-nnoremap <leader><leader>r :RainbowToggle<CR>
-
-" Easy insert ; for javascript
-nnoremap <leader>; mzA;`z
-nnoremap <leader>, mzA,`z
-
-vnoremap <leader>d :Linediff<enter>
-
-nnoremap <leader>B :e builds/device.nut<enter>l
-
-"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Options
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-let g:UltiSnipsEnableSnipMate = 0
-let g:UltiSnipsSnippetDirectories = [ 'UltiSnips', $HOME.'/.vim/UltiSnips/', $HOME.'/.vim/bundle/vim-snippets/UltiSnips/']
-let g:UltiSnipsExpandTrigger="<Tab>"
-let g:UltiSnipsJumpForwardTrigger="<Tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
-
-autocmd BufRead,BufNewFile */temp/*.nut setlocal nomodifiable
-autocmd BufRead,BufNewFile */builds/*.nut setlocal nomodifiable
-
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-
-" To make resizing splits with mouse work
-set ttymouse=xterm2
-
-" Show line number in margin
 set number
-
-set mouse=a
-
-set colorcolumn=100
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-" Search for string while typing i.e. before hitting enter
-set incsearch
-set nohlsearch
-
-"Ignore case for searches unless one or more characters in search string are
-"uppercase
-set ignorecase
-set smartcase
-
-"set complete-=k complete+=k
-set dictionary=/usr/share/dict/words
-
-"Automatically open all folds upon reading buffer
-autocmd BufRead * normal zR
-
-"Language for spell-check
-set spelllang=en_au
-set nospell
-
-"Use vertical splits for diff mode (and show filler lines for when lines are
-"added/removed in one buffer, as in default)
-set diffopt=filler,vertical
-
-colorscheme vim-monokai-tasty
-
-" Required for transparent background:
-" highlight Normal ctermbg=NONE
-set smartindent
-set foldmethod=manual
 set ruler
-" So we don't have to save before changing buffers:
+set mouse=a
 set hidden
-" How many spelling-suggestions to offer
-set sps=best,6
+set cmdheight=2
+set updatetime=300
+set nojoinspaces
+nnoremap / /\v
+vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
+set hlsearch incsearch ignorecase smartcase
+set modelines=0
+set nostartofline
+set nofixendofline
 
-set hls
+set undofile
 
-" Indent the rest of broken lines
-set breakindent
+" To make this work properly: in insert mode, escape, followed by arrow key
+" (very rapidly)
+set ttimeoutlen=0
 
-" Always report number of lines changed by ex commands
-set report=0
+set encoding=utf-8
+set fenc=utf-8
 
-let g:rainbow_active = 1
+" reload files changed outside of Vim not currently modified in Vim (needs below)
+set autoread
+" http://stackoverflow.com/questions/2490227/how-does-vims-autoread-work#20418591
+au FocusGained,BufEnter * :silent! !
 
-" Get tips
-autocmd VimEnter,BufWritePost * CottidieTip
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
-let g:ale_linters = { 'javascript': [ 'eslint' ] }
-let g:ale_fixers = { 'javascript': [ 'eslint' ] }
+if (has('nvim'))
+  set termguicolors
+else
+  " To make resizing splits with mouse work
+  set ttymouse=xterm2
+endif
 
-let g:prettier#config#tab_width = 4
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+
+vmap <silent><leader>f <Plug>(coc-format-selected)
+nmap <silent><leader>f <Plug>(coc-format)<CR>
+
+vnoremap <leader>a :CocAction<CR>
+nnoremap <leader>a :CocAction<CR>
+nnoremap <leader>caa <Plug>(coc-codeaction-selected)
+nnoremap <leader>caf <Plug>(coc-codeaction-file)
+nnoremap <leader>cal <Plug>(coc-codeaction-file)
+vnoremap <leader>cai :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
+
+nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> gh :call <SID>show_documentation()<CR>
+nmap <leader>cr <Plug>(coc-rename)
+nmap <silent><leader>cf <Plug>(coc-fix)
+nnoremap ge :call CocAction('diagnosticNext')<CR>
+nnoremap gE :call CocAction('diagnosticPrevious')<CR>
+nnoremap <silent><leader>ce :<C-u>CocList diagnostics<CR>
+nnoremap <leader>cl :<C-u>CocListResume<CR>
+nnoremap <leader>cL :<C-u>CocList<CR>
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+let g:coc_snippet_next = '<tab>'
+let g:coc_snippet_prev = '<s-tab>'
+inoremap <expr><Tab> <SID>handle_tab()
+
+function! s:handle_tab()
+  " Confirm completion *if selected*
+  " .selected is -2 if there is only one option available and it's selected :/
+  if pumvisible() && complete_info().selected != -1
+    return "\<C-r>=coc#_select_confirm()\<CR>"
+  " Expand snippet if available
+  elseif coc#expandableOrJumpable()
+    return "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>"
+  else
+  " Just a tab
+    return "\<tab>"
+  endif
+endfunction
+
+" Channel/runfromvim
+function! s:tcpsocksendone(port, msg)
+  let l:ch = sockconnect('tcp', 'localhost:' . a:port)
+  call chansend(l:ch, a:msg)
+  call chanclose(l:ch)
+endfunction
+
+let g:runfromvim_port = 8222
+nnoremap <silent><leader>m :call <SID>tcpsocksendone(g:runfromvim_port, 'command0')<CR>
+nnoremap <silent><leader>t :call <SID>tcpsocksendone(g:runfromvim_port, 'command1')<CR>
