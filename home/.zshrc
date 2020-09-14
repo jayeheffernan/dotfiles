@@ -158,7 +158,7 @@ zinit light-mode for \
 ### End of Zinit's installer chunk
 
 setopt promptsubst
-PS1="❯" # provide a simple prompt till the theme loads
+PS1="❯ " # provide a simple prompt till the theme loads
 
 zinit wait lucid light-mode for \
     OMZL::git.zsh \
