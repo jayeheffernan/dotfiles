@@ -157,16 +157,13 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
-# A.
 setopt promptsubst
+PS1="❯" # provide a simple prompt till the theme loads
 
-# B.
 zinit wait lucid light-mode for \
     OMZL::git.zsh \
     atload"unalias grv" \
     OMZP::git
-
-PS1="❯" # provide a simple prompt till the theme loads
 
 zinit wait lucid light-mode for \
     OMZP::colored-man-pages \
@@ -178,9 +175,15 @@ zinit wait lucid light-mode for \
     OMZP::yarn \
     OMZP::docker/_docker \
     zsh-users/zsh-history-substring-search \
-    light-mode pick"async.zsh" src"pure.zsh" \
-    sindresorhus/pure \
     atload" bindkey '^P' history-substring-search-up; bindkey '^N' history-substring-search-down; " \
     OMZP::vi-mode \
-    atinit"zicompinit; zicdreplay"  \
-    zdharma/fast-syntax-highlighting
+    atinit"zicompinit; zicdreplay" \
+    zdharma/fast-syntax-highlighting \
+    atload"_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions \
+    blockf atpull'zinit creinstall -q .' \
+    zsh-users/zsh-completions
+
+zinit wait'!0' lucid light-mode for \
+    pick"async.zsh" src"pure.zsh" \
+    sindresorhus/pure
