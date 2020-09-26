@@ -9,10 +9,17 @@
 	b = branch
 	tb = branch
 	s = status
-	l = log --oneline --abbrev-commit
+	ts = status
+	tl = log --oneline
 	a = add
-	g = log --graph --oneline --decorate --abbrev-commit
-	ga = log --graph --oneline --decorate --all --abbrev-commit
+	ta = add
 	d = diff -w
+	td = diff -w
+	c = commit
+	ca = commit --amend
+	cane = commit --amend --no-edit
+	g = log --graph --oneline --decorate
+	ga = log --graph --oneline --decorate --all
+	l = log --oneline
 [core]
-	editor = /usr/bin/vim
+	editor = /usr/local/bin/vim

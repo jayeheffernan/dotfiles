@@ -1,0 +1,3 @@
+- Customise Vim cheatsheet
+- Test on Linux
+- Use runfromvim
