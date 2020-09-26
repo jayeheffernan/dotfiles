@@ -30,7 +30,7 @@ antigen apply
 
 # Export go path (for go get)
 export GOPATH=~/.go
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/home/jaye/.scripts:/home/jaye/.rvm/gems/ruby-2.4.1/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/home/jaye/.scripts:/home/jaye/.rvm/gems/ruby-2.4.1/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/home/jaye/.builds/MiniZincIDE-2.2.3-bundle-linux/bin:/snap/bin"
 
 export EDITOR='vim'
 

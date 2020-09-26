@@ -16,23 +16,24 @@ import XMonad.Actions.WindowGo (runOrRaise)
 import XMonad.Hooks.EwmhDesktops
 
 main = do
-    xmproc <- spawnPipe "xmobar"
+--    xmproc <- spawnPipe "xmobar"
 
     xmonad $ defaultConfig
         { manageHook = manageDocks <+> manageHook defaultConfig
+        , modMask = mod4Mask
         , layoutHook = smartBorders $ avoidStruts  $  layoutHook defaultConfig
         , startupHook = myStartupHook
         , handleEventHook = fullscreenEventHook
-        , logHook = dynamicLogWithPP xmobarPP
-                        { ppOutput = hPutStrLn xmproc
-                        , ppTitle = xmobarColor "green" "" . shorten 50
-                        }
+--        , logHook = dynamicLogWithPP xmobarPP
+--                        { ppOutput = hPutStrLn xmproc
+--                        , ppTitle = xmobarColor "green" "" . shorten 50
+--                        }
         , terminal = "lilyterm"
         } `additionalKeysP`
         [ ("M-S-z", spawn "slock")
         , ("S-<Print>", spawn "sleep 0.2; scrot -s -e 'mkdir -p ~/Pictures/scrots; mv $f ~/Pictures/scrots'")
         , ("<Print>", spawn "scrot -e 'mkdir -p ~/Pictures/scrots; mv $f ~/Pictures/scrots'")
-        , ("M-<Tab>", cycleRecentWS [xK_Alt_L] xK_Tab xK_grave)
+--        , ("M-<Tab>", cycleRecentWS [xK_Alt_L] xK_Tab xK_grave)
         , ("<XF86AudioMute>", spawn "ponymix toggle")
         , ("<XF86AudioLowerVolume>", spawn "ponymix decrease 5")
         , ("<XF86AudioRaiseVolume>", spawn "ponymix increase 5")
@@ -62,4 +63,3 @@ myStartupHook = do
     spawn "xxkb"
     spawn "feh --bg-fill ~/.wallpaper"
     spawn "setxkbmap -option ctrl:nocaps"
-    spawn "clipit"

@@ -33,6 +33,12 @@ Plugin 'rhysd/vim-textobj-conflict'
 Plugin 'AndrewRadev/linediff.vim'
 Plugin 'wakatime/vim-wakatime'
 Plugin 'drmingdrmer/vim-syntax-markdown'
+Plugin 'w0rp/ale'
+Plugin 'jrozner/vim-antlr'
+"Plugin 'rstacruz/sparkup'
+Plugin 'prettier/vim-prettier'
+Plugin 'mattn/emmet-vim'
+Plugin 'vale1410/vim-minizinc'
 call vundle#end()
 "For plugin manager
 filetype plugin indent on
@@ -49,11 +55,13 @@ let g:ctrlp_working_path_mode = '~'
 let g:ctrlp_mruf_default_order = 1
 
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules)$',
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules|venv)$',
   \ 'file': '\v\.(exe|so|dll|swp)$',
   \ }
 
-let g:syntastic_javascript_checkers=['eslint']
+let g:ale_linters = {'javascript': ['eslint']}
+
+autocmd FileType javascript runtime! ftplugin/html/sparkup.vim
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Mappings
@@ -97,14 +105,6 @@ nnoremap <leader>d :bd<CR>
 
 "Switch to alternate buffer
 nnoremap <leader><space> :buffer #<return>
-"
-"ack.vim
-"if executable('ag')
-  "let g:ackprg = 'ag --vimgrep'
-  let g:ackprg='ag --nogroup --nocolor --column -p ./.agignore'
-"endif
-nnoremap <leader>a :Ack ''OD
-nnoremap <leader>A :Ack -F ''OD
 
 "Toggle spell-check 
 nnoremap <leader>S :set spell!<CR>
@@ -114,7 +114,7 @@ nnoremap <leader>d :bd<CR>
 "ack.vim
 if executable('ag')
   "let g:ackprg = 'ag --vimgrep'
-  let g:ackprg='ag --nogroup --nocolor --column'
+  let g:ackprg='ag --nogroup --nocolor --column -p ./.agignore'
 endif
 nnoremap <leader>a :Ack ''OD
 nnoremap <leader>A :Ack -F ''OD
@@ -129,16 +129,8 @@ nnoremap <leader>h :set hlsearch!<CR>
 nnoremap <leader>b :CtrlPBuffer<return>
 nnoremap <leader>r :CtrlPMRUFiles<return>
 
-"Reflow paragraph
-" nnoremap <Leader>f gqip
-if !exists("*ToggleFold")
-  function ToggleFold()
-    let &foldmethod = (&foldmethod == "manual") ?  "indent" : "manual"
-    echo &foldmethod
-  endfunction
-endif
-
-nnoremap <Leader>f :call ToggleFold()<CR>
+"Pretty formatting
+nnoremap <Leader>f :PrettierAsync<CR>
 
 "Toggle rainbow parens plugin
 nnoremap <leader><leader>r :RainbowParenthesesToggle<CR>
@@ -228,3 +220,6 @@ set hidden
 set sps=best,8
 
 set hls
+
+set path=.,src,node_nodules
+set suffixesadd=.js,.jsx
