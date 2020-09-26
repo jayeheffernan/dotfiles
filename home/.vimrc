@@ -1,225 +1,255 @@
-" Clear autocommands to avoid running twice
-" 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
-Plugin 'maxbrunsfeld/vim-yankstack'
-Plugin 'kien/ctrlp.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'scrooloose/syntastic'
-Plugin 'manasthakur/vim-commentor'
-Plugin 'xevz/vim-squirrel'
-Plugin 'sickill/vim-monokai'
-Plugin 'justinj/vim-react-snippets'
-Plugin 'mileszs/ack.vim'
-Plugin 'tpope/vim-sleuth'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'aquach/vim-http-client'
-Plugin 'othree/yajs.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'ternjs/tern_for_vim'
-Plugin 'kana/vim-textobj-user'
-Plugin 'rhysd/vim-textobj-conflict'
-Plugin 'AndrewRadev/linediff.vim'
-Plugin 'wakatime/vim-wakatime'
-Plugin 'drmingdrmer/vim-syntax-markdown'
-Plugin 'w0rp/ale'
-Plugin 'jrozner/vim-antlr'
-"Plugin 'rstacruz/sparkup'
-Plugin 'prettier/vim-prettier'
-Plugin 'mattn/emmet-vim'
-Plugin 'vale1410/vim-minizinc'
-call vundle#end()
-"For plugin manager
+let g:yankstack_map_keys = 0
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !mkdir -p ~/.vim/autoload
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+call plug#begin()
+
+Plug 'chriskempson/base16-vim'
+
+" Utilities
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'wellle/targets.vim'
+Plug 'tmsvg/pear-tree'
+
+Plug 'wakatime/vim-wakatime'
+
+" Cool stuff
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'junegunn/vim-easy-align'
+Plug 'simnalamburt/vim-mundo'
+Plug 'lifepillar/vim-cheat40'
+" note: install sharkdp/bat for syntax-highlighted fzf preview 
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
+" COC
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" COC plugins
+Plug 'neoclide/coc-snippets', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-emmet', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-jest', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-rls', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
+" TODO: consider tabnine
+
+Plug 'sheerun/vim-polyglot'
+call plug#end()
+
+call yankstack#setup()
+let g:pear_tree_repeatable_expand = 0
+let g:pear_tree_smart_backspace   = 1
+let g:pear_tree_smart_closers     = 1
+let g:pear_tree_smart_openers     = 1
+
+let g:cheat40_use_default = 0
+
+" Load base16-shell colors
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+
+syntax on
 filetype plugin indent on
 
-"For snipmate plugin
-syntax on
-
-"For CtrlP plugin
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_working_path_mode = '~'
-
-" Disable "sorting" in most recently used mode so that most recent is
-" first selected by default
-let g:ctrlp_mruf_default_order = 1
-
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules|venv)$',
-  \ 'file': '\v\.(exe|so|dll|swp)$',
-  \ }
-
-let g:ale_linters = {'javascript': ['eslint']}
-
-autocmd FileType javascript runtime! ftplugin/html/sparkup.vim
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader=","
+nnoremap <Space> :
+vnoremap <Space> :
+nnoremap <leader>w :update<return>
 
-nnoremap <leader>m :!make<cr>
-" yank overwritten visual text
-vnoremap p <esc>pgvd
+nnoremap <leader>ev :e ~/.vimrc<CR>
+nnoremap <leader>et :e ~/.tmux.conf<CR>
+nnoremap <leader>ez :e ~/.zshrc<CR>
+nnoremap <leader>ec :CocConfig<CR>
+" Open new file adjacent to current file
+nnoremap <leader>en :e <C-R>=expand("%:p:h") . "/" <CR>
 
-nnoremap <leader>R :redraw!<cr>
-
-" edit a todo file
-" noremap <leader>t :e TODO.md<cr>
-nnoremap <leader>tt :TernType<cr>
-nnoremap <leader>td :TernDef<cr>
-nnoremap <leader>tr :TernRefs<cr>
-" Close preview window when done completing
-autocmd CompleteDone * pclose
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_preview_window = 'up:40%'
+nnoremap <C-p> :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>r :History<CR>
+nnoremap <leader>s :Rg<Space>
+nnoremap <leader><Up> :buffer #<CR>
+nnoremap <leader>d :bd<CR>
+nnoremap <leader>D :bd!<CR>
 
 nnoremap <leader>l :set list!<CR>
 
-" nnoremap <BS> mzA<BS><ESC>`z
-nnoremap  
-cnoremap  
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+nmap gA :EasyAlign
+xmap gA :EasyAlign
 
-nnoremap K mzkJ`z
-"For yankstack plugin
-let g:yankstack_map_keys = 0
-call yankstack#setup()
+nnoremap Y "+y
+nnoremap YY "+yy
+vnoremap Y "+y
+nnoremap <leader><leader>p "+p
+nnoremap <leader><leader>P "+P
+vnoremap <leader><leader>p "+p
+vnoremap <leader><leader>P "+P
 nmap <leader>p <Plug>yankstack_substitute_older_paste
-nmap <leader>P <Plug>yankstack_substitute_newer_paste 
+nmap <leader>P <Plug>yankstack_substitute_newer_paste
 
-nnoremap <Space> :
-vnoremap <Space> :
-nnoremap <leader>w :w<return>
+nnoremap <leader>u :MundoToggle<CR>
 
-nnoremap <leader>v :e ~/.vimrc<CR>
-nnoremap <leader>s :source %<CR>
-nnoremap <leader>d :bd<CR>
+let g:oppositedirection = { 'h': 'l', 'l': 'h', 'j': 'k', 'k': 'j' }
+function! s:JumpWindow(dir)
+  let l:prev = winnr()
+  execute 'wincmd ' . a:dir
+  if winnr() == l:prev
+    execute '999wincmd ' . g:oppositedirection[a:dir]
+  endif
+endfunction
 
-"Switch to alternate buffer
-nnoremap <leader><space> :buffer #<return>
+nnoremap <silent> <C-j> :<C-u>call <SID>JumpWindow('j')<CR>
+nnoremap <silent> <C-h> :<C-u>call <SID>JumpWindow('h')<CR>
+nnoremap <silent> <C-l> :<C-u>call <SID>JumpWindow('l')<CR>
+nnoremap <silent> <C-k> :<C-u>call <SID>JumpWindow('k')<CR>
 
-"Toggle spell-check 
-nnoremap <leader>S :set spell!<CR>
-
-nnoremap <leader>d :bd<CR>
-
-"ack.vim
-if executable('ag')
-  "let g:ackprg = 'ag --vimgrep'
-  let g:ackprg='ag --nogroup --nocolor --column -p ./.agignore'
-endif
-nnoremap <leader>a :Ack ''OD
-nnoremap <leader>A :Ack -F ''OD
-
-"Toggle spell-check 
-nnoremap <leader>S :set spell!<CR>
-
-"Toggle highlighting of search results
-nnoremap <leader>h :set hlsearch!<CR>
-
-
-nnoremap <leader>b :CtrlPBuffer<return>
-nnoremap <leader>r :CtrlPMRUFiles<return>
-
-"Pretty formatting
-nnoremap <Leader>f :PrettierAsync<CR>
-
-"Toggle rainbow parens plugin
-nnoremap <leader><leader>r :RainbowParenthesesToggle<CR>
-
-" "Easy window switching
-" nnoremap <C-h> <C-w>h
-" nnoremap <C-j> <C-w>j
-" nnoremap <C-k> <C-w>k
-" nnoremap <C-l> <C-w>l
-
-nnoremap <leader>t :NERDTreeToggle<cr>
-nnoremap <leader>h :HTTPClientDoRequest<cr>
-
-" Easy insert ; for javascript
-nnoremap <leader>; mzA;`z
-
-vnoremap <leader>d :Linediff<enter>
-
-let g:UltiSnipsEnableSnipMate = 0
-let g:UltiSnipsSnippetsDir = $HOME.'/.vim/UltiSnips/'
-let g:UltiSnipsSnippetDirectories = [ 'UltiSnips', $HOME.'/.vim/UltiSnips/', $HOME.'/.vim/bundle/vim-snippets/UltiSnips/']
-let g:UltiSnipsExpandTrigger="<Tab>"
-let g:UltiSnipsJumpForwardTrigger="<Tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
-nnoremap <leader>u :UltiSnipsEdit<cr>
-autocmd FileType javascript UltiSnipsAddFiletypes javascript.javascript-jsdoc
-autocmd FileType squirrel UltiSnipsAddFiletypes squirrel.javascript-jsdoc
- 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Options
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set mouse=a
-
-" Show line number in margin
 set number
 set ruler
-
-"set tabstop=4
-"Backspacing an expanded tab deletes space of tab, not just a single space
-"set softtabstop=4
-"set expandtab
-"set shiftwidth=4
-
-set colorcolumn=100
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-" Search for string while typing i.e. before hitting enter
-set incsearch
-set nohlsearch
-
-"Ignore case for searches unless one or more characters in search string are
-"uppercase
-set ignorecase
-set smartcase
-
-"set complete-=k complete+=k
-set dictionary=/usr/share/dict/words
-
-"Automatically open all folds upon reading buffer
-autocmd BufRead * normal zR
-
-"Language for spell-check
-set spelllang=en_au
-set nospell
-
-"Use vertical splits for diff mode (and show filler lines for when lines are
-"added/removed in one buffer, as in default)
-set diffopt=filler,vertical
-
-set background=light
-colorscheme monokai
-" au Syntax * RainbowParenthesesLoadRound
-" au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-
-" Lines broken over multiple lines should retain their indentation
-set breakindent
-set smartindent
-
-set foldmethod=manual
-
-" So we don't have to save before changing buffers:
+set mouse=a
 set hidden
-" How many spelling-suggestions to offer
-set sps=best,8
+set cmdheight=2
+set updatetime=300
+set nojoinspaces
+nnoremap / /\v
+vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
+set hlsearch incsearch ignorecase smartcase
+set modelines=0
+set nostartofline
+set nofixendofline
 
-set hls
+set undofile
 
-set path=.,src,node_nodules
-set suffixesadd=.js,.jsx
+" To make this work properly: in insert mode, escape, followed by arrow key
+" (very rapidly)
+set ttimeoutlen=0
+
+set encoding=utf-8
+set fenc=utf-8
+
+" reload files changed outside of Vim not currently modified in Vim (needs below)
+set autoread
+" http://stackoverflow.com/questions/2490227/how-does-vims-autoread-work#20418591
+au FocusGained,BufEnter * :silent! !
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+if (has('nvim'))
+  set termguicolors
+else
+  " To make resizing splits with mouse work
+  set ttymouse=xterm2
+endif
+
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+
+vmap <silent><leader>f <Plug>(coc-format-selected)
+nmap <silent><leader>f <Plug>(coc-format)<CR>
+
+vnoremap <leader>a :CocAction<CR>
+nnoremap <leader>a :CocAction<CR>
+nnoremap <leader>caa <Plug>(coc-codeaction-selected)
+nnoremap <leader>caf <Plug>(coc-codeaction-file)
+nnoremap <leader>cal <Plug>(coc-codeaction-file)
+vnoremap <leader>cai :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
+
+nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> gh :call <SID>show_documentation()<CR>
+nmap <leader>cr <Plug>(coc-rename)
+nmap <silent><leader>cf <Plug>(coc-fix)
+nnoremap ge :call CocAction('diagnosticNext')<CR>
+nnoremap gE :call CocAction('diagnosticPrevious')<CR>
+nnoremap <silent><leader>ce :<C-u>CocList diagnostics<CR>
+nnoremap <leader>cl :<C-u>CocListResume<CR>
+nnoremap <leader>cL :<C-u>CocList<CR>
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+let g:coc_snippet_next = '<tab>'
+let g:coc_snippet_prev = '<s-tab>'
+inoremap <expr><Tab> <SID>handle_tab()
+
+function! s:handle_tab()
+  " Confirm completion *if selected*
+  " .selected is -2 if there is only one option available and it's selected :/
+  if pumvisible() && complete_info().selected != -1
+    return "\<C-r>=coc#_select_confirm()\<CR>"
+  " Expand snippet if available
+  elseif coc#expandableOrJumpable()
+    return "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>"
+  else
+  " Just a tab
+    return "\<tab>"
+  endif
+endfunction
+
+" Channel/runfromvim
+function! s:tcpsocksendone(port, msg)
+  let l:ch = sockconnect('tcp', 'localhost:' . a:port)
+  call chansend(l:ch, a:msg)
+  call chanclose(l:ch)
+endfunction
+
+let g:runfromvim_port = 8222
+nnoremap <silent><leader>m :call <SID>tcpsocksendone(g:runfromvim_port, 'command0')<CR>
+nnoremap <silent><leader>t :call <SID>tcpsocksendone(g:runfromvim_port, 'command1')<CR>
