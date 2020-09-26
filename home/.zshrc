@@ -173,6 +173,7 @@ zinit wait lucid light-mode for \
     OMZP::aws \
     OMZP::nvm \
     OMZP::yarn \
+    as"completion" \
     OMZP::docker/_docker \
     zsh-users/zsh-history-substring-search \
     atload" bindkey '^P' history-substring-search-up; bindkey '^N' history-substring-search-down; " \

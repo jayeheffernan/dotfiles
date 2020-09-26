@@ -22,4 +22,4 @@
 	ga = log --graph --oneline --decorate --all
 	l = log --oneline
 [core]
-	editor = /usr/local/bin/vim
+	editor = /usr/bin/nvim
