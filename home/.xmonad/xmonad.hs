@@ -28,7 +28,7 @@ main = do
 --                        { ppOutput = hPutStrLn xmproc
 --                        , ppTitle = xmobarColor "green" "" . shorten 50
 --                        }
-        , terminal = "lilyterm"
+        , terminal = "alacritty"
         } `additionalKeysP`
         [ ("M-S-z", spawn "slock")
         , ("S-<Print>", spawn "sleep 0.2; scrot -s -e 'mkdir -p ~/Pictures/scrots; mv $f ~/Pictures/scrots'")
