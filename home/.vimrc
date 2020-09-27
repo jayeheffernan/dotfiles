@@ -42,8 +42,11 @@ Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-rls', {'do': 'yarn install --frozen-lockfile'}
+Plug 'fannheyward/coc-styled-components', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
+
+Plug 'yardnsm/vim-import-cost', { 'do': 'npm install' }
 " TODO: consider tabnine
 
 Plug 'sheerun/vim-polyglot'
@@ -237,6 +240,8 @@ function! s:handle_tab()
   " Expand snippet if available
   elseif coc#expandableOrJumpable()
     return "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>"
+  elseif pumvisible()
+    return "\<C-r>=coc#_select_confirm()\<CR>"
   else
   " Just a tab
     return "\<tab>"
