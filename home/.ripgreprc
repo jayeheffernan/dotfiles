@@ -1,0 +1,6 @@
+--hidden
+--follow
+--smart-case
+--no-ignore-vcs
+--max-columns=200
+--ignore-file=/Users/jaye.heffernan/.ignore
