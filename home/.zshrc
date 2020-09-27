@@ -18,6 +18,9 @@ export FZF_DEFAULT_COMMAND='rg --files'
 source ~/.config/base16-fzf/bash/base16-material.config
 export EDITOR='nvim'
 
+export DIRSTACKSIZE=8
+setopt autopushd pushdminus pushdsilent pushdtohome
+
 ################################################################################
 # ALIASES
 ################################################################################
@@ -103,12 +106,16 @@ function fzf_move_out() {
 function fzf_copy_out() {
   fzf_exec_from_to cp "-R" . ~/outbox
 }
-alias fmv=fzf_move
-alias fcp=fzf_copy
-alias fmvin=fzf_move_in
-alias fcpin=fzf_copy_in
-alias fmvout=fzf_move_out
-alias fcpout=fzf_copy_out
+alias mvf=fzf_move
+alias cpf=fzf_copy
+alias mvin=fzf_move_in
+alias cpin=fzf_copy_in
+alias mvout=fzf_move_out
+alias cpout=fzf_copy_out
+
+alias cdf='cd $(fd --no-ignore --hidden --follow --type d --ignore-file ~/.ignore "" . | fzf)'
+alias dh='dirs -v'
+alias o=popd
 
 # History searching stuff
 export HISTORY_SUBSTRING_SEARCH_FUZZY=1

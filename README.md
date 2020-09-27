@@ -50,7 +50,7 @@ mkdir -p ~/.builds
 
 curl https://sh.rustup.rs -sSf | sh
 
-brew install neovim fzf ripgrep moreutils autojump tree bat 
+brew install neovim fzf ripgrep moreutils autojump tree bat fd
 
 gem install neovim
 npm install -g neovim
