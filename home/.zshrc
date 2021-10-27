@@ -113,9 +113,50 @@ alias cpin=fzf_copy_in
 alias mvout=fzf_move_out
 alias cpout=fzf_copy_out
 
+function git_branch() {
+  git branch --color=always --sort=-committerdate "$@"
+}
+
+function fzf_git_branch() {
+  # confirm we're in a repo
+  git rev-parse HEAD > /dev/null 2>&1 || return
+
+  {
+    git_branch;
+    git_branch --remote;
+  } |
+      grep -v HEAD |
+      fzf --ansi --no-multi --preview-window right:50% \
+          --preview 'git log -n 50 --color=always --oneline --no-decorate $(sed "s/.* //" <<< {})' |
+      sed "s/.* //"
+}
+
+function fzf_git_checkout() {
+    branch=$(fzf_git_branch)
+    if [[ -z "$branch" ]]; then
+        # echo "No branch selected."
+        return
+    fi
+
+    local_version=$(git branch --list "$branch")
+
+    if [[ -z "$local_version" ]]; then
+        # Branch does not exist locally, probs selected a remote branch
+        git checkout --track "$branch"
+    else
+        git checkout "$branch"
+    fi
+
+}
+alias gcof=fzf_git_checkout
+alias gdo='git d "origin/$(git branch --show-current)" "$(git branch --show-current)"'
+
 alias cdf='cd $(fd --no-ignore --hidden --follow --type d --ignore-file ~/.ignore "" . | fzf)'
 alias dh='dirs -v'
 alias o=popd
+
+alias focus='osascript -e '"'"'tell application "Alacritty" to activate'"'"
+alias f=focus
 
 # History searching stuff
 export HISTORY_SUBSTRING_SEARCH_FUZZY=1
