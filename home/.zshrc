@@ -48,6 +48,18 @@ alias dp="sh -c 'docker ps -a --format "'"table {{.Names}}\t{{.Command}}\t{{.Sta
 alias dr="docker restart"
 alias dcr="docker-compose restart"
 
+function ffmweb() {
+    RES="$1"
+    FILE="$2"
+    ffmpeg -i "$FILE" -vcodec h264 -acodec aac -strict -2 -vf "scale=-1:$RES" -an "$FILE.$RES.mp4"
+}
+
+function ffmweba() {
+    RES="$1"
+    FILE="$2"
+    ffmpeg -i "$FILE" -vcodec h264 -acodec aac -strict -2 -vf "scale=-1:$RES" "$FILE.$RES.mp4"
+}
+
 # Make/build/run common things
 make-it() {
 if [ -x build ]; then
