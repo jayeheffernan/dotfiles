@@ -6,9 +6,16 @@
 node_modules
 target
 .next
+.netlify
 out_publish
 out_functions
 .vim/plugged
+worktrees
+.vscode
+build
+dist
+.exercism
+Cargo.lock
 
 yarn.lock
 package-lock.json
@@ -28,14 +35,14 @@ package-lock.json
 *.gif
 *.gifv
 *.ico
-*.jng
+# *.jng
 *.jp2
 *.jpg
 *.jpeg
 *.jpx
 *.jxr
 *.pdf
-*.png
+# *.png
 *.psb
 *.psd
 *.svg
