@@ -1,0 +1,16 @@
+session: ludwig
+
+root: ~/Duck/ludwig
+
+windows:
+  - name: logs
+    layout: even-vertical
+    commands:
+      - git status
+    panes:
+      - type: vertical
+      - type: vertical
+
+  - name: code
+    commands:
+      - vim
