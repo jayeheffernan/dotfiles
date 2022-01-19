@@ -19,6 +19,7 @@ Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
 Plug 'tmsvg/pear-tree'
 
+Plug 'tpope/vim-fugitive'
 Plug 'wakatime/vim-wakatime'
 
 " Cool stuff
@@ -29,6 +30,7 @@ Plug 'lifepillar/vim-cheat40'
 " note: install sharkdp/bat for syntax-highlighted fzf preview 
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-projectionist'
 
 " COC
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -41,12 +43,17 @@ Plug 'neoclide/coc-jest', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-rls', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-styled-components', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
+Plug 'iamcco/coc-svg', {'do': 'yarn install --frozen-lockfile'}
 
+Plug 'lifepillar/pgsql.vim'
 Plug 'yardnsm/vim-import-cost', { 'do': 'npm install' }
+" Snippet definitions
+Plug 'honza/vim-snippets'
+
 " TODO: consider tabnine
 
 Plug 'sheerun/vim-polyglot'
@@ -78,8 +85,13 @@ nnoremap <leader>ev :e ~/.vimrc<CR>
 nnoremap <leader>et :e ~/.tmux.conf<CR>
 nnoremap <leader>ez :e ~/.zshrc<CR>
 nnoremap <leader>ec :CocConfig<CR>
+nnoremap <leader>ea :e ~/.config/alacritty/alacritty.yml<CR>
+nnoremap <leader>ek :e ~/.config/kitty/kitty.conf<CR>
 " Open new file adjacent to current file
 nnoremap <leader>en :e <C-R>=expand("%:p:h") . "/" <CR>
+
+" Open in VSCode
+nnoremap <leader>vs :silent execute "!code --reuse-window --goto " . getreg("%") . ":" . line(".") . ":" . col(".")<CR>
 
 let g:fzf_layout = { 'down': '40%' }
 let g:fzf_preview_window = 'up:40%'
@@ -98,13 +110,19 @@ xmap ga <Plug>(EasyAlign)
 nmap gA :EasyAlign
 xmap gA :EasyAlign
 
-nnoremap Y "+y
-nnoremap YY "+yy
-vnoremap Y "+y
+" Use system clipboard
+nnoremap <leader><leader>d "+d
+vnoremap <leader><leader>d "+d
+nnoremap <leader><leader>y "+y
+vnoremap <leader><leader>y "+y
 nnoremap <leader><leader>p "+p
 nnoremap <leader><leader>P "+P
 vnoremap <leader><leader>p "+p
 vnoremap <leader><leader>P "+P
+
+nnoremap <leader>yF :let @+=expand("%:p")<CR>
+nnoremap <leader>yf :let @+=expand("%")<CR>
+
 nmap <leader>p <Plug>yankstack_substitute_older_paste
 nmap <leader>P <Plug>yankstack_substitute_newer_paste
 
@@ -124,6 +142,8 @@ nnoremap <silent> <C-h> :<C-u>call <SID>JumpWindow('h')<CR>
 nnoremap <silent> <C-l> :<C-u>call <SID>JumpWindow('l')<CR>
 nnoremap <silent> <C-k> :<C-u>call <SID>JumpWindow('k')<CR>
 
+set signcolumn=yes
+
 set number
 set ruler
 set mouse=a
@@ -139,6 +159,7 @@ set hlsearch incsearch ignorecase smartcase
 set modelines=0
 set nostartofline
 set nofixendofline
+set cursorline
 
 set undofile
 
@@ -173,6 +194,8 @@ endif
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
+let g:sql_type_default = 'pgsql'
+
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
@@ -196,7 +219,8 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 
 vmap <silent><leader>f <Plug>(coc-format-selected)
-nmap <silent><leader>f <Plug>(coc-format)<CR>
+" nmap <silent><leader>f <Plug>(coc-format)<CR>
+nmap <leader>f <Plug>(coc-format)<CR>
 
 vnoremap <leader>a :CocAction<CR>
 nnoremap <leader>a :CocAction<CR>
@@ -227,6 +251,10 @@ xmap ic <Plug>(coc-classobj-i)
 omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
+
+nnoremap <leader>Sl :CocList snippets<CR>
+nnoremap <leader>Se :CocCommand snippets.editSnippets<CR>
+nnoremap <leader>So :CocCommand snippets.openSnippetFiles<CR>
 
 let g:coc_snippet_next = '<tab>'
 let g:coc_snippet_prev = '<s-tab>'
