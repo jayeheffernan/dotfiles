@@ -1,0 +1,141 @@
+#!/usr/bin/env node
+
+const { exec } = require("child_process");
+
+const LOG_WINDOW = "logs";
+const LOG_SESSION = "logs";
+// "Fixes" an annoying issue, where we can't move to an existing window index
+const OFFSET = 10;
+
+const usage = `tmuxlogs SUBCOMMAND
+
+Split any "${LOG_WINDOW}" windows in sessions out into a "${LOG_SESSION}"
+session, named based on their original session. Or merge back to their original
+session, renaming back to "${LOG_WINDOW}".
+
+Sub-commands:
+
+  - split
+  - merge
+`;
+
+const run = (command) =>
+  new Promise((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        return reject(error);
+      }
+
+      if (stderr) {
+        return reject(`stderr: ${stderr}`);
+      }
+
+      resolve(stdout.split("\n").filter((line) => line.length));
+    });
+  });
+
+const getSessions = async () => {
+  const lines = await run(
+    `tmux list-sessions -F '#{session_id}|#{session_name}'`
+  );
+  return lines
+    .map((line) => line.split("|"))
+    .map(([id, name]) => {
+      if (!/^\$\d+$/.test(id)) {
+        throw new Error(`unrecognised session ID format: ${id} (${name})`);
+      }
+
+      const index = Number.parseInt(id.slice(1));
+
+      return {
+        index,
+        name,
+      };
+    });
+};
+
+const getWindows = async (session) => {
+  const lines = await run(
+    `tmux list-windows -t '${session}' -F '#{window_index}|#{window_name}'`
+  );
+
+  return lines
+    .map((line) => line.split("|"))
+    .map(([index, name]) => ({
+      index: Number.parseInt(index),
+      name,
+    }));
+};
+
+const splitLogWindows = async () => {
+  const sessions = await getSessions();
+
+  if (!sessions.some((s) => s.name === LOG_SESSION)) {
+    await run(`tmux new-session -d -s ${LOG_SESSION}`);
+  }
+
+  for (const session of sessions) {
+    const windows = await getWindows(session.name);
+    const logWindow = windows.find((w) => w.name === LOG_WINDOW);
+    if (!logWindow) {
+      continue;
+    }
+
+    const targetWindow = `${LOG_SESSION}:${session.index + OFFSET}`;
+
+    await run(
+      `tmux move-window -d -s '${session.name}:${logWindow.index}' -t '${targetWindow}'`
+    );
+
+    await run(`tmux rename-window -t ${targetWindow} ${session.name}`);
+  }
+};
+
+const mergeLogWindows = async () => {
+  const sessions = await getSessions();
+
+  const logSession = sessions.find((s) => s.name === LOG_SESSION);
+
+  if (!logSession) {
+    console.error("No logs session");
+    return;
+  }
+
+  const windows = await getWindows(logSession.name);
+
+  for (const window of windows) {
+    const targetSession = sessions.find((s) => s.name === window.name);
+    if (!targetSession) {
+      continue;
+    }
+
+    await run(
+      `tmux rename-window -t ${logSession.name}:${window.index} ${LOG_WINDOW}`
+    );
+
+    await run(
+      `tmux move-window -d -s '${logSession.name}:${window.index}' -t '${targetSession.name}'`
+    );
+  }
+};
+
+const main = async () => {
+  try {
+    const args = [...process.argv.slice(2)];
+    const [command] = args;
+
+    if (command === "split") {
+      await splitLogWindows();
+    } else if (command === "merge") {
+      await mergeLogWindows();
+    } else {
+      console.log(usage);
+      process.exit(1);
+    }
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  }
+};
+
+main();
