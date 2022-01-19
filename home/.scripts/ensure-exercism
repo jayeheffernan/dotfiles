@@ -1,0 +1,14 @@
+#! /usr/bin/env bash
+
+ensure_exercism() {
+  TRACK="$1"
+  EX="$2"
+  DIR="$HOME/Documents/Projects/Exercism/$TRACK/$EX"
+  echo jaye ensuring
+  if [ ! -d "$DIR" ]; then
+      echo jaye downloading
+      exercism download --track="$TRACK" --exercise="$EX"
+  fi
+}
+
+ensure_exercism "$@"
