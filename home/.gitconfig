@@ -24,7 +24,7 @@
 	g = log --graph --oneline --decorate
 	ga = log --graph --oneline --decorate --all
 	l = log --oneline
-	ll = log --graph --format="%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"
+	ll = log --graph --format='%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)'
 	recent = for-each-ref --sort=-committerdate refs/heads/ --count 12
 	r = recent
 	pu = push

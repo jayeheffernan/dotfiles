@@ -1,11 +1,12 @@
 {
   "prettier.disableSuccessMessage": true,
-  "eslint.autoFixOnSave": true,
+  "eslint.autoFixOnSave": false,
   "eslint.filetypes": [
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact"
-  ]
+  ],
+  "yaml.format.enable": true
 }
 

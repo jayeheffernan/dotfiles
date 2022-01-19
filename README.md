@@ -34,23 +34,24 @@ To remove symlinks for a particular package:
 
 ## Dependencies
 
+[Kitty](https://sw.kovidgoyal.net/kitty/binary/)
+
 ```sh
 mkdir -p ~/.config
 mkdir -p ~/.builds
 
 curl https://sh.rustup.rs -sSf | sh
 
-brew install neovim fzf ripgrep moreutils autojump tree bat fd
+# Skip setting up shell/path stuff, it's already in our config
+curl https://get.volta.sh | bash -s -- --skip-setup
+volta install node
+
+brew install neovim fzf ripgrep moreutils autojump tree bat fd exa
 
 gem install neovim
 npm install -g neovim
 python3 -m pip install --user --upgrade pynvim
 python2 -m pip install --user --upgrade pynvim
-
-git clone 'https://github.com/alacritty/alacritty/' ~/.builds
-cd ~/.builds/alacritty
-make
-cp -r target/release/osx/Alacritty.app /Applications/
 
 git clone 'https://github.com/aaron-williamson/base16-alacritty' ~/.config
 git clone 'https://github.com/chriskempson/base16-shell.git' ~/.config
