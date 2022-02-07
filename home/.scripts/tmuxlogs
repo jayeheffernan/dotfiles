@@ -7,7 +7,8 @@ const LOG_SESSION = "logs";
 // "Fixes" an annoying issue, where we can't move to an existing window index
 const OFFSET = 10;
 
-const usage = `tmuxlogs SUBCOMMAND
+const SCRIPT = `tmuxlogs`;
+const USAGE = `${SCRIPT} SUBCOMMAND
 
 Split any "${LOG_WINDOW}" windows in sessions out into a "${LOG_SESSION}"
 session, named based on their original session. Or merge back to their original
@@ -15,8 +16,10 @@ session, renaming back to "${LOG_WINDOW}".
 
 Sub-commands:
 
-  - split
-  - merge
+  - select - switch the "${LOG_SESSION}" session to show the matching window for the current session
+  - init-hooks - set tmux hook: run \`${SCRIPT} select\` automatically when switching sessions
+  - split - move "${LOG_WINDOW}" windows to separate session
+  - merge - move windows from "${LOG_SESSION}" session back to original sessions
 `;
 
 const run = (command) =>
@@ -33,6 +36,19 @@ const run = (command) =>
       resolve(stdout.split("\n").filter((line) => line.length));
     });
   });
+
+const selectLogWindow = async () => {
+  const [sessionName] = await run("tmux display-message -p '#{session_name}'");
+  const changeLogWindow = `select-window -t "${LOG_SESSION}:${sessionName}"`;
+  await run(`tmux ${changeLogWindow}`);
+};
+
+const initHooks = async () => {
+  await run(`tmux set-hook -g client-attached 'run-shell "tmuxlogs select"'`);
+  await run(
+    `tmux set-hook -g client-session-changed 'run-shell "tmuxlogs select"'`
+  );
+};
 
 const getSessions = async () => {
   const lines = await run(
@@ -124,12 +140,16 @@ const main = async () => {
     const args = [...process.argv.slice(2)];
     const [command] = args;
 
-    if (command === "split") {
+    if (command === "init-hooks") {
+      await initHooks();
+    } else if (command === "select") {
+      await selectLogWindow();
+    } else if (command === "split") {
       await splitLogWindows();
     } else if (command === "merge") {
       await mergeLogWindows();
     } else {
-      console.log(usage);
+      console.log(USAGE);
       process.exit(1);
     }
   } catch (e) {
