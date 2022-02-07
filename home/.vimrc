@@ -1,6 +1,8 @@
 set nocompatible
 filetype off
+
 let g:yankstack_map_keys = 0
+let g:polyglot_disabled = ['csv']
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !mkdir -p ~/.vim/autoload
@@ -27,10 +29,17 @@ Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'junegunn/vim-easy-align'
 Plug 'simnalamburt/vim-mundo'
 Plug 'lifepillar/vim-cheat40'
+Plug 'linluk/vim-websearch'
 " note: install sharkdp/bat for syntax-highlighted fzf preview 
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-dadbod'
+" Completion for DB objects, e.g. table names
+Plug 'kristijanhusak/vim-dadbod-completion', {'do': 'yarn install --frozen-lockfile'}
+
+" Debugger integration
+Plug 'puremourning/vimspector'
 
 " COC
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -43,11 +52,12 @@ Plug 'neoclide/coc-jest', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-json', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
+Plug 'fannheyward/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-styled-components', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'iamcco/coc-svg', {'do': 'yarn install --frozen-lockfile'}
+Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
 
 Plug 'lifepillar/pgsql.vim'
 Plug 'yardnsm/vim-import-cost', { 'do': 'npm install' }
@@ -82,7 +92,8 @@ vnoremap <Space> :
 nnoremap <leader>w :update<return>
 
 nnoremap <leader>ev :e ~/.vimrc<CR>
-nnoremap <leader>et :e ~/.tmux.conf<CR>
+nnoremap <leader>etm :e ~/.tmux.conf<CR>
+nnoremap <leader>etd :e ~/TODO.md<CR>
 nnoremap <leader>ez :e ~/.zshrc<CR>
 nnoremap <leader>ec :CocConfig<CR>
 nnoremap <leader>ea :e ~/.config/alacritty/alacritty.yml<CR>
@@ -100,8 +111,8 @@ nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>r :History<CR>
 nnoremap <leader>s :Rg<Space>
 nnoremap <leader><Up> :buffer #<CR>
-nnoremap <leader>d :bd<CR>
-nnoremap <leader>D :bd!<CR>
+nnoremap <leader>q :bd<CR>
+nnoremap <leader>Q :bd!<CR>
 
 nnoremap <leader>l :set list!<CR>
 
@@ -219,8 +230,14 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 
 vmap <silent><leader>f <Plug>(coc-format-selected)
-" nmap <silent><leader>f <Plug>(coc-format)<CR>
 nmap <leader>f <Plug>(coc-format)<CR>
+augroup sql
+  autocmd!
+  autocmd FileType sql nnoremap <leader>R vap:'<,'>DB<CR>
+" Fix for formatter not recognising #>> Postgres operator
+" not working
+"   autocmd FileType sql autocmd BufWritePre :%s/#>>/#>>/g<CR>
+augroup END
 
 vnoremap <leader>a :CocAction<CR>
 nnoremap <leader>a :CocAction<CR>
@@ -256,6 +273,15 @@ nnoremap <leader>Sl :CocList snippets<CR>
 nnoremap <leader>Se :CocCommand snippets.editSnippets<CR>
 nnoremap <leader>So :CocCommand snippets.openSnippetFiles<CR>
 
+nmap <leader>drr <Plug>VimspectorContinue
+nmap <leader>drc <Plug>VimspectorRunToCursor
+nmap <leader>dq <Plug>VimspectorStop
+nmap <leader>dbb <Plug>VimspectorToggleBreakpoint
+" for normal mode - the word under the cursor
+nmap <leader>di <Plug>VimspectorBalloonEval
+" for visual mode, the visually selected text
+xmap <leader>di <Plug>VimspectorBalloonEval
+
 let g:coc_snippet_next = '<tab>'
 let g:coc_snippet_prev = '<s-tab>'
 inoremap <expr><Tab> <SID>handle_tab()
@@ -286,3 +312,13 @@ endfunction
 let g:runfromvim_port = 8222
 nnoremap <silent><leader>m :call <SID>tcpsocksendone(g:runfromvim_port, 'command0')<CR>
 nnoremap <silent><leader>t :call <SID>tcpsocksendone(g:runfromvim_port, 'command1')<CR>
+
+" Google plugin
+let g:web_search_command = "open"
+let g:web_search_query = "https://google.com/search?q="
+vnoremap <leader>g :WebSearchVisual<CR>
+
+let g:db = 'postgresql://postgres:@localhost:5432/ludwig'
+let g:omni_sql_no_default_maps = 1 "https://www.reddit.com/r/vim/comments/2om1ib/how_to_disable_sql_dynamic_completion/cmop4zh/
+
+let g:vimspector_enable_mappings = 'HUMAN'

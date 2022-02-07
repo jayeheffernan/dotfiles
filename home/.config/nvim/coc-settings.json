@@ -7,6 +7,11 @@
     "typescript",
     "typescriptreact"
   ],
-  "yaml.format.enable": true
+  "sql.formatOptions": {
+    "language": "postgresql",
+    "linesBetweenQueries": 2,
+    "uppercase": true
+  },
+  "yaml.format.enable": true,
+  "tsserver.typingsCacheLocation": "/Users/jaye.heffernan/duck/ludwig/.scratch/types-cache"
 }
-
