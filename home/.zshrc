@@ -10,8 +10,11 @@ TWILIO_AC_ZSH_SETUP_PATH=/Users/jaye.heffernan/.twilio-cli/autocomplete/zsh_setu
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
+export DIRENV_LOG_FORMAT=''
+eval "$(direnv hook zsh)"
+
 export VOLTA_HOME="$HOME/.volta"
-export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jaye.heffernan/.scripts:/Users/jaye.heffernan/Library/Python/3.7/bin:/Users/jaye.heffernan/.cargo/bin:$VOLTA_HOME/bin:"
+export PATH="$VOLTA_HOME/bin:$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jaye.heffernan/.scripts:/Users/jaye.heffernan/Library/Python/3.7/bin:/Users/jaye.heffernan/.cargo/bin"
 
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 source ~/.config/base16-fzf/bash/base16-material.config
@@ -26,8 +29,16 @@ export ANDROID_AVD_HOME=/Users/jaye.heffernan/.android/avd
 
 # History searching stuff
 export HISTORY_SUBSTRING_SEARCH_FUZZY=1
+HISTSIZE=10000000
+SAVEHIST=10000000
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_FIND_NO_DUPS
+# Don't save history if command is preceded by space
+setopt HIST_IGNORE_SPACE
+# Write the history file in the ":start:elapsed;command" format.
+setopt EXTENDED_HISTORY
+# Write to the history file immediately, not when the shell exits.
+setopt INC_APPEND_HISTORY
 
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
@@ -463,3 +474,8 @@ exerrs() {
 
 alias exerrss='exercism submit src/lib.rs Cargo.toml **/*.rs **/Cargo.toml'
 alias exerrssl='exercism submit src/lib.rs Cargo.toml Cargo.lock **/*.rs **/Cargo.toml'
+
+alias pt=papertrail
+
+# pspg: a pager for tabular data. 16 = "simple" theme
+export PSPG='--style=16 --no-mouse --on-sigint-exit'
