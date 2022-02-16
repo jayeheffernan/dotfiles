@@ -1,6 +1,6 @@
 session: website
 
-root: ~/duck/website
+root: ~/duck/website/main
 
 windows:
   - name: logs

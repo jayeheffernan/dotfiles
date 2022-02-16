@@ -229,7 +229,8 @@ function change_dir() {
     # No argument? Autojump to tmux session name
     if [ -z "$DIR" ]
     then
-        j "$(tmux display-message -p '#S')"
+        # Add main for project's ./main worktree
+        j "$(tmux display-message -p '#S')" main
         return 0
     fi
 
@@ -239,7 +240,7 @@ function change_dir() {
     # If cd fails, then autojump instead
     if [ $? != "0" ]
     then
-        j "$DIR"
+        j "$@"
     fi
 }
 alias cd=change_dir

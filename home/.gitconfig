@@ -30,6 +30,7 @@
 	pu = push
 	punv = push --no-verify
 	ri = rebase --interactive
+	cp = cherry-pick
 [core]
 	editor = /usr/local/bin/vim
 	excludesfile = /Users/jaye.heffernan/.gitignore_global

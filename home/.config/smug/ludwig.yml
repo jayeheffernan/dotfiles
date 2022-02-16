@@ -1,6 +1,6 @@
 session: ludwig
 
-root: ~/Duck/ludwig
+root: ~/Duck/ludwig/main
 
 windows:
   - name: logs
