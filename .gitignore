@@ -5,3 +5,6 @@ home/.tmux/plugins
 **/*.swp
 **/*.netrwhist
 home/.tmux/plugins
+
+home/.config/coc/*
+!home/.config/coc/ultisnips
