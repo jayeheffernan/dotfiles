@@ -5,16 +5,16 @@
 	default = simple
 [alias]
 	co = checkout
-	tco = checkout
+	com = checkout master
 	b = branch
 	tb = branch
 	s = status
-	ts = status
-	tl = log --oneline
 	a = add
 	ta = add
 	d = diff -w
-	td = diff -w
+	dm = diff -w master
+	dom = diff -w origin/master
+	dt = difftool
 	c = commit
 	ca = commit --amend
 	cane = commit --amend --no-edit
@@ -27,10 +27,26 @@
 	ll = log --graph --format='%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)'
 	recent = for-each-ref --sort=-committerdate refs/heads/ --count 12
 	r = recent
-	pu = push
-	punv = push --no-verify
-	ri = rebase --interactive
+	pushnv = push --no-verify
+	rb = rebase
+	rbi = rebase --interactive
+	rbm = rebase master
+	rbim = rebase --interactive master
+	rbom = rebase origin/master
+	rbiom = rebase --interactive origin/master
+	m = merge
+	mm = merge master
+	mom = merge origin/master
 	cp = cherry-pick
+	fix = "!f() { ${EDITOR} `git diff --name-only`; }; f"
+	add-fixed = "!git add `git diff --name-only --diff-filter=U`"
+	f = fetch
 [core]
 	editor = /usr/local/bin/vim
 	excludesfile = /Users/jaye.heffernan/.gitignore_global
+[interactive]
+	singlekey = true
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
