@@ -324,20 +324,19 @@ nmap <leader>di <Plug>VimspectorBalloonEval
 " for visual mode, the visually selected text
 xmap <leader>di <Plug>VimspectorBalloonEval
 
-" Use <C-l> for both expand and jump (make expand higher priority.)
-imap <C-l> <Plug>(coc-snippets-expand-jump)
-
-" Use <C-l> for select text for visual placeholder of snippet.
-vmap <C-l> <Plug>(coc-snippets-select)
-
-imap <C-h> <nop>
-nmap <C-h> <nop>
-vmap <C-h> <nop>
-let g:coc_snippet_next = '<c-l>'
-imap <C-h> <nop>
-nmap <C-h> <nop>
-vmap <C-h> <nop>
+imap <C-Space> <nop>
+nmap <C-Space> <nop>
+vmap <C-Space> <nop>
+let g:coc_snippet_next = '<C-Space>'
+imap <c-h> <nop>
+nmap <c-h> <nop>
+vmap <c-h> <nop>
 let g:coc_snippet_prev = '<c-h>'
+
+" Use for both expand and jump (make expand higher priority.)
+imap <C-Space> <Plug>(coc-snippets-expand-jump)
+" Use for select text for visual placeholder of snippet.
+vmap <C-Space> <Plug>(coc-snippets-select)
 
 inoremap <expr><Tab> <SID>handle_tab()
 vnoremap <expr><Tab> <SID>handle_tab()
