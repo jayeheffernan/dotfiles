@@ -274,6 +274,24 @@ function vim_scratch_latest() {
 alias vims=vim_scratch
 alias vimsl=vim_scratch_latest
 
+alias copy=pbcopy
+alias paste=pbpaste
+
+function copyappend () {
+    {
+        paste
+        cat
+    } | copy
+}
+
+function copyprepend () {
+    {
+        cat
+        paste
+    } | copy
+}
+
+
 # Check what's listening on different ports
 function ports() {
   PORT="$1"
@@ -388,6 +406,13 @@ fzf_git_add() {
     fi
 }
 
+fzf_git_add_intent() {
+    local selections=$(fzf_git_status_selections '' "$@")
+    if [[ -n $selections ]]; then
+        echo "$selections" | xargs git add --intent-to-add --verbose
+    fi
+}
+
 fzf_git_add_patch() {
     local selections=$(fzf_git_status_selections '' "$@")
     if [[ -n $selections ]]; then
@@ -443,9 +468,32 @@ fzf_git_log_pickaxe_re() {
     fzf_git_log_pickaxe "$@" --pickaxe-regex
 }
 
+fzf_github_pr_select() {
+    # TODO why does the preview window not show by default? Have to press "?"
+    # to toggle it
+    local selection=$(
+      GH_FORCE_TTY='100%' gh pr list | grep --extended-regexp '#\d' |
+         fzf --no-sort --no-multi --ansi \
+             --preview-window right:50% \
+             --preview "GH_FORCE_TTY='100%' gh pr view {+1}"
+      )
+    if [[ -n $selection ]]; then
+        local pr=$(echo "$selection" | sed 's/^[* |]*//' | cut -d' ' -f1)
+        echo "$pr"
+    fi
+}
+
+fzf_github_pr_checkout() {
+    local pr=$(fzf_github_pr_select)
+    if [[ -n $pr ]]; then
+        gh pr checkout "$pr"
+    fi
+}
+
 # Git Fuzzy aliases (git combined with fzf)
 alias gfl='fzf_git_log'
 alias gfa='fzf_git_add'
+alias gfan='fzf_git_add_intent'
 alias gfap='fzf_git_add_patch'
 alias gfapr='fzf_git_add_patch_redo'
 alias gfrs='fzf_git_unstage'
@@ -453,8 +501,14 @@ alias gflp='fzf_git_log_pickaxe'
 alias gflpr='fzf_git_log_pickaxe_re'
 alias gfco='fzf_git_checkout'
 
+alias ghfpr='fzf_github_pr_select'
+alias ghfco='fzf_github_pr_checkout'
+
 fzf_cd() {
-    cd $(fd --no-ignore --hidden --follow --ignore-file ~/.ignore '' --type d "${1-.}" | fzf)
+    local selection=$(fd --no-ignore --hidden --follow --ignore-file ~/.ignore '' --type d "${1-.}" | fzf)
+    if [[ -n $selection ]]; then
+        cd "$selection"
+    fi
 }
 alias cdf=fzf_cd
 alias c=fzf_cd
