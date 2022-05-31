@@ -26,6 +26,7 @@ Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-fugitive'
 Plug 'wakatime/vim-wakatime'
 Plug 'itchyny/lightline.vim'
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Cool stuff
 Plug 'maxbrunsfeld/vim-yankstack'
@@ -96,10 +97,12 @@ endif
 syntax on
 filetype plugin indent on
 
-let mapleader=","
-nnoremap <Space> :
-vnoremap <Space> :
+let mapleader=" "
+nnoremap ' :
+vnoremap ' :
 nnoremap <leader>w :update<return>
+
+let maplocalleader=","
 
 nnoremap <leader>ev :e ~/.vimrc<CR>
 nnoremap <leader>etm :e ~/.tmux.conf<CR>
@@ -132,6 +135,7 @@ let g:fzf_layout = { 'down': '50%' }
 let g:fzf_preview_window = 'up:50%'
 let g:coc_fzf_preview = ''
 let g:coc_fzf_opts = []
+
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>r :History<CR>
@@ -178,6 +182,14 @@ nnoremap <silent> <C-j> :<C-u>call <SID>JumpWindow('j')<CR>
 nnoremap <silent> <C-h> :<C-u>call <SID>JumpWindow('h')<CR>
 nnoremap <silent> <C-l> :<C-u>call <SID>JumpWindow('l')<CR>
 nnoremap <silent> <C-k> :<C-u>call <SID>JumpWindow('k')<CR>
+
+" Keep search results at the center of screen
+nmap n nzz
+nmap N Nzz
+nmap * *zz
+nmap # #zz
+nmap g* g*zz
+nmap g# g#zz
 
 set signcolumn=yes
 
@@ -245,12 +257,6 @@ let g:lightline = {
   \ },
   \ }
 
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
 function! s:show_documentation()
   if &filetype == 'vim'
     execute 'h '.expand('<cword>')
@@ -258,8 +264,6 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
-
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 vmap <silent><leader>f <Plug>(coc-format-selected)
 nmap <leader>f <Plug>(coc-format)<CR>
@@ -270,39 +274,40 @@ augroup sql
   autocmd FileType sql nnoremap <leader>R vap:'<,'>DB<CR>
 augroup END
 
-vnoremap <leader>a :CocAction<CR>
-nnoremap <leader>a :CocAction<CR>
-nnoremap <leader>caa <Plug>(coc-codeaction-selected)
-nnoremap <leader>caf <Plug>(coc-codeaction-file)
-nnoremap <leader>cal <Plug>(coc-codeaction-file)
-vnoremap <leader>cai :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
+vnoremap <localleader>a :CocAction<CR>
+nnoremap <localleader>a :CocAction<CR>
+nnoremap <localleader>caa <Plug>(coc-codeaction-selected)
+nnoremap <localleader>caf <Plug>(coc-codeaction-file)
+nnoremap <localleader>cal <Plug>(coc-codeaction-file)
+vnoremap <localleader>cai :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
 
-nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gr <Plug>(coc-references)
-nnoremap <silent> gh :call <SID>show_documentation()<CR>
-nmap <leader>cr <Plug>(coc-rename)
-nmap <silent><leader>cf <Plug>(coc-fix)
-nnoremap ge :call CocAction('diagnosticNext')<CR>
-nnoremap gE :call CocAction('diagnosticPrevious')<CR>
-nnoremap <silent><leader>ce :<C-u>CocFzfList diagnostics<CR>
-nnoremap <leader>cl :<C-u>CocFzfListResume<CR>
-nnoremap <leader>cL :<C-u>CocFzfList<CR>
+" nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
+nmap <silent><localleader>d <Plug>(coc-definition)
+nmap <silent><localleade>r <Plug>(coc-references)
+nnoremap <silent><localleader>h :call <SID>show_documentation()<CR>
+nmap <localleader>r <Plug>(coc-rename)
+nmap <silent><localleader>f <Plug>(coc-fix)
+nnoremap <localleader>en :call CocAction('diagnosticNext')<CR>
+nnoremap <localleader>ep :call CocAction('diagnosticPrevious')<CR>
+nnoremap <silent><localleader>el :<C-u>CocFzfList diagnostics<CR>
+nnoremap <localleader>lr :<C-u>CocFzfListResume<CR>
+nnoremap <localleader>ll :<C-u>CocFzfList<CR>
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
+" Disabled because they seem to freeze Vim while the language server is starting up
+" xmap if <Plug>(coc-funcobj-i)
+" omap if <Plug>(coc-funcobj-i)
+" xmap af <Plug>(coc-funcobj-a)
+" omap af <Plug>(coc-funcobj-a)
+" xmap ic <Plug>(coc-classobj-i)
+" omap ic <Plug>(coc-classobj-i)
+" xmap ac <Plug>(coc-classobj-a)
+" omap ac <Plug>(coc-classobj-a)
 
-nnoremap <leader>Sl :CocList snippets<CR>
-nnoremap <leader>Se :CocCommand snippets.editSnippets<CR>
-nnoremap <leader>So :CocCommand snippets.openSnippetFiles<CR>
+nnoremap <localleader>sl :CocList snippets<CR>
+nnoremap <localleader>se :CocCommand snippets.editSnippets<CR>
+nnoremap <localleader>so :CocCommand snippets.openSnippetFiles<CR>
 
 " Git mappings
 nmap <leader>gn <Plug>(GitGutterNextHunk)
@@ -319,9 +324,23 @@ nmap <leader>di <Plug>VimspectorBalloonEval
 " for visual mode, the visually selected text
 xmap <leader>di <Plug>VimspectorBalloonEval
 
-let g:coc_snippet_next = '<tab>'
-let g:coc_snippet_prev = '<s-tab>'
+" Use <C-l> for both expand and jump (make expand higher priority.)
+imap <C-l> <Plug>(coc-snippets-expand-jump)
+
+" Use <C-l> for select text for visual placeholder of snippet.
+vmap <C-l> <Plug>(coc-snippets-select)
+
+imap <C-h> <nop>
+nmap <C-h> <nop>
+vmap <C-h> <nop>
+let g:coc_snippet_next = '<c-l>'
+imap <C-h> <nop>
+nmap <C-h> <nop>
+vmap <C-h> <nop>
+let g:coc_snippet_prev = '<c-h>'
+
 inoremap <expr><Tab> <SID>handle_tab()
+vnoremap <expr><Tab> <SID>handle_tab()
 
 function! s:handle_tab()
   " Confirm completion *if selected*
@@ -329,8 +348,8 @@ function! s:handle_tab()
   if pumvisible() && complete_info().selected != -1
     return "\<C-r>=coc#_select_confirm()\<CR>"
   " Expand snippet if available
-  elseif coc#expandableOrJumpable()
-    return "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>"
+  " elseif coc#expandableOrJumpable()
+  "   return "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>"
   elseif pumvisible()
     return "\<C-r>=coc#_select_confirm()\<CR>"
   else
@@ -339,7 +358,7 @@ function! s:handle_tab()
   endif
 endfunction
 
-" Auto-fit quickfix window height
+" Auto-fix quickfix window height
 au FileType qf call AdjustWindowHeight(3, 10)
 function! AdjustWindowHeight(minheight, maxheight)
   exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
