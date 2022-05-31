@@ -3,6 +3,7 @@ filetype off
 
 let g:yankstack_map_keys = 0
 let g:polyglot_disabled = ['csv']
+let g:gitgutter_map_keys = 0
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !mkdir -p ~/.vim/autoload
@@ -19,10 +20,12 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
+Plug 'airblade/vim-gitgutter'
 Plug 'tmsvg/pear-tree'
 
 Plug 'tpope/vim-fugitive'
 Plug 'wakatime/vim-wakatime'
+Plug 'itchyny/lightline.vim'
 
 " Cool stuff
 Plug 'maxbrunsfeld/vim-yankstack'
@@ -58,6 +61,13 @@ Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'iamcco/coc-svg', {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
+Plug 'pantharshit00/coc-prisma', {'do': 'yarn install --frozen-lockfile'}
+Plug 'pantharshit00/vim-prisma', {'do': 'yarn install --frozen-lockfile'}
+Plug 'iamcco/coc-tailwindcss', {'do': 'yarn install --frozen-lockfile'}
+" Use FZF to navigate COC lists
+Plug 'antoinemadec/coc-fzf'
+" TODO review - don't necessarily need this, but it sounds interesting
+Plug 'neoclide/coc-lists', {'do': 'yarn install --frozen-lockfile'}
 
 Plug 'lifepillar/pgsql.vim'
 Plug 'yardnsm/vim-import-cost', { 'do': 'npm install' }
@@ -98,14 +108,30 @@ nnoremap <leader>ez :e ~/.zshrc<CR>
 nnoremap <leader>ec :CocConfig<CR>
 nnoremap <leader>ea :e ~/.config/alacritty/alacritty.yml<CR>
 nnoremap <leader>ek :e ~/.config/kitty/kitty.conf<CR>
+nnoremap <leader>eg :e ~/.gitconfig<CR>
 " Open new file adjacent to current file
 nnoremap <leader>en :e <C-R>=expand("%:p:h") . "/" <CR>
 
-" Open in VSCode
-nnoremap <leader>vs :silent execute "!code --reuse-window --goto " . getreg("%") . ":" . line(".") . ":" . col(".")<CR>
+function OpenInVsCode()
+  let git_root = fnameescape(trim(system("git rev-parse --show-toplevel")))
+  let goto = join([fnameescape(getreg("%")), ":", line("."), ":", col(".")], '')
+  let command = "code '" . git_root . "' --goto '" . goto . "'"
+  execute "!" . command
+endfunction
+nnoremap <leader>vs :silent call OpenInVsCode()<CR>
 
-let g:fzf_layout = { 'down': '40%' }
-let g:fzf_preview_window = 'up:40%'
+function OpenPage()
+    execute "!yarn open-page " . fnameescape(getreg("%"))
+endfunction
+
+function OpenPageDev()
+    execute "!yarn open-page-dev " . fnameescape(getreg("%"))
+endfunction
+
+let g:fzf_layout = { 'down': '50%' }
+let g:fzf_preview_window = 'up:50%'
+let g:coc_fzf_preview = ''
+let g:coc_fzf_opts = []
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>r :History<CR>
@@ -144,7 +170,7 @@ function! s:JumpWindow(dir)
   let l:prev = winnr()
   execute 'wincmd ' . a:dir
   if winnr() == l:prev
-    execute '999wincmd ' . g:oppositedirection[a:dir]
+    execute '99wincmd ' . g:oppositedirection[a:dir]
   endif
 endfunction
 
@@ -159,13 +185,9 @@ set number
 set ruler
 set mouse=a
 set hidden
-set cmdheight=2
+set cmdheight=1
 set updatetime=300
 set nojoinspaces
-nnoremap / /\v
-vnoremap / /\v
-nnoremap ? ?\v
-vnoremap ? ?\v
 set hlsearch incsearch ignorecase smartcase
 set modelines=0
 set nostartofline
@@ -207,10 +229,21 @@ autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
 let g:sql_type_default = 'pgsql'
 
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+function! CocCurrentFunction()
+    return get(b:, 'coc_current_function', '')
+endfunction
+
+let g:lightline = {
+  \ 'colorscheme': 'solarized',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
+  \ },
+  \ 'component_function': {
+  \   'cocstatus': 'coc#status',
+  \   'currentfunction': 'CocCurrentFunction'
+  \ },
+  \ }
 
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
@@ -228,15 +261,13 @@ endfunction
 
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-
 vmap <silent><leader>f <Plug>(coc-format-selected)
 nmap <leader>f <Plug>(coc-format)<CR>
 augroup sql
   autocmd!
+  autocmd Filetype sql vnoremap <silent><leader>f !pg_format<CR>
+  autocmd Filetype sql nnoremap <silent><leader>f ggVG!pg_format<CR>
   autocmd FileType sql nnoremap <leader>R vap:'<,'>DB<CR>
-" Fix for formatter not recognising #>> Postgres operator
-" not working
-"   autocmd FileType sql autocmd BufWritePre :%s/#>>/#>>/g<CR>
 augroup END
 
 vnoremap <leader>a :CocAction<CR>
@@ -254,9 +285,9 @@ nmap <leader>cr <Plug>(coc-rename)
 nmap <silent><leader>cf <Plug>(coc-fix)
 nnoremap ge :call CocAction('diagnosticNext')<CR>
 nnoremap gE :call CocAction('diagnosticPrevious')<CR>
-nnoremap <silent><leader>ce :<C-u>CocList diagnostics<CR>
-nnoremap <leader>cl :<C-u>CocListResume<CR>
-nnoremap <leader>cL :<C-u>CocList<CR>
+nnoremap <silent><leader>ce :<C-u>CocFzfList diagnostics<CR>
+nnoremap <leader>cl :<C-u>CocFzfListResume<CR>
+nnoremap <leader>cL :<C-u>CocFzfList<CR>
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -272,6 +303,12 @@ omap ac <Plug>(coc-classobj-a)
 nnoremap <leader>Sl :CocList snippets<CR>
 nnoremap <leader>Se :CocCommand snippets.editSnippets<CR>
 nnoremap <leader>So :CocCommand snippets.openSnippetFiles<CR>
+
+" Git mappings
+nmap <leader>gn <Plug>(GitGutterNextHunk)
+nmap <leader>gp <Plug>(GitGutterPrevHunk)
+nmap <leader>ga <Plug>(GitGutterStageHunk)
+nmap <leader>gb :Git blame<CR>
 
 nmap <leader>drr <Plug>VimspectorContinue
 nmap <leader>drc <Plug>VimspectorRunToCursor
@@ -302,6 +339,12 @@ function! s:handle_tab()
   endif
 endfunction
 
+" Auto-fit quickfix window height
+au FileType qf call AdjustWindowHeight(3, 10)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+
 " Channel/runfromvim
 function! s:tcpsocksendone(port, msg)
   let l:ch = sockconnect('tcp', 'localhost:' . a:port)
@@ -316,7 +359,7 @@ nnoremap <silent><leader>t :call <SID>tcpsocksendone(g:runfromvim_port, 'command
 " Google plugin
 let g:web_search_command = "open"
 let g:web_search_query = "https://google.com/search?q="
-vnoremap <leader>g :WebSearchVisual<CR>
+vnoremap <leader>S :WebSearchVisual<CR>
 
 let g:db = 'postgresql://postgres:@localhost:5432/ludwig'
 let g:omni_sql_no_default_maps = 1 "https://www.reddit.com/r/vim/comments/2om1ib/how_to_disable_sql_dynamic_completion/cmop4zh/
