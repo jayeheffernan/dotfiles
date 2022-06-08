@@ -1,7 +1,9 @@
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &packpath = &runtimepath
+
 set nocompatible
 filetype off
 
-let g:yankstack_map_keys = 0
 let g:polyglot_disabled = ['csv']
 let g:gitgutter_map_keys = 0
 
@@ -27,9 +29,13 @@ Plug 'tpope/vim-fugitive'
 Plug 'wakatime/vim-wakatime'
 Plug 'itchyny/lightline.vim'
 Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'lambdalisue/fern.vim'
+" Recommended fix for Fern in Neovim
+Plug 'antoinemadec/FixCursorHold.nvim'
 
 " Cool stuff
-Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'svermeulen/vim-yoink'
+Plug 'ggandor/lightspeed.nvim'
 Plug 'junegunn/vim-easy-align'
 Plug 'simnalamburt/vim-mundo'
 Plug 'lifepillar/vim-cheat40'
@@ -43,7 +49,15 @@ Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-completion', {'do': 'yarn install --frozen-lockfile'}
 
 " Debugger integration
-Plug 'puremourning/vimspector'
+" Plug 'puremourning/vimspector'
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+" Plug 'nvim-telescope/telescope-dap.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
+Plug 'theHamsta/nvim-dap-virtual-text'
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " COC
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -80,7 +94,6 @@ Plug 'honza/vim-snippets'
 Plug 'sheerun/vim-polyglot'
 call plug#end()
 
-call yankstack#setup()
 let g:pear_tree_repeatable_expand = 0
 let g:pear_tree_smart_backspace   = 1
 let g:pear_tree_smart_closers     = 1
@@ -164,8 +177,12 @@ vnoremap <leader><leader>P "+P
 nnoremap <leader>yF :let @+=expand("%:p")<CR>
 nnoremap <leader>yf :let @+=expand("%")<CR>
 
-nmap <leader>p <Plug>yankstack_substitute_older_paste
-nmap <leader>P <Plug>yankstack_substitute_newer_paste
+nmap <leader>p <Plug>(YoinkPostPasteSwapBack)
+nmap <leader>P <Plug>(YoinkPostPasteSwapForward)
+nmap p <Plug>(YoinkPaste_p)
+nmap P <Plug>(YoinkPaste_P)
+nmap gp <Plug>(YoinkPaste_gp)
+nmap gP <Plug>(YoinkPaste_gP)
 
 nnoremap <leader>u :MundoToggle<CR>
 
@@ -265,13 +282,13 @@ function! s:show_documentation()
   endif
 endfunction
 
-vmap <silent><leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format)<CR>
+vmap <silent><localleader>f <Plug>(coc-format-selected)
+nmap <localleader>f <Plug>(coc-format)<CR>
 augroup sql
   autocmd!
-  autocmd Filetype sql vnoremap <silent><leader>f !pg_format<CR>
-  autocmd Filetype sql nnoremap <silent><leader>f ggVG!pg_format<CR>
-  autocmd FileType sql nnoremap <leader>R vap:'<,'>DB<CR>
+  autocmd Filetype sql vnoremap <silent><localleader>f !pg_format<CR>
+  autocmd Filetype sql nnoremap <silent><localleader>f ggVG!pg_format<CR>
+  autocmd FileType sql nnoremap <localleader>R vap:'<,'>DB<CR>
 augroup END
 
 vnoremap <localleader>a :CocAction<CR>
@@ -282,11 +299,12 @@ nnoremap <localleader>cal <Plug>(coc-codeaction-file)
 vnoremap <localleader>cai :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
 
 " nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
-nmap <silent><localleader>d <Plug>(coc-definition)
-nmap <silent><localleade>r <Plug>(coc-references)
+nmap <silent><localleader>v <Plug>(coc-definition)
+nmap <silent><localleader>t <Plug>(coc-type-definition)
+nmap <silent><localleader>r <Plug>(coc-references-used)
 nnoremap <silent><localleader>h :call <SID>show_documentation()<CR>
-nmap <localleader>r <Plug>(coc-rename)
-nmap <silent><localleader>f <Plug>(coc-fix)
+nmap <localleader>R <Plug>(coc-rename)
+nmap <silent><localleader>F <Plug>(coc-fix)
 nnoremap <localleader>en :call CocAction('diagnosticNext')<CR>
 nnoremap <localleader>ep :call CocAction('diagnosticPrevious')<CR>
 nnoremap <silent><localleader>el :<C-u>CocFzfList diagnostics<CR>
@@ -314,15 +332,18 @@ nmap <leader>gn <Plug>(GitGutterNextHunk)
 nmap <leader>gp <Plug>(GitGutterPrevHunk)
 nmap <leader>ga <Plug>(GitGutterStageHunk)
 nmap <leader>gb :Git blame<CR>
+nmap <leader>gg :Git 
 
-nmap <leader>drr <Plug>VimspectorContinue
-nmap <leader>drc <Plug>VimspectorRunToCursor
-nmap <leader>dq <Plug>VimspectorStop
-nmap <leader>dbb <Plug>VimspectorToggleBreakpoint
-" for normal mode - the word under the cursor
-nmap <leader>di <Plug>VimspectorBalloonEval
-" for visual mode, the visually selected text
-xmap <leader>di <Plug>VimspectorBalloonEval
+" let g:vimspector_enable_mappings = 'HUMAN'
+
+" nmap <leader>drr <Plug>VimspectorContinue
+" nmap <leader>drc <Plug>VimspectorRunToCursor
+" nmap <leader>dq <Plug>VimspectorStop
+" nmap <leader>dbb <Plug>VimspectorToggleBreakpoint
+" " for normal mode - the word under the cursor
+" nmap <leader>di <Plug>VimspectorBalloonEval
+" " for visual mode, the visually selected text
+" xmap <leader>di <Plug>VimspectorBalloonEval
 
 imap <C-Space> <nop>
 nmap <C-Space> <nop>
@@ -382,4 +403,157 @@ vnoremap <leader>S :WebSearchVisual<CR>
 let g:db = 'postgresql://postgres:@localhost:5432/ludwig'
 let g:omni_sql_no_default_maps = 1 "https://www.reddit.com/r/vim/comments/2om1ib/how_to_disable_sql_dynamic_completion/cmop4zh/
 
-let g:vimspector_enable_mappings = 'HUMAN'
+noremap <silent> <Leader>f :Fern . -drawer -toggle -reveal=% -width=40<CR><C-w>=
+
+" mappings mostly from https://bluz71.github.io/2017/05/21/vim-plugins-i-like.html#fernvim
+function! FernInit() abort
+  nmap <buffer><expr>
+        \ <Plug>(fern-my-open-expand-collapse)
+        \ fern#smart#leaf(
+        \   "\<Plug>(fern-action-open:select)",
+        \   "\<Plug>(fern-action-expand)",
+        \   "\<Plug>(fern-action-collapse)",
+        \ )
+  nmap <buffer> <CR> <Plug>(fern-my-open-expand-collapse)
+  nmap <buffer> <2-LeftMouse> <Plug>(fern-my-open-expand-collapse)
+  nmap <buffer> <Tab> <Plug>(fern-action-mark:toggle)j
+  nmap <buffer> <S-Tab> <Plug>(fern-action-mark:toggle)k
+  nmap <buffer> n <Plug>(fern-action-new-path)
+  nmap <buffer> D <Plug>(fern-action-remove)
+  nmap <buffer> dd <Plug>(fern-action-remove)
+  nmap <buffer> C <Plug>(fern-action-move)
+  nmap <buffer> cc <Plug>(fern-action-move)
+  nmap <buffer> r <Plug>(fern-action-rename)
+  nmap <buffer> s <Plug>(fern-action-open:split)
+  nmap <buffer> v <Plug>(fern-action-open:vsplit)
+  nmap <buffer> R <Plug>(fern-action-reload)
+  nmap <buffer> <nowait> < <Plug>(fern-action-leave)
+  nmap <buffer> <nowait> > <Plug>(fern-action-enter)
+endfunction
+
+augroup FernEvents
+  autocmd!
+  autocmd FileType fern call FernInit()
+augroup END
+
+" nnoremap <F4> :lua require('dapui').toggle()<CR>
+" nnoremap <F5> :lua require('dap').toggle_breakpoint()<CR>
+" nnoremap <F9> :lua require('dap').continue()<CR>
+
+" nnoremap <F1> :lua require('dap').step_over()<CR>
+" nnoremap <F2> :lua require('dap').step_into()<CR>
+" nnoremap <F3> :lua require('dap').step_out()<CR>
+
+nnoremap <localleader>dk :lua require('dap').continue()<CR>
+nnoremap <localleader>dj :lua require('dap').step_over()<CR>
+nnoremap <localleader>dl :lua require('dap').step_into()<CR>
+nnoremap <localleader>dsh :lua require('dap').step_out()<CR>
+
+nnoremap <localleader>dhv :lua require('dap.ui.variables').hover()<CR>
+vnoremap <localleader>dhv :lua require('dap.ui.variables').visual_hover()<CR>
+
+nnoremap <localleader>dhh :lua require('dap.ui.widgets').hover()<CR>
+" nnoremap <localleader>duf :lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>
+
+" nnoremap <localleader>dro :lua require('dap').repl.open()<CR>
+" nnoremap <localleader>drl :lua require('dap').repl.run_last()<CR>
+
+nnoremap <localleader>dbc :lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+nnoremap <localleader>dbm :lua require('dap').set_breakpoint({ nil, nil, vim.fn.input('Log point message: ') })<CR>
+nnoremap <localleader>dbb :lua require('dap').toggle_breakpoint()<CR>
+
+" nnoremap <localleader>dc :lua require('dap.ui.variables').scopes()<CR>
+nnoremap <localleader>di :lua require('dapui').toggle()<CR>
+
+" nnoremap <localleader>dcc <cmd>lua require"telescope".extensions.dap.commands{}<CR>
+" nnoremap <localleader>dco <cmd>lua require"telescope".extensions.dap.configurations{}<CR>
+" nnoremap <localleader>dlb <cmd>lua require"telescope".extensions.dap.list_breakpoints{}<CR>
+" nnoremap <localleader>dv  <cmd>lua require"telescope".extensions.dap.variables{}<CR>
+" nnoremap <localleader>df  <cmd>lua require"telescope".extensions.dap.frames{}<CR>
+
+lua<<EOF
+vim.g.dap_virtual_text = true
+
+require('dapui').setup()
+-- require('telescope').setup()
+-- require('telescope').load_extension('dap')
+require("nvim-dap-virtual-text").setup()
+
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    disable = {},
+  },
+  indent = {
+    enable = false,
+    disable = {},
+  },
+  ensure_installed = {
+    "tsx",
+    "javascript",
+    "toml",
+    "bash",
+    "json",
+    "yaml",
+    "html",
+    "scss"
+  },
+}
+-- local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+-- parser_config.tsx.used_by = { "javascript", "typescript.tsx" }
+
+local dap = require('dap')
+
+dap.adapters.node2 = {
+  type = 'executable',
+  command = 'node',
+  args = {os.getenv('HOME') .. '/.builds/vscode-node-debug2/out/src/nodeDebug.js'},
+}
+
+dap.configurations.javascript = {
+  {
+    type = 'node2',
+    request = 'attach',
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+		port = 9229,
+    skipFiles = {'<node_internals>/**/*.js'},
+  },
+}
+
+dap.configurations.typescript = {
+  {
+    type = 'node2',
+    request = 'attach',
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+		port = 9229,
+    skipFiles = {'<node_internals>/**/*.js'},
+  },
+}
+
+require'lightspeed'.setup {
+  ignore_case = false,
+  exit_after_idle_msecs = { unlabeled = 1000, labeled = nil },
+  --- s/x ---
+  jump_to_unique_chars = { safety_timeout = 400 },
+  match_only_the_start_of_same_char_seqs = true,
+  force_beacons_into_match_width = false,
+  -- Display characters in a custom way in the highlighted matches.
+  substitute_chars = { ['\r'] = '¬', },
+  -- Leaving the appropriate list empty effectively disables "smart" mode,
+  -- and forces auto-jump to be on or off.
+  -- safe_labels = { . . . },
+  -- labels = { . . . },
+  -- These keys are captured directly by the plugin at runtime.
+  special_keys = {
+    next_match_group = '<space>',
+    prev_match_group = '<tab>',
+  },
+  --- f/t ---
+  limit_ft_matches = 4,
+  repeat_ft_with_target_char = false,
+}
+EOF
