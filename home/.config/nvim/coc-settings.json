@@ -13,5 +13,14 @@
     "uppercase": true
   },
   "yaml.format.enable": true,
-  "tsserver.typingsCacheLocation": "/Users/jaye.heffernan/duck/ludwig/.scratch/types-cache"
+  "tsserver.typingsCacheLocation": "/Users/jaye.heffernan/duck/ludwig/.scratch/types-cache",
+  "tsserver.log": "verbose",
+  "tsserver.maxTsServerMemory": 4096,
+  "tsserver.enableTracing": true,
+  "sqlfluff.dialect":"postgres",
+  "snippets.extends": {
+    "javascriptreact": ["javascript"],
+    "typescriptreact": ["javascript","javascriptreact","typescript"],
+    "typescript": ["javascript"]
+  }
 }

@@ -32,10 +32,12 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'lambdalisue/fern.vim'
 " Recommended fix for Fern in Neovim
 Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'ThePrimeagen/refactoring.nvim'
 
 " Cool stuff
 Plug 'svermeulen/vim-yoink'
-Plug 'ggandor/lightspeed.nvim'
+" Plug 'ggandor/lightspeed.nvim'
+Plug 'unblevable/quick-scope'
 Plug 'junegunn/vim-easy-align'
 Plug 'simnalamburt/vim-mundo'
 Plug 'lifepillar/vim-cheat40'
@@ -44,6 +46,7 @@ Plug 'linluk/vim-websearch'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-projectionist'
+Plug 'shortcuts/no-neck-pain.nvim', { 'tag': '*' }
 Plug 'tpope/vim-dadbod'
 " Completion for DB objects, e.g. table names
 Plug 'kristijanhusak/vim-dadbod-completion', {'do': 'yarn install --frozen-lockfile'}
@@ -53,7 +56,7 @@ Plug 'kristijanhusak/vim-dadbod-completion', {'do': 'yarn install --frozen-lockf
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
 " Plug 'nvim-telescope/telescope-dap.nvim'
-" Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
 Plug 'theHamsta/nvim-dap-virtual-text'
 
@@ -75,7 +78,9 @@ Plug 'fannheyward/coc-styled-components', {'do': 'yarn install --frozen-lockfile
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'iamcco/coc-svg', {'do': 'yarn install --frozen-lockfile'}
-Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
+Plug 'antonk52/coc-cssmodules', {'do': 'yarn install --frozen-lockfile'}
+"Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
+Plug 'yaegassy/coc-sqlfluff', {'do': 'yarn install --frozen-lockfile'}
 Plug 'pantharshit00/coc-prisma', {'do': 'yarn install --frozen-lockfile'}
 Plug 'pantharshit00/vim-prisma', {'do': 'yarn install --frozen-lockfile'}
 Plug 'iamcco/coc-tailwindcss', {'do': 'yarn install --frozen-lockfile'}
@@ -84,7 +89,7 @@ Plug 'antoinemadec/coc-fzf'
 " TODO review - don't necessarily need this, but it sounds interesting
 Plug 'neoclide/coc-lists', {'do': 'yarn install --frozen-lockfile'}
 
-Plug 'lifepillar/pgsql.vim'
+"Plug 'lifepillar/pgsql.vim'
 Plug 'yardnsm/vim-import-cost', { 'do': 'npm install' }
 " Snippet definitions
 Plug 'honza/vim-snippets'
@@ -100,6 +105,8 @@ let g:pear_tree_smart_closers     = 1
 let g:pear_tree_smart_openers     = 1
 
 let g:cheat40_use_default = 0
+
+let g:qs_second_highlight=0
 
 " Load base16-shell colors
 if filereadable(expand("~/.vimrc_background"))
@@ -128,6 +135,8 @@ nnoremap <leader>eg :e ~/.gitconfig<CR>
 " Open new file adjacent to current file
 nnoremap <leader>en :e <C-R>=expand("%:p:h") . "/" <CR>
 
+nnoremap <leader>C :NoNeckPain<CR>
+
 function OpenInVsCode()
   let git_root = fnameescape(trim(system("git rev-parse --show-toplevel")))
   let goto = join([fnameescape(getreg("%")), ":", line("."), ":", col(".")], '')
@@ -149,9 +158,15 @@ let g:fzf_preview_window = 'up:50%'
 let g:coc_fzf_preview = ''
 let g:coc_fzf_opts = []
 
+" https://www.reddit.com/r/vim/comments/hbzaju/fzf_hfiles_command_for_latest_changed_files_from/
+command! -count=1 GitLogFiles call fzf#run({ 'source': 'git log HEAD -n <count> --diff-filter=MA --name-only --pretty=format: | sed -e /^$/d | awk "!seen[\$0]++" ', 'sink': 'e', 'options': '--multi'})
+command! GitBranchFiles call fzf#run({ 'source': 'git diff --name-only --diff-filter=d origin/master | sed -e /^$/d', 'sink': 'e', 'options': '--multi'})
+
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>r :History<CR>
+nnoremap <leader>grb :GitBranchFiles<CR>
+nnoremap <leader>grl :GitLogFiles<CR>
 nnoremap <leader>s :Rg<Space>
 nnoremap <leader><Up> :buffer #<CR>
 nnoremap <leader>q :bd<CR>
@@ -167,8 +182,8 @@ xmap gA :EasyAlign
 " Use system clipboard
 nnoremap <leader><leader>d "+d
 vnoremap <leader><leader>d "+d
-nnoremap <leader><leader>y "+y
-vnoremap <leader><leader>y "+y
+nnoremap Y "+y
+vnoremap Y "+y
 nnoremap <leader><leader>p "+p
 nnoremap <leader><leader>P "+P
 vnoremap <leader><leader>p "+p
@@ -199,6 +214,9 @@ nnoremap <silent> <C-j> :<C-u>call <SID>JumpWindow('j')<CR>
 nnoremap <silent> <C-h> :<C-u>call <SID>JumpWindow('h')<CR>
 nnoremap <silent> <C-l> :<C-u>call <SID>JumpWindow('l')<CR>
 nnoremap <silent> <C-k> :<C-u>call <SID>JumpWindow('k')<CR>
+
+nnoremap <leader>cn :cn<CR>
+nnoremap <leader>cp :cp<CR>
 
 " Keep search results at the center of screen
 nmap n nzz
@@ -256,7 +274,7 @@ endif
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 
-let g:sql_type_default = 'pgsql'
+"let g:sql_type_default = 'pgsql'
 
 function! CocCurrentFunction()
     return get(b:, 'coc_current_function', '')
@@ -286,28 +304,28 @@ vmap <silent><localleader>f <Plug>(coc-format-selected)
 nmap <localleader>f <Plug>(coc-format)<CR>
 augroup sql
   autocmd!
-  autocmd Filetype sql vnoremap <silent><localleader>f !pg_format<CR>
-  autocmd Filetype sql nnoremap <silent><localleader>f ggVG!pg_format<CR>
-  autocmd FileType sql nnoremap <localleader>R vap:'<,'>DB<CR>
+  autocmd Filetype sql vmap <buffer> <localleader>f :CocCommand sqlfluff.fix<CR>
+  autocmd Filetype sql nmap <buffer> <localleader>f :CocCommand sqlfluff.fix<CR>
 augroup END
 
-vnoremap <localleader>a :CocAction<CR>
-nnoremap <localleader>a :CocAction<CR>
-nnoremap <localleader>caa <Plug>(coc-codeaction-selected)
+vnoremap <localleader>a <Plug>(coc-codeaction-selected)
+nnoremap <localleader>a <Plug>(coc-codeaction-selected)
+nnoremap <localleader>caa <Plug>(coc-codeaction)
 nnoremap <localleader>caf <Plug>(coc-codeaction-file)
-nnoremap <localleader>cal <Plug>(coc-codeaction-file)
+nnoremap <localleader>cal <Plug>(coc-codelens-actions)
 vnoremap <localleader>cai :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
 
 " nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
 nmap <silent><localleader>v <Plug>(coc-definition)
 nmap <silent><localleader>t <Plug>(coc-type-definition)
 nmap <silent><localleader>r <Plug>(coc-references-used)
+vmap <silent><localleader>r <Plug>(coc-references-used)
 nnoremap <silent><localleader>h :call <SID>show_documentation()<CR>
 nmap <localleader>R <Plug>(coc-rename)
-nmap <silent><localleader>F <Plug>(coc-fix)
+nmap <silent><localleader>F <Plug>(coc-fix-current)
 nnoremap <localleader>en :call CocAction('diagnosticNext')<CR>
 nnoremap <localleader>ep :call CocAction('diagnosticPrevious')<CR>
-nnoremap <silent><localleader>el :<C-u>CocFzfList diagnostics<CR>
+nnoremap <silent><localleader>le :<C-u>CocFzfList diagnostics<CR>
 nnoremap <localleader>lr :<C-u>CocFzfListResume<CR>
 nnoremap <localleader>ll :<C-u>CocFzfList<CR>
 
@@ -333,17 +351,6 @@ nmap <leader>gp <Plug>(GitGutterPrevHunk)
 nmap <leader>ga <Plug>(GitGutterStageHunk)
 nmap <leader>gb :Git blame<CR>
 nmap <leader>gg :Git 
-
-" let g:vimspector_enable_mappings = 'HUMAN'
-
-" nmap <leader>drr <Plug>VimspectorContinue
-" nmap <leader>drc <Plug>VimspectorRunToCursor
-" nmap <leader>dq <Plug>VimspectorStop
-" nmap <leader>dbb <Plug>VimspectorToggleBreakpoint
-" " for normal mode - the word under the cursor
-" nmap <leader>di <Plug>VimspectorBalloonEval
-" " for visual mode, the visually selected text
-" xmap <leader>di <Plug>VimspectorBalloonEval
 
 imap <C-Space> <nop>
 nmap <C-Space> <nop>
@@ -403,7 +410,7 @@ vnoremap <leader>S :WebSearchVisual<CR>
 let g:db = 'postgresql://postgres:@localhost:5432/ludwig'
 let g:omni_sql_no_default_maps = 1 "https://www.reddit.com/r/vim/comments/2om1ib/how_to_disable_sql_dynamic_completion/cmop4zh/
 
-noremap <silent> <Leader>f :Fern . -drawer -toggle -reveal=% -width=40<CR><C-w>=
+noremap <silent> <Leader>f :Fern . -drawer -reveal=% -width=40<CR><C-w>=
 
 " mappings mostly from https://bluz71.github.io/2017/05/21/vim-plugins-i-like.html#fernvim
 function! FernInit() abort
@@ -420,9 +427,7 @@ function! FernInit() abort
   nmap <buffer> <S-Tab> <Plug>(fern-action-mark:toggle)k
   nmap <buffer> n <Plug>(fern-action-new-path)
   nmap <buffer> D <Plug>(fern-action-remove)
-  nmap <buffer> dd <Plug>(fern-action-remove)
   nmap <buffer> C <Plug>(fern-action-move)
-  nmap <buffer> cc <Plug>(fern-action-move)
   nmap <buffer> r <Plug>(fern-action-rename)
   nmap <buffer> s <Plug>(fern-action-open:split)
   nmap <buffer> v <Plug>(fern-action-open:vsplit)
@@ -436,23 +441,18 @@ augroup FernEvents
   autocmd FileType fern call FernInit()
 augroup END
 
-" nnoremap <F4> :lua require('dapui').toggle()<CR>
-" nnoremap <F5> :lua require('dap').toggle_breakpoint()<CR>
-" nnoremap <F9> :lua require('dap').continue()<CR>
-
-" nnoremap <F1> :lua require('dap').step_over()<CR>
-" nnoremap <F2> :lua require('dap').step_into()<CR>
-" nnoremap <F3> :lua require('dap').step_out()<CR>
+nnoremap <2-LeftMouse> <Plug>(coc-definition)
 
 nnoremap <localleader>dk :lua require('dap').continue()<CR>
 nnoremap <localleader>dj :lua require('dap').step_over()<CR>
 nnoremap <localleader>dl :lua require('dap').step_into()<CR>
-nnoremap <localleader>dsh :lua require('dap').step_out()<CR>
+nnoremap <localleader>dh :lua require('dap').step_out()<CR>
 
-nnoremap <localleader>dhv :lua require('dap.ui.variables').hover()<CR>
-vnoremap <localleader>dhv :lua require('dap.ui.variables').visual_hover()<CR>
+nnoremap <localleader>dvv :lua require('dap.ui.variables').hover()<CR>
+vnoremap <localleader>dvv :lua require('dap.ui.variables').visual_hover()<CR>
 
-nnoremap <localleader>dhh :lua require('dap.ui.widgets').hover()<CR>
+nnoremap <localleader>dvh :lua require('dap.ui.widgets').hover()<CR>
+nnoremap D :lua require('dap.ui.widgets').hover()<CR>
 " nnoremap <localleader>duf :lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>
 
 " nnoremap <localleader>dro :lua require('dap').repl.open()<CR>
@@ -465,95 +465,17 @@ nnoremap <localleader>dbb :lua require('dap').toggle_breakpoint()<CR>
 " nnoremap <localleader>dc :lua require('dap.ui.variables').scopes()<CR>
 nnoremap <localleader>di :lua require('dapui').toggle()<CR>
 
-" nnoremap <localleader>dcc <cmd>lua require"telescope".extensions.dap.commands{}<CR>
-" nnoremap <localleader>dco <cmd>lua require"telescope".extensions.dap.configurations{}<CR>
-" nnoremap <localleader>dlb <cmd>lua require"telescope".extensions.dap.list_breakpoints{}<CR>
-" nnoremap <localleader>dv  <cmd>lua require"telescope".extensions.dap.variables{}<CR>
-" nnoremap <localleader>df  <cmd>lua require"telescope".extensions.dap.frames{}<CR>
 
-lua<<EOF
-vim.g.dap_virtual_text = true
+function! s:updateCheats()
+  let appname = substitute(system('osascript -e ''tell application "System Events" to get name of application processes whose frontmost is true and visible is true'''), '\n', '', 'g')
+  let path = '/tmp/' . appname . '.txt'
+  echo 'editing ' . path
+  execute 'edit ' . path
+endfunction
 
-require('dapui').setup()
--- require('telescope').setup()
--- require('telescope').load_extension('dap')
-require("nvim-dap-virtual-text").setup()
 
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    disable = {},
-  },
-  indent = {
-    enable = false,
-    disable = {},
-  },
-  ensure_installed = {
-    "tsx",
-    "javascript",
-    "toml",
-    "bash",
-    "json",
-    "yaml",
-    "html",
-    "scss"
-  },
-}
--- local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
--- parser_config.tsx.used_by = { "javascript", "typescript.tsx" }
+function! s:enableCheats()
+  autocmd FocusGained * :call s:updateCheats()
+endfunction
 
-local dap = require('dap')
-
-dap.adapters.node2 = {
-  type = 'executable',
-  command = 'node',
-  args = {os.getenv('HOME') .. '/.builds/vscode-node-debug2/out/src/nodeDebug.js'},
-}
-
-dap.configurations.javascript = {
-  {
-    type = 'node2',
-    request = 'attach',
-    cwd = vim.fn.getcwd(),
-    sourceMaps = true,
-    protocol = 'inspector',
-		port = 9229,
-    skipFiles = {'<node_internals>/**/*.js'},
-  },
-}
-
-dap.configurations.typescript = {
-  {
-    type = 'node2',
-    request = 'attach',
-    cwd = vim.fn.getcwd(),
-    sourceMaps = true,
-    protocol = 'inspector',
-		port = 9229,
-    skipFiles = {'<node_internals>/**/*.js'},
-  },
-}
-
-require'lightspeed'.setup {
-  ignore_case = false,
-  exit_after_idle_msecs = { unlabeled = 1000, labeled = nil },
-  --- s/x ---
-  jump_to_unique_chars = { safety_timeout = 400 },
-  match_only_the_start_of_same_char_seqs = true,
-  force_beacons_into_match_width = false,
-  -- Display characters in a custom way in the highlighted matches.
-  substitute_chars = { ['\r'] = '¬', },
-  -- Leaving the appropriate list empty effectively disables "smart" mode,
-  -- and forces auto-jump to be on or off.
-  -- safe_labels = { . . . },
-  -- labels = { . . . },
-  -- These keys are captured directly by the plugin at runtime.
-  special_keys = {
-    next_match_group = '<space>',
-    prev_match_group = '<tab>',
-  },
-  --- f/t ---
-  limit_ft_matches = 4,
-  repeat_ft_with_target_char = false,
-}
-EOF
+command EnableCheats call s:enableCheats()
