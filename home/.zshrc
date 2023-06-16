@@ -79,6 +79,11 @@ _fzf_compgen_dir() {
     fd --no-ignore --hidden --follow --ignore-file ~/.ignore --type d '' "$1"
 }
 
+# https://superuser.com/a/1051787
+to-history() { print -S $BUFFER ; BUFFER= }
+zle -N to-history
+bindkey 'œ' to-history # my terminal outputs this character when pressing Option-Q
+
 ################################################################################
 # PLUGIN MANAGER
 ################################################################################
@@ -124,6 +129,7 @@ zinit wait lucid light-mode for \
     OMZP::autojump \
     OMZP::aws \
     OMZP::yarn \
+    djui/alias-tips \
     zsh-users/zsh-history-substring-search \
     OMZP::fzf \
     atload" bindkey '^R' fzf-history-widget" \
@@ -141,6 +147,12 @@ zinit wait'!0' lucid light-mode for \
     pick"async.zsh" src"pure.zsh" \
     sindresorhus/pure
 
+# # Force using aliases
+# export ZSH_PLUGINS_ALIAS_TIPS_FORCE=1
+export ZSH_PLUGINS_ALIAS_TIPS_REVEAL_TEXT="Alias expanded to: "
+export ZSH_PLUGINS_ALIAS_TIPS_TEXT="YSK alias: "
+# export ZSH_PLUGINS_ALIAS_TIPS_REVEAL=1
+
 ################################################################################
 # ALIASES
 ################################################################################
@@ -156,7 +168,6 @@ alias g="git"
 alias suod=sudo
 alias sduo=sudo
 
-alias mux=tmuxinator
 export DISABLE_AUTO_TITLE=true
 
 alias ls='exa'                                                         # ls
@@ -166,7 +177,30 @@ alias llm='exa -lbGF --git --sort=modified'                            # long li
 alias la='exa -lbhHigUmuSa --time-style=long-iso --git --color-scale'  # all list
 alias lx='exa -lbhHigUmuSa@ --time-style=long-iso --git --color-scale' # all + extended list
 
+alias mk=mkdir
+alias mkp='mkdir -p'
+
 alias y='yarn'
+
+function ocr() {
+    local image_file="$1"
+    # OCR to stdout
+    tesseract "$image_file" -
+}
+
+# Make background of image transparent, by flood-fill based on top-corner
+# e.g. `bg_rm input.jpg output.png`
+function bg_rm() {
+    local image_file="$1"
+    local output_file="$2"
+    # https://stackoverflow.com/a/44542839
+    local color=$( convert "$image_file" -format "%[pixel:p{0,0}]" info:- )
+    convert "$image_file" -alpha off -bordercolor "$color" -border 1 \
+        \( +clone -fuzz 30% -fill none -floodfill +0+0 "$color" \
+           -alpha extract -geometry 200% -blur 0x0.5 \
+           -morphology erode square:1 -geometry 50% \) \
+        -compose CopyOpacity -composite -shave 1 "$output_file"
+}
 
 # Docker alias and options
 export COMPOSE_HTTP_TIMEOUT=300
@@ -273,6 +307,46 @@ function vim_scratch_latest() {
 }
 alias vims=vim_scratch
 alias vimsl=vim_scratch_latest
+
+function strip_sql_semicolon() {
+  cat \
+    | tac \
+    | awk 'NF {p=1} p' \
+    | awk 'NR == 1 {sub(/;\s*$/, ""); print} NR != 1 {print}' \
+    | tac
+}
+
+function psql_json() {
+  local F="$1"
+  rm -f '/tmp/psql_json.out'
+
+  cat <(echo '\\t') \
+    <(echo '\\a') \
+    <(echo 'select json_agg(t) FROM (') \
+    <(cat "$F" | strip_sql_semicolon) \
+    <(echo ') t') \
+    | psql \
+    > '/tmp/psql_json.out'
+
+  # Filter for actual JSON lines
+  cat '/tmp/psql_json.out' \
+    | awk '/^[[]/ { json_started = 1 } json_started { print }' \
+    | jq --sort-keys '' \
+    > '/tmp/psql_json.json'
+
+  cat '/tmp/psql_json.json'
+}
+
+function psql_diff() {
+  local A="$1"
+  local B="$2"
+  rm -f '/tmp/psql_diff.a.json' '/tmp/psql_diff.b.json'
+  psql_json "$A" > '/tmp/psql_diff.a.json'
+  psql_json "$B" > '/tmp/psql_diff.b.json'
+  vimdiff '/tmp/psql_diff.a.json' '/tmp/psql_diff.b.json'
+}
+
+alias sqldiff=psql_diff
 
 alias copy=pbcopy
 alias paste=pbpaste
@@ -500,9 +574,12 @@ alias gfrs='fzf_git_unstage'
 alias gflp='fzf_git_log_pickaxe'
 alias gflpr='fzf_git_log_pickaxe_re'
 alias gfco='fzf_git_checkout'
+# I use this one a lot
+alias gf='fzf_git_checkout'
 
 alias ghfpr='fzf_github_pr_select'
 alias ghfco='fzf_github_pr_checkout'
+alias ghf='fzf_github_pr_checkout'
 
 fzf_cd() {
     local selection=$(fd --no-ignore --hidden --follow --ignore-file ~/.ignore '' --type d "${1-.}" | fzf)

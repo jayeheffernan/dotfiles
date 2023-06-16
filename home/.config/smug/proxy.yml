@@ -1,0 +1,20 @@
+session: proxy
+
+root: ~/Duck/mocks-server/main
+
+windows:
+  - name: logs
+    layout: even-vertical
+    commands:
+      - mitmproxy -p 40401 --mode reverse:http://localhost:40400 # reverse proxy to mocks-server
+    panes:
+      - type: vertical
+        commands:
+          - mitmproxy -p 40403 # explicit proxy
+      - type: vertical
+        commands:
+          - mitmproxy -p 40402 --mode reverse:http://localhost:3000 # reverse proxy to local Ludwig API
+
+  - name: mocks
+    commands:
+      - npm start

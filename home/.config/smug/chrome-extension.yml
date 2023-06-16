@@ -1,0 +1,12 @@
+session: chrome-extension
+
+root: ~/Duck/chrome-extension/main
+
+windows:
+  - name: logs
+    layout: even-vertical
+    commands:
+      - git status
+      - y dev
+
+  - name: code

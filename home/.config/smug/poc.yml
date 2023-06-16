@@ -1,6 +1,6 @@
-session: ludwig
+session: admin-poc
 
-root: ~/Duck/ludwig/main
+root: ~/Duck/admin-poc/main
 
 windows:
   - name: logs
@@ -8,8 +8,6 @@ windows:
     commands:
       - git status
     panes:
-      - type: vertical
-      - type: vertical
       - type: vertical
 
   - name: code

@@ -2,6 +2,8 @@
 # Ignore file for vim search
 #
 
+.DS_Store
+
 .git
 node_modules
 target
@@ -12,10 +14,10 @@ out_functions
 .vim/plugged
 worktrees
 .vscode
-build
 dist
 .exercism
 Cargo.lock
+.scratch
 
 yarn.lock
 package-lock.json
@@ -60,6 +62,7 @@ package-lock.json
 *.mp3
 *.ogg
 *.ra
+*.flac
 
 # Video
 *.3gpp
@@ -79,6 +82,9 @@ package-lock.json
 *.swc
 *.swf
 *.webm
+
+# Audacity files
+*.au
 
 # Archives
 *.7z

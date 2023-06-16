@@ -6,27 +6,37 @@
 [alias]
 	co = checkout
 	com = checkout master
+	coom = checkout origin/master
 	b = branch
 	tb = branch
 	s = status
+	st = stash
 	a = add
 	ta = add
 	d = diff -w
 	dm = diff -w master
+	dmno = diff -w master --name-only
 	dom = diff -w origin/master
+	domno = diff -w origin/master --name-only
 	dt = difftool
+	dc = diff -w --cached
 	c = commit
 	ca = commit --amend
 	cane = commit --amend --no-edit
 	cnv = commit --no-verify
 	canv = commit --amend --no-verify
 	canenv = commit --amend --no-edit --no-verify
+	ap = add --patch
 	g = log --graph --oneline --decorate
 	ga = log --graph --oneline --decorate --all
 	l = log --oneline
 	ll = log --graph --format='%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)'
-	recent = for-each-ref --sort=-committerdate refs/heads/ --count 12
-	r = recent
+	lm = log --oneline master
+	lom = log --oneline origin/master
+	llom = log --graph --format='%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)' origin/master
+	lp = log --patch
+	recent = for-each-ref --sort=-committerdate refs/heads/
+	r = recent --count 12
 	pushnv = push --no-verify
 	rb = rebase
 	rbi = rebase --interactive
@@ -34,19 +44,30 @@
 	rbim = rebase --interactive master
 	rbom = rebase origin/master
 	rbiom = rebase --interactive origin/master
+	rbiu = rebase --interactive @{u}
+	rbc = rebase --continue
 	m = merge
+	RHm = reset --hard master
+	RHom = reset --hard origin/master
+	RHu = reset --hard @{u}
+	RH = reset --hard
 	mm = merge master
 	mom = merge origin/master
 	cp = cherry-pick
-	fix = "!f() { ${EDITOR} `git diff --name-only`; }; f"
-	add-fixed = "!git add `git diff --name-only --diff-filter=U`"
+	cpc = cherry-pick --continue
+	fix = "!f() { ${EDITOR} $(git diff --name-only | sort | uniq | grep -e '\\w'); }; f"
+	add-fixed = "!f() { git add $(git diff --name-only --diff-filter=U | sort | uniq | grep -e '\\w'); }; f"
 	f = fetch
+	rs = restore --staged
 [core]
-	editor = /usr/local/bin/vim
+	editor = /usr/local/bin/nvim
 	excludesfile = /Users/jaye.heffernan/.gitignore_global
 [interactive]
 	singlekey = true
 [diff]
 	tool = vimdiff
+	algorithm = histogram
 [difftool]
 	prompt = false
+[advice]
+	detachedHead = false
