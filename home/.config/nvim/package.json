@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "hpagent": "^1.0.0",
-    "https-proxy-agent": "^5.0.1"
-  }
-}
