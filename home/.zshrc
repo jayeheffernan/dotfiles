@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 ################################################################################
 # EXPORTS
 ################################################################################
@@ -7,17 +14,12 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 # twilio autocomplete setup
 TWILIO_AC_ZSH_SETUP_PATH=/Users/jaye.heffernan/.twilio-cli/autocomplete/zsh_setup && test -f $TWILIO_AC_ZSH_SETUP_PATH && source $TWILIO_AC_ZSH_SETUP_PATH;
 
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-
 export DIRENV_LOG_FORMAT=''
-eval "$(direnv hook zsh)"
 
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jaye.heffernan/.scripts:/Users/jaye.heffernan/Library/Python/3.7/bin:/Users/jaye.heffernan/.cargo/bin"
 
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
-source ~/.config/base16-fzf/bash/base16-material.config
 export EDITOR='nvim'
 
 export DIRSTACKSIZE=12
@@ -69,7 +71,10 @@ export FZF_DEFAULT_OPTS="
 --bind 'tab:toggle-out'
 --bind 'shift-tab:toggle-in'
 --history /tmp/fzf.history.txt
-"
+--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8
+--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc
+--color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8
+" # NB: color lines are catppuccin theme
 export FZF_CTRL_T_COMMAND='fd --no-ignore --hidden --follow --ignore-file ~/.ignore ""'
 export FZF_ALT_C_COMMAND='fd --no-ignore --hidden --follow --ignore-file ~/.ignore --type d ""'
 
@@ -91,64 +96,14 @@ bindkey 'œ' to-history # my terminal outputs this character when pressing Optio
 # PLUGIN MANAGER
 ################################################################################
 
-### Added by Zinit's installer
-if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
-fi
-
-source "$HOME/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
-################################################################################
-# PLUGINS
-################################################################################
-
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
-zinit light-mode for \
-    zinit-zsh/z-a-rust \
-    zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node
-
-### End of Zinit's installer chunk
-
-setopt promptsubst
-PS1="❯ " # provide a simple prompt til the theme loads
-
-zinit wait lucid light-mode for \
-    OMZL::git.zsh
+# TODO not sure if still need this
+# setopt promptsubst
+# PS1="❯ " # provide a simple prompt til the theme loads
+#
+source ${ZDOTDIR:-~}/.antidote/antidote.zsh
+antidote load
 
 bindkey '^P' history-substring-search-up; bindkey '^N' history-substring-search-down; bindkey '^R' fzf-history-widget
-zinit wait lucid light-mode for \
-    OMZP::colored-man-pages \
-    OMZP::fancy-ctrl-z \
-    OMZP::history \
-    OMZP::autojump \
-    OMZP::aws \
-    OMZP::yarn \
-    djui/alias-tips \
-    zsh-users/zsh-history-substring-search \
-    OMZP::fzf \
-    atload" bindkey '^R' fzf-history-widget" \
-    OMZP::docker/_docker \
-    OMZP::vi-mode \
-    atinit"zicompinit; zicdreplay" \
-    atload" bindkey '^P' history-substring-search-up; bindkey '^N' history-substring-search-down; bindkey '^R' fzf-history-widget" \
-    zdharma/fast-syntax-highlighting \
-    atload"_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions \
-    blockf atpull'zinit creinstall -q .' \
-    zsh-users/zsh-completions
-
-zinit wait'!0' lucid light-mode for \
-    pick"async.zsh" src"pure.zsh" \
-    sindresorhus/pure
 
 # # Force using aliases
 # export ZSH_PLUGINS_ALIAS_TIPS_FORCE=1
@@ -161,9 +116,6 @@ export ZSH_PLUGINS_ALIAS_TIPS_TEXT="YSK alias: "
 ################################################################################
 
 alias vim='nvim'
-
-# Vim unmerged Git files
-alias vimm='vim $(git diff --name-status --diff-filter=U)'
 
 # Typos
 alias gi="git"
@@ -614,3 +566,6 @@ alias pt=papertrail
 
 # pspg: a pager for tabular data. 16 = "simple" theme
 export PSPG='--style=16 --no-mouse --on-sigint-exit'
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

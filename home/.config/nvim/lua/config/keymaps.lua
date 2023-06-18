@@ -172,9 +172,7 @@ keymap("n", "<localleader>w", ":update<return>", { desc = "Save file"})
 
 -- Next/previous mapping prefixes, but easier to type
 keymap("n", "<leader>N", "[", { remap = true })
-keymap("n", "<leader>NN", "[[", { remap = true })
 keymap("n", "<leader>n", "]", { remap = true })
-keymap("n", "<leader>nn", "]]", { remap = true })
 
 -- Copy/paste stuff
 keymap({ "n", "x" }, "<leader>yy", "\"+y", { desc = "Yank to system clipboard"})
@@ -190,7 +188,7 @@ keymap("n", "<C-p>", ":Files<CR>", { desc = "Search files" })
 keymap("n", "<localleader>ff", ":Files<CR>", { desc = "Search files" })
 keymap("n", "<localleader>fb", ":Buffers<CR>", { desc = "Find buffers" })
 keymap("n", "<localleader>sg", ":Rg ", { desc = "Search with (rip)Grep"})
-keymap("n", "<localleader>sw", ":Rg <C-r><C-w>", { desc = "Search with (rip)Grep"})
+keymap("n", "<localleader>sw", ":Rg <C-r><C-w>", { desc = "Search word"})
 keymap("n", "<localleader>sr", ":References<CR>", { desc = "Search references" })
 
 -- Redo some telescope mapppings, e.g. <leader>fb to find buffers should also

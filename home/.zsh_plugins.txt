@@ -1,0 +1,23 @@
+catppuccin/zsh-syntax-highlighting path:themes/catppuccin_latte-zsh-syntax-highlighting.zsh
+djui/alias-tips
+jeffreytse/zsh-vi-mode
+ohmyzsh/ohmyzsh path:lib/git.zsh
+ohmyzsh/ohmyzsh path:plugins/autojump
+ohmyzsh/ohmyzsh path:plugins/aws
+ohmyzsh/ohmyzsh path:plugins/direnv
+ohmyzsh/ohmyzsh path:plugins/fancy-ctrl-z
+ohmyzsh/ohmyzsh path:plugins/fzf
+ohmyzsh/ohmyzsh path:plugins/git-extras
+ohmyzsh/ohmyzsh path:plugins/history
+ohmyzsh/ohmyzsh path:plugins/yarn
+romkatv/powerlevel10k
+zsh-users/zsh-completions
+
+# https://github.com/Aloxaf/fzf-tab
+# fzf-tab needs to be loaded after compinit, but before plugins which will wrap widgets, 
+# such as zsh-autosuggestions or fast-syntax-highlighting!!
+Aloxaf/fzf-tab
+
+zdharma-continuum/fast-syntax-highlighting kind:defer
+zsh-users/zsh-autosuggestions kind:defer
+zsh-users/zsh-history-substring-search kind:defer

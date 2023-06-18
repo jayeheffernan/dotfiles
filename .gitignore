@@ -1,8 +1,10 @@
 home/.vim/bundle/*
 home/.vim/plugged/*
+home/.vim/sessions/*
 !home/.vim/autoload/plug.vim
 home/.tmux/plugins
 **/*.swp
+**/*.bak
 **/*.netrwhist
 home/.tmux/plugins
 
