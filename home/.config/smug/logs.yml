@@ -3,4 +3,4 @@ session: logs
 root: ~/duck
 
 windows:
-  - name: zsh
+  - name: logs

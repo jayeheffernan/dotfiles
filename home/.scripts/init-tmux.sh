@@ -1,3 +1,4 @@
+tmux start-server
 smug start logs --detach
 smug start proxy --detach
 smug start ludwig --detach

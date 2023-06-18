@@ -45,6 +45,7 @@ const selectLogWindow = async () => {
 
 // TODO: seems like this needs to be run within each session? Can we make that
 // more automatic?
+// Answer: yes, I put these in my .tmux.conf instead
 const initHooks = async () => {
   await run(`tmux set-hook -g client-attached 'run-shell "tmuxlogs select"'`);
   await run(
