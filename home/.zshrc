@@ -66,6 +66,9 @@ export FZF_DEFAULT_OPTS="
 --bind 'ctrl-d:deselect-all'
 --bind 'ctrl-e:execute(vim {+} < /dev/tty > /dev/tty)'
 --bind 'ctrl-y:execute(echo {+} | pbcopy)'
+--bind 'tab:toggle-out'
+--bind 'shift-tab:toggle-in'
+--history /tmp/fzf.history.txt
 "
 export FZF_CTRL_T_COMMAND='fd --no-ignore --hidden --follow --ignore-file ~/.ignore ""'
 export FZF_ALT_C_COMMAND='fd --no-ignore --hidden --follow --ignore-file ~/.ignore --type d ""'
