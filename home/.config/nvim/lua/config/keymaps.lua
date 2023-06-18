@@ -2,6 +2,21 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+function OpenInVsCode()
+  local git_root = vim.fn.fnameescape(vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel")))
+  local goto = vim.fn.join({ vim.fn.fnameescape(vim.fn.getreg("%")), ":", vim.fn.line("."), ":", vim.fn.col(".") }, '')
+  local command = "code '" .. git_root .. "' --goto '" .. goto .. "'"
+  vim.fn.system(command)
+end
+
+local function get_buffer_dir()
+  ---@type string?
+  local path = vim.api.nvim_buf_get_name(0)
+  path = path ~= "" and vim.loop.fs_realpath(path) or nil
+  path = path and vim.fs.dirname(path) or vim.loop.cwd()
+  return path
+end
+
 -- Start LazyVim defaults, copied from GitHub
 local Util = require("lazyvim.util")
 
@@ -24,16 +39,20 @@ end
 -- map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 --
 -- Move to window using the <ctrl> hjkl keys
+map("n", "<leader>h", "<C-w>h", { desc = "Go to left window", remap = true })
+map("n", "<leader>j", "<C-w>j", { desc = "Go to lower window", remap = true })
+map("n", "<leader>k", "<C-w>k", { desc = "Go to upper window", remap = true })
+map("n", "<leader>l", "<C-w>l", { desc = "Go to right window", remap = true })
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 
 -- Resize window using <ctrl> arrow keys
-map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
-map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
-map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
-map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+map("n", "<leader>H", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+map("n", "<leader>J", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+map("n", "<leader>K", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+map("n", "<leader>L", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
 -- -- Move Lines
 -- map("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move down" })
@@ -130,18 +149,18 @@ if vim.fn.has("nvim-0.9.0") == 1 then
 end
 
 -- -- floating terminal
--- local lazyterm = function() Util.float_term(nil, { cwd = Util.get_root() }) end
--- map("n", "<leader>ft", lazyterm, { desc = "Terminal (root dir)" })
--- map("n", "<leader>fT", function() Util.float_term() end, { desc = "Terminal (cwd)" })
+local lazyterm = function() Util.float_term(nil, { cwd = Util.get_root() }) end
+map("n", "<leader>fT", lazyterm, { desc = "Terminal (root dir)" })
+map("n", "<leader>ft", function() Util.float_term(nil, { cwd = get_buffer_dir() }) end, { desc = "Terminal (file dir)" })
 -- map("n", "<c-/>", lazyterm, { desc = "Terminal (root dir)" })
 -- map("n", "<c-_>", lazyterm, { desc = "which_key_ignore" })
 --
 -- -- Terminal Mappings
--- map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
--- map("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })
--- map("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
--- map("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
--- map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
+map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
+map("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })
+map("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
+map("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
+map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
 -- map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
 -- map("t", "<c-_>", "<cmd>close<cr>", { desc = "which_key_ignore" })
 --
@@ -175,8 +194,9 @@ keymap("n", "<leader>N", "[", { remap = true })
 keymap("n", "<leader>n", "]", { remap = true })
 
 -- Copy/paste stuff
-keymap({ "n", "x" }, "<leader>yy", "\"+y", { desc = "Yank to system clipboard"})
-keymap({ "n", "x" }, "<leader>yp", "\"+y", { desc = "Paste from system clipboard"})
+keymap({ "n", "x" }, "<leader>y", "\"+", { desc = "System clipboard" })
+-- keymap({ "n", "x" }, "<leader>yy", "\"+y", { desc = "Yank to system clipboard"})
+-- keymap({ "n", "x" }, "<leader>yp", "\"+p", { desc = "Paste from system clipboard"})
 keymap({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
 keymap({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
 keymap({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
@@ -187,6 +207,7 @@ keymap("n", "[p", "<Plug>(YankyCycleBackward)", { desc = "Previous paste option"
 keymap("n", "<C-p>", ":Files<CR>", { desc = "Search files" })
 keymap("n", "<localleader>ff", ":Files<CR>", { desc = "Search files" })
 keymap("n", "<localleader>fb", ":Buffers<CR>", { desc = "Find buffers" })
+keymap("n", "<localleader>bf", ":Buffers<CR>", { desc = "Find buffers" })
 keymap("n", "<localleader>sg", ":Rg ", { desc = "Search with (rip)Grep"})
 keymap("n", "<localleader>sw", ":Rg <C-r><C-w>", { desc = "Search word"})
 keymap("n", "<localleader>sr", ":References<CR>", { desc = "Search references" })
@@ -195,14 +216,9 @@ keymap("n", "<localleader>sr", ":References<CR>", { desc = "Search references" }
 -- be available as <leader>bf
 keymap("n", "<leader>bf", "<cmd>Telescope buffers<cr>", { desc = "Find" })
 
+keymap("n", "<leader>wo", "<C-W>o", { desc = "Only window (close others)"})
+
 keymap({ "i", "s" }, "<C-Space>", function() require'luasnip'.expand_or_jump(1) end, { desc = "LuaSnip expand/forward jump" })
-keymap({ "i", "s" }, "<C-,>", function() require'luasnip'.jump(-1) end, { desc = "LuaSnip backward jump" })
+keymap({ "i", "s" }, "<C-h>", function() require'luasnip'.jump(-1) end, { desc = "LuaSnip backward jump" })
 
-function OpenInVsCode()
-  local git_root = vim.fn.fnameescape(vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel")))
-  local goto = vim.fn.join({ vim.fn.fnameescape(vim.fn.getreg("%")), ":", vim.fn.line("."), ":", vim.fn.col(".") }, '')
-  local command = "code '" .. git_root .. "' --goto '" .. goto .. "'"
-  vim.fn.system(command)
-end
-vim.keymap.set("n", "<leader>VS", OpenInVsCode)
-
+keymap("n", "<leader>VS", OpenInVsCode)
