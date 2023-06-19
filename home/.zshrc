@@ -564,6 +564,10 @@ alias exerrssl='exercism submit src/lib.rs Cargo.toml Cargo.lock **/*.rs **/Carg
 
 alias pt=papertrail
 
+set_wallpaper() {
+  osascript -e 'tell application "System Events" to tell every desktop to set picture to "/Users/jaye.heffernan/ivory-black.jpg"'
+}
+
 # pspg: a pager for tabular data. 16 = "simple" theme
 export PSPG='--style=16 --no-mouse --on-sigint-exit'
 

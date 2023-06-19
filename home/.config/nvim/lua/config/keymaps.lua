@@ -206,7 +206,13 @@ keymap("n", "<leader>N", "[", { remap = true })
 keymap("n", "<leader>n", "]", { remap = true })
 
 -- Copy/paste stuff
-keymap({ "n", "x" }, "<leader>y", '"+', { desc = "System clipboard" })
+keymap({ "n", "x" }, "<leader>yy", '"+y', { desc = "Yank" })
+keymap({ "n", "x" }, "<leader>yd", '"+d', { desc = "Delete" })
+keymap({ "n", "x" }, "<leader>yp", '"+p', { desc = "Paste" })
+keymap({ "n", "x" }, "<leader>yP", '"+P', { desc = "Paste behind" })
+keymap("n", "<leader>yf", ':let @+=expand("%")<CR>', { desc = "Copy filename (relative)" })
+keymap("n", "<leader>yF", ':let @+=expand("%:p")<CR>', { desc = "Copy filename (absolute)" })
+
 keymap({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
 keymap({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
 keymap({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
@@ -247,6 +253,11 @@ keymap({ "n", "x" }, "<leader>fE", function()
   require("oil").toggle_float(require("lazyvim.util").get_root())
 end, { desc = "Explore (root dir)" })
 
+keymap("n", "<leader>gb", ":Git blame<CR>", { desc = "Blame" })
+keymap("n", "<leader>gg", ":Git ", { desc = "Git" })
+
+-- NB: harpoon stuff here is probably junk. Not currently in-use. Just playing
+-- around with some ideas.
 keymap({ "n", "x" }, "<leader>hm", function()
   require("harpoon.mark").add_file()
 end, { desc = "Harpoon mark" })

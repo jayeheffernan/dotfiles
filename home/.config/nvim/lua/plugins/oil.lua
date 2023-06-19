@@ -2,6 +2,9 @@ return {
   {
     "stevearc/oil.nvim",
     opts = {
+      columns = {
+        "icon",
+      },
       keymaps = {
         ["?"] = "actions.show_help",
         ["<CR>"] = "actions.select",

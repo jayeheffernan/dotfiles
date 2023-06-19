@@ -6,6 +6,7 @@ return {
       { "X", mode = { "x", "o" }, desc = "Leap backward to" },
     },
     opts = {
+      highlight_unlabeled_phase_one_targets = true,
       safe_labels = {},
       labels = {
         "n",
@@ -68,9 +69,8 @@ return {
 
       leap.add_default_mappings(false) -- false = no-force
 
-      -- Visual-mode mappings for s/S can prefer surround, but expose leap mappings under x/X
-      vim.keymap.set("x", "s", "<Plug>VSurround")
-      vim.keymap.set("x", "S", "<Plug>VgSurround")
+      -- Visual-mode mapping for S can prefer surround, but expose leap mappings under x/X (and also "s")
+      vim.keymap.set("x", "S", "<Plug>VSurround")
       vim.keymap.set({ "x", "o" }, "x", "<Plug>(leap-forward-to)")
       vim.keymap.set({ "x", "o" }, "X", "<Plug>(leap-backward-to)")
     end,
