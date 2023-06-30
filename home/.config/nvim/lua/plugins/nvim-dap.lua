@@ -10,6 +10,139 @@ return {
         end,
       },
     },
+
+    keys = function()
+      return {
+        {
+          "<leader>dB",
+          function()
+            require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+          end,
+          desc = "Breakpoint Condition",
+        },
+        {
+          "<leader>db",
+          function()
+            require("dap").toggle_breakpoint()
+          end,
+          desc = "Toggle Breakpoint",
+        },
+        {
+          "<leader>dc",
+          function()
+            require("dap").continue()
+          end,
+          desc = "Continue",
+        },
+        {
+          "<leader>dC",
+          function()
+            require("dap").run_to_cursor()
+          end,
+          desc = "Run to Cursor",
+        },
+        {
+          "<leader>di",
+          function()
+            require("dap").step_into()
+          end,
+          desc = "Step Into",
+        },
+        {
+          "<leader>do",
+          function()
+            require("dap").step_out()
+          end,
+          desc = "Step Out",
+        },
+        {
+          "<leader>dr",
+          function()
+            require("dap").repl.toggle()
+          end,
+          desc = "Toggle REPL",
+        },
+        {
+          "<leader>ds",
+          function()
+            require("dap").session()
+          end,
+          desc = "Session",
+        },
+        {
+          "<leader>dt",
+          function()
+            require("dap").terminate()
+          end,
+          desc = "Terminate",
+        },
+        {
+          "<leader>dn",
+          function()
+            require("dap").step_over()
+          end,
+          desc = 'Step over ("next")',
+        },
+        {
+          "<leader>dlb",
+          function()
+            require("dap").list_breakpoints()
+            vim.cmd("copen")
+          end,
+          desc = "Breakpoints",
+        },
+        {
+          "<leader>dD",
+          function()
+            require("dap").clear_breakpoints()
+          end,
+          desc = "Delete breakpoints",
+        },
+        {
+          "<leader>dff",
+          function()
+            require("dap").focus_frame()
+          end,
+          desc = "Current frame",
+        },
+        {
+          "<leader>dh",
+          function()
+            require("dap.ui.widgets").hover()
+          end,
+          desc = "Hover",
+        },
+        {
+          "<leader>dp",
+          function()
+            require("dap.ui.widgets").preview()
+          end,
+          desc = "Preview",
+        },
+        {
+          "<leader>dP",
+          function()
+            require("dap").pause()
+          end,
+          desc = "Pause",
+        },
+        {
+          "<leader>dwp",
+          function()
+            require("dap.ui.widgets").preview()
+          end,
+          desc = "Preview",
+        },
+        {
+          "<leader>dwh",
+          function()
+            require("dap.ui.widgets").hover()
+          end,
+          desc = "Hover",
+        },
+      }
+    end,
+
     opts = function()
       local dap = require("dap")
       if not dap.adapters["pwa-node"] then
@@ -48,6 +181,29 @@ return {
             sourceMaps = true,
             protocol = "inspector",
             port = 9229,
+            smartStep = true,
+            skipFiles = {
+              "<node_internals>/**",
+              "node_modules/**",
+              "${workspaceFolder}/lib/cls/**",
+              "${workspaceFolder}/backends/index.js",
+              "${workspaceFolder}/backends/*/index.js",
+              "${workspaceFolder}/backends/_integrations/*/index.js",
+            },
+            outFiles = { "${workspaceFolder}/dist/server/**/*.js" },
+            sourceMapPathOverrides = {
+              ["webpack://sleeping-duck/./*"] = "${workspaceFolder}/*",
+              ["webpack://sleeping-duck/*"] = "*",
+            },
+          },
+          {
+            type = "vscode-node-2",
+            request = "attach",
+            name = "Attach Ludwig worker",
+            cwd = "${workspaceFolder}",
+            sourceMaps = true,
+            protocol = "inspector",
+            port = 9228,
             smartStep = true,
             skipFiles = {
               "<node_internals>/**",

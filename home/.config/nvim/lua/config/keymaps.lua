@@ -220,6 +220,19 @@ keymap({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
 keymap("n", "]p", "<Plug>(YankyCycleForward)", { desc = "Next paste option" })
 keymap("n", "[p", "<Plug>(YankyCycleBackward)", { desc = "Previous paste option" })
 
+local wk = require("which-key")
+wk.register({
+  ["<localleader>b"] = { name = "+buffer" },
+  ["<localleader>c"] = { name = "+code" },
+  ["<localleader>f"] = { name = "+file/find" },
+  ["<localleader>s"] = { name = "+search" },
+  ["<leader>n"] = { name = "+next" },
+  ["<leader>N"] = { name = "+next" },
+  ["<leader>dl"] = { name = "+list" },
+  ["<leader>df"] = { name = "+focus" },
+  ["<leader>dw"] = { name = "+widgets" },
+})
+-- FZF versions of Telescope mappings
 keymap("n", "<C-p>", ":Files<CR>", { desc = "Search files" })
 keymap("n", "<localleader>ff", ":Files<CR>", { desc = "Search files" })
 keymap("n", "<localleader>fb", ":Buffers<CR>", { desc = "Find buffers" })
@@ -227,7 +240,6 @@ keymap("n", "<localleader>bf", ":Buffers<CR>", { desc = "Find buffers" })
 keymap("n", "<localleader>sg", ":Rg ", { desc = "Search with (rip)Grep" })
 keymap("n", "<localleader>sw", ":Rg <C-r><C-w>", { desc = "Search word" })
 keymap("n", "<localleader>sr", ":References<CR>", { desc = "Search references" })
-
 keymap("n", "<localleader>fe", ":Rg <C-r><C-w>", { desc = "Search word" })
 keymap("n", "<localleader>fE", ":References<CR>", { desc = "Search references" })
 

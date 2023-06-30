@@ -9,7 +9,7 @@ return {
         "docker-compose-language-service",
         "dockerfile-language-server",
         "markdownlint",
-        "sqlfluff",
+        "sqlls",
       },
     },
   },

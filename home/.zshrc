@@ -529,12 +529,12 @@ alias gfrs='fzf_git_unstage'
 alias gflp='fzf_git_log_pickaxe'
 alias gflpr='fzf_git_log_pickaxe_re'
 alias gfco='fzf_git_checkout'
-# I use this one a lot
-alias gf='fzf_git_checkout'
 
 alias ghfpr='fzf_github_pr_select'
 alias ghfco='fzf_github_pr_checkout'
 alias ghf='fzf_github_pr_checkout'
+
+alias vimpr='vim "./.scratch/prs/$(git rev-parse --abbrev-ref HEAD).md"'
 
 fzf_cd() {
     local selection=$(fd --no-ignore --hidden --follow --ignore-file ~/.ignore '' --type d "${1-.}" | fzf)
