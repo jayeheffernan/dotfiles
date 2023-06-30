@@ -6,6 +6,7 @@ return {
     "junegunn/fzf",
     init = function()
       vim.cmd({ cmd = "source", args = { sdir .. "./fzf.init.vim" } })
+      vim.g.fzf_layout = { window = { width = 0.9, height = 0.9 } }
     end,
     keys = function()
       local Util = require("lazyvim.util")
