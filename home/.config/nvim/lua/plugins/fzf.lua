@@ -6,42 +6,94 @@ return {
     "junegunn/fzf",
     init = function()
       vim.cmd({ cmd = "source", args = { sdir .. "./fzf.init.vim" } })
-      vim.g.fzf_layout = { window = { width = 0.9, height = 0.9 } }
+      vim.g.fzf_layout = { window = { width = 0.7, height = 0.9 } }
     end,
     keys = function()
       local Util = require("lazyvim.util")
+
+      local isFullscreen = false
+      local toggleIsFullscreen = function()
+        isFullscreen = not isFullscreen
+      end
+      -- fzf.vim commands use bang to activate as full-screen
+      local getBang = function()
+        if isFullscreen then
+          return "!"
+        end
+        return ""
+      end
+
       return {
-        { "<C-p>", ":Files<CR>", { desc = "Find files" } },
-        { "<localleader>ss", ":Rg ", desc = "Search (rg, cwd)" },
-        { "<localleader>sS", ":PRg ", desc = "Search (rg, dir)" },
-        { "<localleader>sw", ":Rg <C-r><C-w>", desc = "Word (cwd)" },
-        { "<localleader>sW", ":PRg <C-r><C-w>", desc = "Word word (root dir)" },
+        {
+          "<leader>uF",
+          desc = "FZF",
+        },
+        {
+          "<leader>uFf",
+          toggleIsFullscreen,
+          desc = "Fullscreen",
+        },
+        {
+          "<localleader>ss",
+          function()
+            vim.fn.feedkeys(":Rg" .. getBang() .. " ")
+          end,
+          desc = "Search (rg, cwd)",
+        },
+        {
+          "<localleader>sS",
+          function()
+            vim.fn.feedkeys(":PRg" .. getBang() .. " ")
+          end,
+          desc = "Search (rg, dir)",
+        },
+        {
+          "<localleader>sw",
+          function()
+            vim.fn.feedkeys(":Rg" .. getBang() .. " <C-r><C-w>")
+          end,
+          desc = "Word (cwd)",
+        },
+        {
+          "<localleader>sW",
+          function()
+            vim.fn.feedkeys(":PRg" .. getBang() .. " <C-r><C-w>")
+          end,
+          desc = "Word word (root dir)",
+        },
         -- -- find
         {
           "<localleader>fb",
           function()
-            vim.cmd("Buffers")
+            vim.cmd({ cmd = "Buffers", bang = isFullscreen })
           end,
           desc = "Buffers",
         },
+        -- {
+        --   "<C-p>",
+        --   function()
+        --     vim.cmd({ cmd = "Files", bang = isFullscreen })
+        --   end,
+        --   desc = "Find Files (cwd)",
+        -- },
         {
           "<localleader>ff",
           function()
-            vim.cmd("Files")
+            vim.cmd({ cmd = "Files", bang = isFullscreen })
           end,
           desc = "Find Files (cwd)",
         },
         {
           "<localleader>fF",
           function()
-            vim.cmd({ cmd = "Files", args = { Util.get_root() }, bang = true })
+            vim.cmd({ cmd = "Files", args = { Util.get_root() }, bang = isFullscreen })
           end,
           desc = "Find Files (root dir)",
         },
         {
           "<localleader>fr",
           function()
-            vim.cmd("History")
+            vim.cmd({ cmd = "History", bang = isFullscreen })
           end,
           desc = "Recent",
         },
@@ -50,14 +102,14 @@ return {
         {
           "<localleader>sgc",
           function()
-            vim.cmd("Commits")
+            vim.cmd({ cmd = "Commits", bang = isFullscreen })
           end,
           desc = "commits",
         },
         {
           "<localleader>sgs",
           function()
-            vim.cmd("GFiles?")
+            vim.cmd({ cmd = "GFiles?", bang = isFullscreen })
           end,
           desc = "status",
         },
@@ -66,35 +118,35 @@ return {
         {
           "<localleader>sb",
           function()
-            vim.cmd("BLines")
+            vim.cmd({ cmd = "BLines", bang = isFullscreen })
           end,
           desc = "Buffer",
         },
         {
           "<localleader>sc",
           function()
-            vim.cmd("History:")
+            vim.cmd({ cmd = "History:", bang = isFullscreen })
           end,
           desc = "Command History",
         },
         {
           "<localleader>sC",
           function()
-            vim.cmd("Commands")
+            vim.cmd({ cmd = "Commands", bang = isFullscreen })
           end,
           desc = "Commands",
         },
         {
           "<localleader>sf",
           function()
-            vim.cmd("RG")
+            vim.cmd({ cmd = "RG", bang = isFullscreen })
           end,
           desc = "Find/Grep (cwd)",
         },
         {
           "<localleader>sF",
           function()
-            vim.cmd("PRG")
+            vim.cmd({ cmd = "PRG", bang = isFullscreen })
           end,
           desc = "Find/Grep (root dir)",
         },
