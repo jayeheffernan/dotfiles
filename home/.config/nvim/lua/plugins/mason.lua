@@ -10,6 +10,7 @@ return {
         "dockerfile-language-server",
         "markdownlint",
         "sqlls",
+        "sqlfluff",
       },
     },
   },
