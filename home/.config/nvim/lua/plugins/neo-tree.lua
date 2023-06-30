@@ -1,22 +1,24 @@
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",
-    keys = {
-      {
-        "<leader>fs",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd(), reveal = true })
-        end,
-        desc = "Sidebar NeoTree (cwd)",
-      },
-      {
-        "<leader>fS",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = require("lazyvim.util").get_root() })
-        end,
-        desc = "Sidebar NeoTree (root dir)",
-      },
-    },
+    keys = function()
+      return {
+        {
+          "<leader>fs",
+          function()
+            require("neo-tree.command").execute({ toggle = true, dir = require("lazyvim.util").get_root() })
+          end,
+          desc = "Sidebar explorer (root dir)",
+        },
+        {
+          "<leader>fS",
+          function()
+            require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+          end,
+          desc = "Sidebar explorer (cwd)",
+        },
+      }
+    end,
     opts = {
       sources = { "filesystem" },
       filesystem = {

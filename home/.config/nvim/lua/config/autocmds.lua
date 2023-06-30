@@ -11,3 +11,14 @@ vim.api.nvim_create_autocmd("User", {
     print(msg)
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "sql", "mysql", "plsql" },
+  callback = function()
+    local cmp = require("cmp")
+    cmp.setup.buffer({ sources = { { name = "vim-dadbod-completion" } } })
+    vim.keymap.set("n", "<leader>rf", function()
+      vim.cmd("%DB")
+    end, { desc = "Run SQL file" })
+  end,
+})

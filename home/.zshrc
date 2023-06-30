@@ -62,7 +62,7 @@ FZF_DEFAULT_PREVIEW='if [ -d {1} ]; then
 export FZF_DEFAULT_COMMAND="fd --no-ignore --hidden --type f --follow --ignore-file ~/.ignore ''"
 export FZF_DEFAULT_OPTS="
 --preview='""$FZF_DEFAULT_PREVIEW""'
---preview-window=:hidden
+--preview-window=right:50%
 --bind '?:toggle-preview'
 --bind 'ctrl-a:select-all'
 --bind 'ctrl-d:deselect-all'

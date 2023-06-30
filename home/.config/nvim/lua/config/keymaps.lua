@@ -192,8 +192,6 @@ map("n", "<leader>w|", "<C-W>v", { desc = "Split window right", remap = true })
 -- map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 -- map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 -- End LazyVim defaults, copied from GitHub
-vim.g.mapleader = " "
-vim.g.maplocalleader = ","
 
 local keymap = vim.keymap.set
 
@@ -222,26 +220,12 @@ keymap("n", "[p", "<Plug>(YankyCycleBackward)", { desc = "Previous paste option"
 
 local wk = require("which-key")
 wk.register({
-  ["<localleader>b"] = { name = "+buffer" },
-  ["<localleader>c"] = { name = "+code" },
-  ["<localleader>f"] = { name = "+file/find" },
-  ["<localleader>s"] = { name = "+search" },
   ["<leader>n"] = { name = "+next" },
   ["<leader>N"] = { name = "+next" },
   ["<leader>dl"] = { name = "+list" },
   ["<leader>df"] = { name = "+focus" },
   ["<leader>dw"] = { name = "+widgets" },
 })
--- FZF versions of Telescope mappings
-keymap("n", "<C-p>", ":Files<CR>", { desc = "Search files" })
-keymap("n", "<localleader>ff", ":Files<CR>", { desc = "Search files" })
-keymap("n", "<localleader>fb", ":Buffers<CR>", { desc = "Find buffers" })
-keymap("n", "<localleader>bf", ":Buffers<CR>", { desc = "Find buffers" })
-keymap("n", "<localleader>sg", ":Rg ", { desc = "Search with (rip)Grep" })
-keymap("n", "<localleader>sw", ":Rg <C-r><C-w>", { desc = "Search word" })
-keymap("n", "<localleader>sr", ":References<CR>", { desc = "Search references" })
-keymap("n", "<localleader>fe", ":Rg <C-r><C-w>", { desc = "Search word" })
-keymap("n", "<localleader>fE", ":References<CR>", { desc = "Search references" })
 
 -- Redo some telescope mapppings, e.g. <leader>fb to find buffers should also
 -- be available as <leader>bf
