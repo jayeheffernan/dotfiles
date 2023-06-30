@@ -53,6 +53,7 @@ bindkey '^[[B' down-line-or-beginning-search # Down
 bindkey '^P' history-substring-search-up
 bindkey '^N' history-substring-search-down
 
+export BAT_THEME="Catppuccin-mocha"
 FZF_DEFAULT_PREVIEW='if [ -d {1} ]; then
                       exa -alh --color=always --git {1}
                   else
