@@ -195,9 +195,10 @@ map("n", "<leader>w|", "<C-W>v", { desc = "Split window right", remap = true })
 
 local keymap = vim.keymap.set
 
-keymap("n", "<leader>v", "gd", { remap = true, desc = "Go to definition" })
-keymap({ "n", "x" }, "'", ": ")
+keymap({ "n", "x" }, "'", ":")
 keymap("n", "<localleader>w", ":update<return>", { desc = "Save file" })
+
+keymap("n", "<leader>v", "gd", { remap = true, desc = "Go to definition" })
 
 -- Next/previous mapping prefixes, but easier to type
 keymap("n", "<leader>N", "[", { remap = true })
