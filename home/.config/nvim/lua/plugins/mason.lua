@@ -11,6 +11,7 @@ return {
         "markdownlint",
         "sqlls",
         "sqlfluff",
+        "marksman",
       },
     },
   },

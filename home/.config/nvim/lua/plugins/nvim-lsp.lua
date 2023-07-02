@@ -20,6 +20,11 @@ return {
             "markdown",
           },
         },
+        marksman = {
+          filetypes = {
+            "markdown",
+          },
+        },
         -- NB: may require `npm install --global cssmodules-language-server`
         cssmodules_ls = {
           capabilities = {
