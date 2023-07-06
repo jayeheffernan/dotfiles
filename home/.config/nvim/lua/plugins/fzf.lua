@@ -152,18 +152,18 @@ return {
         },
 
         {
-          "<leader>owf",
+          "<leader>zF",
           function()
             vim.cmd({ cmd = "WikiRG", bang = isFullscreen })
           end,
-          desc = "Find/Grep (cwd)",
+          desc = "Find/Grep",
         },
         {
-          "<leader>owi",
+          "<leader>zf",
           function()
-            vim.cmd({ cmd = "edit", args = { "~/.vimwiki/notes/index.md" } })
+            vim.cmd({ cmd = "Files", args = { "~/.vimwiki/notes" }, bang = isFullscreen })
           end,
-          desc = "Index",
+          desc = "Find files",
         },
 
         -- Left-over mappings, not ported from LazyVim's Telescope equivalents

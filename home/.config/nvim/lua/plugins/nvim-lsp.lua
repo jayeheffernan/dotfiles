@@ -5,11 +5,6 @@ return {
     opts = {
       ---@type lspconfig.options
       servers = {
-        marksman = {
-          filetypes = {
-            "markdown",
-          },
-        },
         -- NB: may require `npm install --global cssmodules-language-server`
         cssmodules_ls = {
           capabilities = {

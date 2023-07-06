@@ -1,57 +1,111 @@
+local imghack = false
+
 return {
   {
-    "iamcco/markdown-preview.nvim",
-    build = function()
-      vim.cmd("call mkdp#util#install()")
-    end,
-  },
-  {
-    "jakewvincent/mkdnflow.nvim",
+    "epwalsh/obsidian.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "junegunn/fzf",
+    },
     opts = {
-      modules = {
-        conceal = true,
-        maps = false,
+      dir = "~/.vimwiki/notes", -- no need to call 'vim.fn.expand' here
+      completion = {
+        -- If using nvim-cmp, otherwise set to false
+        nvim_cmp = true,
+        -- Trigger completion at 2 chars
+        min_chars = 2,
+        -- Where to put new notes created from completion. Valid options are
+        --  * "current_dir" - put new notes in same directory as the current buffer.
+        --  * "notes_subdir" - put new notes in the default notes subdirectory.
+        new_notes_location = "notes_subdir",
       },
-      mappings = {},
-      perspective = {
-        priority = "root",
-        root_tell = ".wikiroot",
-      },
-      links = {
-        style = "wiki",
-        name_is_source = true,
-        context = 1, -- support links broken over 2 lines
-        implicit_extension = "md",
-        -- transform_explicit = function(text)
-        --   -- To create a filename stub, just lowercase the link-text
-        --   return string.lower(text)
-        -- end,
-      },
-      new_file_template = {
-        use_template = true,
-      },
+
+      -- Optional, customize how names/IDs for new notes are created.
+      note_id_func = function(title)
+        local ih = imghack
+        imghack = false
+        if title ~= nil then
+          local img = ih and title:match("^a/")
+          print(vim.inspect({ title = title, img = img, ih = ih }))
+          if img then
+            return error("note_id_func_found_image_link")
+          end
+          -- If title is given, transform it into valid file name.
+          return title:gsub("[^A-Za-z0-9 -]", ""):lower()
+        else
+          -- If title is nil, just add 4 random uppercase letters to the suffix.
+          local suffix = ""
+          for _ = 1, 4 do
+            suffix = suffix .. string.char(math.random(65, 90))
+          end
+          return tostring(os.time()) .. "-" .. suffix
+        end
+      end,
+
+      disable_frontmatter = true,
+
+      -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
+      -- URL it will be ignored but you can customize this behavior here.
+      follow_url_func = function(url)
+        -- Open the URL in the default web browser.
+        vim.fn.jobstart({ "open", url }) -- Mac OS
+        -- vim.fn.jobstart({"xdg-open", url})  -- linux
+      end,
+
+      -- Optional, set to true to force ':ObsidianOpen' to bring the app to the foreground.
+      open_app_foreground = false,
+
+      -- Optional, by default commands like `:ObsidianSearch` will attempt to use
+      -- telescope.nvim, fzf-lua, and fzf.nvim (in that order), and use the
+      -- first one they find. By setting this option to your preferred
+      -- finder you can attempt it first. Note that if the specified finder
+      -- is not installed, or if it the command does not support it, the
+      -- remaining finders will be attempted in the original order.
+      finder = "fzf.vim",
     },
     config = function(_, opts)
-      require("mkdnflow").setup(opts)
+      require("obsidian").setup(opts)
 
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "markdown", "md" },
-        desc = "markdown mappings",
-        callback = function(opts)
-          vim.keymap.set({ "n", "v" }, "<CR>", function()
-            vim.cmd("MkdnEnter")
-          end, { buffer = true })
+        pattern = { "markdown" },
+        callback = function()
+          vim.keymap.set({ "n", "x" }, "<CR>", function()
+            local s, e = require("obsidian").util.cursor_on_markdown_link()
+            if e then
+              local res, err = pcall(function()
+                imghack = true
+                return vim.cmd("ObsidianFollowLink")
+              end)
+              if err and err:match("note_id_func_found_image_link") then
+                local link = vim.api.nvim_get_current_line():sub(s + 2, e - 2)
+                local fname = "~/.vimwiki/notes/" .. link
+                -- local cmd = "!wezterm cli split-pane --percent 80 -- bash -c 'wezterm imgcat --height 100\\% --width 100\\% "
+                local cmd = "!wezterm cli split-pane -- bash -c 'wezterm imgcat "
+                  .. fname:gsub(" ", "\\ ")
+                  -- .. vim.fn.shellescape(fname)
+                  .. "; read"
+                  .. "'"
+                print(cmd)
+                vim.api.nvim_command(cmd)
+              end
+            end
+          end)
+
+          vim.keymap.set("n", "<leader>zv", function()
+            vim.cmd("ObsidianOpen")
+          end, { desc = "View with Obsidian" })
         end,
-        group = vim.api.nvim_create_augroup("jaye_markdown_mappings", { clear = true }),
       })
+
+      vim.keymap.set("n", "<leader>zi", function()
+        vim.cmd("e ~/.vimwiki/notes/index.md")
+      end, { desc = "Open index" })
+
+      vim.keymap.set("n", "<leader>zi", function()
+        vim.cmd("e ~/.vimwiki/notes/index.md")
+      end, { desc = "Open index" })
+
+      vim.keymap.set("n", "<leader>zn", ":ObsidianNew ", { desc = "New note" })
     end,
   },
-  -- {
-  --   "vimwiki/vimwiki",
-  --   init = function()
-  --     vim.g.vimwiki_list = { { path = "~/.vimwiki/", syntax = "markdown", ext = ".md" } }
-  --     vim.g.vimwiki_global_ext = 0
-  --     vim.g.vimwiki_ext2syntax = vim.empty_dict()
-  --   end,
-  -- },
 }

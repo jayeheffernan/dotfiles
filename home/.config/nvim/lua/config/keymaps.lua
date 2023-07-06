@@ -222,12 +222,12 @@ keymap("n", "[p", "<Plug>(YankyCycleBackward)", { desc = "Previous paste option"
 local wk = require("which-key")
 wk.register({
   ["<leader>n"] = { name = "+next" },
-  ["<leader>N"] = { name = "+next" },
+  ["<leader>N"] = { name = "+Previous" },
   ["<leader>dl"] = { name = "+list" },
   ["<leader>df"] = { name = "+focus" },
   ["<leader>dw"] = { name = "+widgets" },
   ["<leader>o"] = { name = "+open" },
-  ["<leader>ow"] = { name = "+wiki" },
+  ["<leader>z"] = { name = "+zet/wiki" },
 })
 
 -- Redo some telescope mapppings, e.g. <leader>fb to find buffers should also
