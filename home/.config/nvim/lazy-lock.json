@@ -8,7 +8,7 @@
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp_luasnip": { "branch": "master", "commit": "18095520391186d634a0045dacaa346291096566" },
   "dressing.nvim": { "branch": "master", "commit": "e6eff7a5a950a853c3903d906dbcea03f778db5f" },
-  "emmet-ls": { "branch": "master", "commit": "1bf1b0ac3c76fca04e5135cb6d7ea4905cb086cf" },
+  "emmet-language-server": { "branch": "main", "commit": "427a1f4271f011de241d02bb1688988176aee44f" },
   "flash.nvim": { "branch": "main", "commit": "947170a7abc7e145cc87afd3ecb6aeb281d88a52" },
   "friendly-snippets": { "branch": "main", "commit": "96c02045323a9e0b8936fc4dce42dc249495c4f1" },
   "fzf": { "branch": "master", "commit": "63aa5d3b4e9d2bee68d086a90a02e4c417c3b77c" },

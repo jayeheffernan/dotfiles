@@ -1,5 +1,5 @@
 return {
   {
-    "aca/emmet-ls",
+    "olrtg/emmet-language-server",
   },
 }
