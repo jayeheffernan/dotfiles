@@ -13,11 +13,6 @@ ohmyzsh/ohmyzsh path:plugins/yarn
 romkatv/powerlevel10k
 zsh-users/zsh-completions
 
-# https://github.com/Aloxaf/fzf-tab
-# fzf-tab needs to be loaded after compinit, but before plugins which will wrap widgets, 
-# such as zsh-autosuggestions or fast-syntax-highlighting!!
-Aloxaf/fzf-tab
-
 zdharma-continuum/fast-syntax-highlighting kind:defer
 zsh-users/zsh-autosuggestions kind:defer
 zsh-users/zsh-history-substring-search kind:defer

@@ -226,6 +226,8 @@ wk.register({
   ["<leader>dl"] = { name = "+list" },
   ["<leader>df"] = { name = "+focus" },
   ["<leader>dw"] = { name = "+widgets" },
+  ["<leader>o"] = { name = "+open" },
+  ["<leader>ow"] = { name = "+wiki" },
 })
 
 -- Redo some telescope mapppings, e.g. <leader>fb to find buffers should also

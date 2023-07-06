@@ -151,6 +151,21 @@ return {
           desc = "Find/Grep (root dir)",
         },
 
+        {
+          "<leader>owf",
+          function()
+            vim.cmd({ cmd = "WikiRG", bang = isFullscreen })
+          end,
+          desc = "Find/Grep (cwd)",
+        },
+        {
+          "<leader>owi",
+          function()
+            vim.cmd({ cmd = "edit", args = { "~/.vimwiki/notes/index.md" } })
+          end,
+          desc = "Index",
+        },
+
         -- Left-over mappings, not ported from LazyVim's Telescope equivalents
         -- { "<localleader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
         -- { "<localleader>sD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },

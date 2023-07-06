@@ -14,3 +14,6 @@ let g:fzf_action = {
 " Project-level Rg (takes search-term) and RG (live reload while typing search-term)
 command! -bang -nargs=* PRg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), fzf#vim#with_preview({'dir': luaeval('require("lazyvim.util").get_root()')}), <bang>0)
 command! -bang -nargs=* PRG call fzf#vim#grep2("rg --column --line-number --no-heading --color=always --smart-case -- ", <q-args>, fzf#vim#with_preview({'dir': luaeval('require("lazyvim.util").get_root()')}), <bang>0)
+
+command! -bang -nargs=* WikiRg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), fzf#vim#with_preview({'dir': '~/.vimwiki/notes'}), <bang>0)
+command! -bang -nargs=* WikiRG call fzf#vim#grep2("rg --column --line-number --no-heading --color=always --smart-case -- ", <q-args>, fzf#vim#with_preview({'dir': '~/.vimwiki/notes'}), <bang>0)
