@@ -16,7 +16,6 @@ return {
           -- Both formatters will run, in the order they're registered
           nls.builtins.formatting.pg_format,
           nls.builtins.formatting.sqlfluff,
-          nls.builtins.formatting.prettierd,
         },
       }
     end,

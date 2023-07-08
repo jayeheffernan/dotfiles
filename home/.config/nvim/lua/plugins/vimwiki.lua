@@ -1,3 +1,5 @@
+local J = require("util.util")
+
 local imghack = false
 
 return {
@@ -88,6 +90,9 @@ return {
                 print(cmd)
                 vim.api.nvim_command(cmd)
               end
+            else
+              -- Follow normal http and file liks
+              J.run_cmd({ "open", vim.fn.expand("<cfile>") })
             end
           end)
 
