@@ -101,10 +101,6 @@ return {
         vim.cmd("e ~/.vimwiki/notes/index.md")
       end, { desc = "Open index" })
 
-      vim.keymap.set("n", "<leader>zi", function()
-        vim.cmd("e ~/.vimwiki/notes/index.md")
-      end, { desc = "Open index" })
-
       vim.keymap.set("n", "<leader>zn", ":ObsidianNew ", { desc = "New note" })
     end,
   },

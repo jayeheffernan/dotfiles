@@ -566,6 +566,10 @@ alias exerrss='exercism submit src/lib.rs Cargo.toml **/*.rs **/Cargo.toml'
 alias exerrssl='exercism submit src/lib.rs Cargo.toml Cargo.lock **/*.rs **/Cargo.toml'
 
 alias pt=papertrail
+alias cdz="cd ~/.vimwiki/notes"
+alias   z="cd ~/.vimwiki/notes"
+
+alias v="vim ."
 
 set_wallpaper() {
   osascript -e 'tell application "System Events" to tell every desktop to set picture to "/Users/jaye.heffernan/ivory-black.jpg"'

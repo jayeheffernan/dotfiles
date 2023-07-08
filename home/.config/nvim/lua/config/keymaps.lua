@@ -2,11 +2,32 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
-function OpenInVsCode()
+local Job = require("plenary.job")
+J = {}
+
+function J.open_with_vscode()
   local git_root = vim.fn.fnameescape(vim.fn.trim(vim.fn.system("git rev-parse --show-toplevel")))
   local loc = vim.fn.join({ vim.fn.fnameescape(vim.fn.getreg("%")), ":", vim.fn.line("."), ":", vim.fn.col(".") }, "")
   local command = "code '" .. git_root .. "' --goto '" .. loc .. "'"
   vim.fn.system(command)
+end
+
+-- Taken from Harpoon's M.get_os_command_output()
+function J.run_cmd(cmd, cwd)
+  if type(cmd) ~= "table" then
+    error("run_cmd() expect table arg")
+  end
+  local command = table.remove(cmd, 1)
+  local stderr = {}
+  local stdout, ret = Job:new({
+    command = command,
+    args = cmd,
+    cwd = cwd or vim.loop.cwd(),
+    on_stderr = function(_, data)
+      table.insert(stderr, data)
+    end,
+  }):sync()
+  return stdout, ret, stderr
 end
 
 local function get_buffer_dir()
@@ -83,12 +104,7 @@ map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsea
 
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
-map(
-  "n",
-  "<leader>ur",
-  "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-  { desc = "Redraw / clear hlsearch / diff update" }
-)
+map("n", "<leader>ur", "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>", { desc = "Redraw / clear hlsearch / diff update" })
 
 -- -- map({ "n", "x" }, "gw", "*N", { desc = "Search word under cursor" })
 -- --
@@ -228,11 +244,8 @@ wk.register({
   ["<leader>dw"] = { name = "+widgets" },
   ["<leader>o"] = { name = "+open" },
   ["<leader>z"] = { name = "+zet/wiki" },
+  ["<leader>r"] = { name = "+run" },
 })
-
--- Redo some telescope mapppings, e.g. <leader>fb to find buffers should also
--- be available as <leader>bf
-keymap("n", "<leader>bf", "<cmd>Telescope buffers<cr>", { desc = "Find" })
 
 keymap("n", "<leader>wo", "<C-W>o", { desc = "Only window (close others)" })
 
@@ -243,8 +256,6 @@ keymap({ "i", "s" }, "<C-h>", function()
   require("luasnip").jump(-1)
 end, { desc = "LuaSnip backward jump" })
 
-keymap("n", "<leader>ov", OpenInVsCode, { desc = "VS Code" })
-
 keymap({ "n", "x" }, "<leader>fe", function()
   require("oil").toggle_float()
 end, { desc = "Explore (file dir)" })
@@ -252,43 +263,21 @@ keymap({ "n", "x" }, "<leader>fE", function()
   require("oil").toggle_float(require("lazyvim.util").get_root())
 end, { desc = "Explore (root dir)" })
 
-keymap("n", "<leader>gb", ":Git blame<CR>", { desc = "Blame" })
+keymap("n", "<leader>gb", function()
+  vim.cmd("Git blame")
+end, { desc = "Blame" })
 keymap("n", "<leader>gg", ":Git ", { desc = "Git" })
 
--- NB: harpoon stuff here is probably junk. Not currently in-use. Just playing
--- around with some ideas.
-keymap({ "n", "x" }, "<leader>hm", function()
-  require("harpoon.mark").add_file()
-end, { desc = "Harpoon mark" })
+keymap("n", "<leader>rv", J.open_with_vscode, { desc = "VSCode" })
 
-keymap({ "n", "x" }, "<leader>hh", function()
-  require("harpoon.ui").toggle_quick_menu()
-end, { desc = "Harpoon mark" })
+keymap("n", "<leader>ro", function()
+  vim.cmd("ObsidianOpen")
+end, { desc = "Obsidian" })
 
-local hutils = require("harpoon.utils")
-function goToTmux(twindow, tpane)
-  local _, ret, stderr = hutils.get_os_command_output({
-    "tmux",
-    "select-window",
-    "-t",
-    twindow,
-  }, vim.loop.cwd())
+keymap("n", "<leader>rR", function()
+  J.run_cmd({ "refresh-firefox" })
+end, { desc = "Refresh (+focus)" })
 
-  if ret ~= 0 then
-    error("Failed to go to window." .. stderr[1])
-  end
-  local _, ret, stderr = hutils.get_os_command_output({
-    "tmux",
-    "select-pane",
-    "-t",
-    twindow .. "." .. tpane,
-  }, vim.loop.cwd())
-
-  if ret ~= 0 then
-    error("Failed to go to window." .. stderr[1])
-  end
-end
-
-keymap({ "n", "x" }, "<leader>ht", function()
-  goToTmux("logs:ludwig", "{bottom}")
-end, { desc = "Harpoon mark" })
+keymap("n", "<leader>rt", function()
+  J.run_cmd({ "tmux", "send-keys", "-t", "logs", "C-l", "Up", "Enter" })
+end, { desc = "Tmux re-run" })

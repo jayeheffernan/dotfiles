@@ -221,6 +221,29 @@ return {
           },
 
           {
+            type = "vscode-node-2",
+            request = "attach",
+            name = "Attach Jest",
+            cwd = "${workspaceFolder}",
+            sourceMaps = true,
+            protocol = "inspector",
+            port = 9227,
+            smartStep = true,
+            skipFiles = {
+              "<node_internals>/**",
+              "node_modules/**",
+              "${workspaceFolder}/<node_internals>/**",
+              "${workspaceFolder}/node_modules/**",
+              "${workspaceFolder}/lib/cls/**",
+              "${workspaceFolder}/backends/index.js",
+              "${workspaceFolder}/backends/*/index.js",
+              "${workspaceFolder}/backends/_integrations/*/index.js",
+            },
+            sourceMapPathOverrides = {
+              ["./*"] = "${workspaceFolder}/*",
+            },
+          },
+          {
             type = "pwa-node",
             request = "launch",
             name = "Launch file",
