@@ -33,7 +33,7 @@ return {
             return error("note_id_func_found_image_link")
           end
           -- If title is given, transform it into valid file name.
-          return title:gsub("[^A-Za-z0-9 -]", ""):lower()
+          return title:gsub("[^A-Za-z0-9 _-]", ""):lower()
         else
           -- If title is nil, just add 4 random uppercase letters to the suffix.
           local suffix = ""
@@ -83,10 +83,10 @@ return {
                 local fname = "~/.vimwiki/notes/" .. link
                 -- local cmd = "!wezterm cli split-pane --percent 80 -- bash -c 'wezterm imgcat --height 100\\% --width 100\\% "
                 local cmd = "!wezterm cli split-pane -- bash -c 'wezterm imgcat "
-                  .. fname:gsub(" ", "\\ ")
-                  -- .. vim.fn.shellescape(fname)
-                  .. "; read"
-                  .. "'"
+                    .. fname:gsub(" ", "\\ ")
+                    -- .. vim.fn.shellescape(fname)
+                    .. "; read"
+                    .. "'"
                 print(cmd)
                 vim.api.nvim_command(cmd)
               end

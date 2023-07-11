@@ -24,9 +24,7 @@ return {
           vim.keymap.set("n", "<leader>rr", function()
             vim.cmd("%DB")
           end, { desc = "Run file as query" })
-          vim.keymap.set("v", "<leader>rr", function()
-            vim.cmd("DB")
-          end, { desc = "Run selection as query" })
+          vim.keymap.set("x", "<leader>rr", ":'<,'>DB<CR>", { desc = "Run selection as query" })
         end,
       })
 

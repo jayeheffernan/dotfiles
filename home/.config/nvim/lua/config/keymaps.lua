@@ -70,7 +70,8 @@ map("n", "<leader>wL", "<cmd>vertical resize +2<cr>", { desc = "Increase window 
 --   map("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
 -- end
 
-map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
+map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Alternate" })
+map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Only (close others)" })
 -- map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 
 -- Clear search with <esc>
