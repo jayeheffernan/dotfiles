@@ -11,6 +11,10 @@ fi
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 
+# https://github.com/antonmedv/fx/blob/master/doc/js.md
+export FX_LANG=node
+export NODE_PATH=`npm root -g`
+
 # twilio autocomplete setup
 TWILIO_AC_ZSH_SETUP_PATH=/Users/jaye.heffernan/.twilio-cli/autocomplete/zsh_setup && test -f $TWILIO_AC_ZSH_SETUP_PATH && source $TWILIO_AC_ZSH_SETUP_PATH;
 
