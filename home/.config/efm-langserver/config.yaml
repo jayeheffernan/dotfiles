@@ -56,6 +56,12 @@ languages:
   typescript:
     - <<: *javascript-eslint
 
+  typescriptreact:
+    - <<: *javascript-eslint
+
+  javascriptreact:
+    - <<: *javascript-eslint
+
   json:
     - <<: *json-fixjson
     - <<: *json-jq
