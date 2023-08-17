@@ -1,0 +1,5 @@
+return {
+  {
+    "cbochs/grapple.nvim",
+  }
+}

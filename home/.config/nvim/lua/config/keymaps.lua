@@ -217,6 +217,7 @@ keymap("n", "[p", "<Plug>(YankyCycleBackward)", { desc = "Previous paste option"
 
 local wk = require("which-key")
 wk.register({
+  ["<leader>m"] = { name = "+grapple" },
   ["<leader>n"] = { name = "+next" },
   ["<leader>N"] = { name = "+Previous" },
   ["<leader>dl"] = { name = "+list" },
@@ -261,3 +262,48 @@ end, { desc = "Refresh (+focus)" })
 keymap("n", "<leader>rt", function()
   J.run_cmd({ "tmux", "send-keys", "-t", "logs", "C-l", "Up", "Enter" })
 end, { desc = "Tmux re-run" })
+
+keymap("n", "<leader>mm", function() vim.cmd("GrapplePopup tags") end, { desc = "List tags" })
+
+keymap("n", "<leader>mM", require("grapple").toggle, { desc = "Toggle anon" })
+
+-- trsa keys are used as 1234 tags
+keymap("n", "<leader>mt", function()
+  require("grapple").select({ key = "m1" })
+end, { desc = "Select 1" })
+
+keymap("n", "<leader>mT", function()
+  require("grapple").toggle({ key = "m1" })
+end, { desc = "Set 1" })
+
+keymap("n", "<leader>ms", function()
+  require("grapple").select({ key = "m2" })
+end, { desc = "Select 2" })
+
+keymap("n", "<leader>mS", function()
+  require("grapple").toggle({ key = "m2" })
+end, { desc = "Set 2" })
+
+keymap("n", "<leader>mr", function()
+  require("grapple").select({ key = "m3" })
+end, { desc = "Select 3" })
+
+keymap("n", "<leader>mR", function()
+  require("grapple").toggle({ key = "m3" })
+end, { desc = "Set 3" })
+
+keymap("n", "<leader>ma", function()
+  require("grapple").select({ key = "m4" })
+end, { desc = "Select 4" })
+
+keymap("n", "<leader>mA", function()
+  require("grapple").toggle({ key = "m4" })
+end, { desc = "Set 4" })
+
+
+-- lazygit
+map("n", "<leader>gl",
+  function() Util.float_term({ "lazygit" }, { cwd = Util.get_root(), esc_esc = false, ctrl_hjkl = false }) end,
+  { desc = "Lazygit (root dir)" })
+map("n", "<leader>gL", function() Util.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end,
+  { desc = "Lazygit (cwd)" })
