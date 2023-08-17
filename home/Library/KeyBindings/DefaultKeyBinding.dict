@@ -1,0 +1,19 @@
+{
+/* Remap Home / End keys, from https://medium.com/@elhayefrat/how-to-fix-the-home-and-end-buttons-for-an-external-keyboard-in-mac-4da773a0d3a2 */
+/* Home Button*/
+"\UF729" = "moveToBeginningOfLine:"; 
+/* End Button */
+"\UF72B" = "moveToEndOfLine:"; 
+/* Shift + Home Button */
+"$\UF729" = "moveToBeginningOfLineAndModifySelection:"; 
+/* Shift + End Button */
+"$\UF72B" = "moveToEndOfLineAndModifySelection:"; 
+/* Ctrl + Home Button */
+"^\UF729" = "moveToBeginningOfDocument:"; 
+/* Ctrl + End Button */
+"^\UF72B" = "moveToEndOfDocument:"; 
+ /* Shift + Ctrl + Home Button */
+"$^\UF729" = "moveToBeginningOfDocumentAndModifySelection:";
+/* Shift + Ctrl + End Button*/
+"$^\UF72B" = "moveToEndOfDocumentAndModifySelection:"; 
+}
