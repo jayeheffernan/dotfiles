@@ -1,11 +1,26 @@
 return {
   {
-    {
-      "L3MON4D3/LuaSnip",
-      keys = function()
-        return {}
-      end,
-    },
+    "L3MON4D3/LuaSnip",
+    keys = function()
+      return {}
+    end,
+    config = function(_, opts)
+      if opts then require("luasnip").config.setup(opts) end
+      vim.tbl_map(
+        function(type) require("luasnip.loaders.from_" .. type).lazy_load() end,
+        { "vscode" }
+      -- { "vscode", "snipmate", "lua" }
+      )
+      require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/LuaSnip/" })
+
+      -- friendly-snippets - enable standardized comments snippets
+      require("luasnip").filetype_extend("typescript",
+        { "tsdoc", "typescripreact", "react-ts", "javascript", "javascriptreact", "react", "react-es7" })
+      require("luasnip").filetype_extend("javascript", { "jsdoc", "javascriptreact", "react", "react-es7" })
+      require("luasnip").filetype_extend("lua", { "luadoc" })
+      require("luasnip").filetype_extend("rust", { "rustdoc" })
+      require("luasnip").filetype_extend("sh", { "shelldoc" })
+    end,
   },
   {
     "hrsh7th/nvim-cmp",

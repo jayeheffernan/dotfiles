@@ -307,3 +307,7 @@ map("n", "<leader>gl",
   { desc = "Lazygit (root dir)" })
 map("n", "<leader>gL", function() Util.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end,
   { desc = "Lazygit (cwd)" })
+
+vim.api.nvim_create_user_command("LuaSnipEdit", function()
+  require("luasnip.loaders").edit_snippet_files()
+end, { nargs = "*" })
