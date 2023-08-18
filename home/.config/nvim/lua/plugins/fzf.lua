@@ -50,16 +50,16 @@ return {
         {
           "<localleader>sw",
           function()
-            vim.fn.feedkeys(":Rg" .. getBang() .. " <C-r><C-w>")
+            vim.fn.feedkeys(":Rg" .. getBang() .. " " .. vim.fn.expand("<cword>"))
           end,
           desc = "Word (cwd)",
         },
         {
           "<localleader>sW",
           function()
-            vim.fn.feedkeys(":PRg" .. getBang() .. " <C-r><C-w>")
+            vim.fn.feedkeys(":PRg" .. getBang() .. " " .. vim.fn.expand("<cword>"))
           end,
-          desc = "Word word (root dir)",
+          desc = "Word (root dir)",
         },
         -- -- find
         {
