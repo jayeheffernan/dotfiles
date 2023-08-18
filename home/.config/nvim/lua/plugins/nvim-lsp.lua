@@ -8,7 +8,6 @@ return {
       -- but can be also overridden when specified
       format = { timeout_ms = 6000 },
       autoformat = true,
-      autoformat = true,
       -- Enable this to show formatters used in a notification
       -- Useful for debugging formatter issues
       format_notify = true,

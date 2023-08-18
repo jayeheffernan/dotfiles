@@ -4,6 +4,7 @@ return {
     event = "VeryLazy",
     opts = {
       labels = "ntesirlpufywkvmc,xoa;qjg./NTESIRLPUFYWKVMCXOAQJG",
+      label = { before = true, after = false },
       modes = {
         search = {
           enabled = false,
@@ -42,6 +43,23 @@ return {
             require("flash").remote()
           end,
           desc = "Remote Flash",
+        },
+        {
+          "gs",
+          mode = "n",
+          function()
+            require("flash").jump({
+              action = function(match, state)
+                vim.api.nvim_win_call(match.win, function()
+                  -- Move cursor to match location
+                  vim.api.nvim_win_set_cursor(match.win, match.pos)
+                  -- Go to definition under cursor
+                  vim.cmd("normal gd")
+                end)
+              end,
+            })
+          end,
+          desc = "Goto Flash",
         },
       }
     end,

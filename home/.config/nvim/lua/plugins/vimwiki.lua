@@ -1,6 +1,30 @@
 local J = require("util.util")
 
 local imghack = false
+local function go_to_md_link()
+  local s, e = require("obsidian").util.cursor_on_markdown_link()
+  if e then
+    local res, err = pcall(function()
+      imghack = true
+      return vim.cmd("ObsidianFollowLink")
+    end)
+    if err and err:match("note_id_func_found_image_link") then
+      local link = vim.api.nvim_get_current_line():sub(s + 2, e - 2)
+      local fname = "~/.vimwiki/notes/" .. link
+      -- local cmd = "!wezterm cli split-pane --percent 80 -- bash -c 'wezterm imgcat --height 100\\% --width 100\\% "
+      local cmd = "!wezterm cli split-pane -- bash -c 'wezterm imgcat "
+          .. fname:gsub(" ", "\\ ")
+          -- .. vim.fn.shellescape(fname)
+          .. "; read"
+          .. "'"
+      print(cmd)
+      vim.api.nvim_command(cmd)
+    end
+  else
+    -- Follow normal http and file liks
+    J.run_cmd({ "open", vim.fn.expand("<cfile>") })
+  end
+end
 
 return {
   {
@@ -8,6 +32,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "junegunn/fzf",
+      "folke/flash.nvim",
     },
     opts = {
       dir = "~/.vimwiki/notes", -- no need to call 'vim.fn.expand' here
@@ -68,45 +93,37 @@ return {
     config = function(_, opts)
       require("obsidian").setup(opts)
 
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "markdown" },
-        callback = function()
-          vim.keymap.set({ "n", "x" }, "<CR>", function()
-            local s, e = require("obsidian").util.cursor_on_markdown_link()
-            if e then
-              local res, err = pcall(function()
-                imghack = true
-                return vim.cmd("ObsidianFollowLink")
-              end)
-              if err and err:match("note_id_func_found_image_link") then
-                local link = vim.api.nvim_get_current_line():sub(s + 2, e - 2)
-                local fname = "~/.vimwiki/notes/" .. link
-                -- local cmd = "!wezterm cli split-pane --percent 80 -- bash -c 'wezterm imgcat --height 100\\% --width 100\\% "
-                local cmd = "!wezterm cli split-pane -- bash -c 'wezterm imgcat "
-                    .. fname:gsub(" ", "\\ ")
-                    -- .. vim.fn.shellescape(fname)
-                    .. "; read"
-                    .. "'"
-                print(cmd)
-                vim.api.nvim_command(cmd)
-              end
-            else
-              -- Follow normal http and file liks
-              J.run_cmd({ "open", vim.fn.expand("<cfile>") })
-            end
-          end)
-
-          vim.keymap.set("n", "<leader>zv", function()
-            vim.cmd("ObsidianOpen")
-          end, { desc = "View with Obsidian" })
-        end,
-      })
-
       vim.keymap.set("n", "<leader>zi", function()
         vim.cmd("e ~/.vimwiki/notes/index.md")
       end, { desc = "Open index" })
 
       vim.keymap.set("n", "<leader>zn", ":ObsidianNew ", { desc = "New note" })
+
+      -- Setup keymaps for markdown files
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "markdown" },
+        callback = function()
+          vim.keymap.set({ "n", "x" }, "<CR>", go_to_md_link)
+          vim.keymap.set({ "n" }, "gs", function()
+            require("flash").jump({
+              pattern = "\\[\\[\\|https:",
+              search = { mode = "search", },
+              action = function(match, state)
+                vim.api.nvim_win_call(match.win, function()
+                  -- Move cursor to match location
+                  vim.api.nvim_win_set_cursor(match.win, match.pos)
+                  -- Go to link under cursor
+                  go_to_md_link();
+                end)
+              end,
+            })
+          end
+          )
+          vim.keymap.set("n", "<leader>zv", function()
+            vim.cmd("ObsidianOpen")
+          end, { desc = "View with Obsidian" })
+        end,
+      })
     end,
   },
 }
