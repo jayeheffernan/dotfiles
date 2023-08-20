@@ -259,7 +259,7 @@ keymap("n", "<leader>rR", function()
   J.run_cmd({ "refresh-firefox" })
 end, { desc = "Refresh (+focus)" })
 
-keymap("n", "<leader>rt", function()
+keymap("n", "<leader>rtt", function()
   J.run_cmd({ "tmux", "send-keys", "-t", "logs", "C-l", "Up", "Enter" })
 end, { desc = "Tmux re-run" })
 
@@ -311,3 +311,21 @@ map("n", "<leader>gL", function() Util.float_term({ "lazygit" }, { esc_esc = fal
 vim.api.nvim_create_user_command("LuaSnipEdit", function()
   require("luasnip.loaders").edit_snippet_files()
 end, { nargs = "*" })
+
+-- Capture tmux pane contents to temporary buffer
+vim.api.nvim_create_user_command("TmuxCapturePane", function(opts)
+  -- New buffer
+  vim.cmd.new();
+  -- Mark as temporary, so no warning on close
+  vim.cmd.setlocal("buftype=nofile");
+  -- Dump apne contents
+  vim.cmd("read ! tmux capture-pane -p -S -100 -t '" .. (opts.args or "") .. "'");
+  -- Remove blank lines at end of file
+  vim.cmd("silent! keeppattern %s#\\($\\n\\s*\\)\\+\\%$##");
+  -- Scroll to end
+  vim.cmd.normal("G");
+end, { nargs = 1 })
+
+keymap("n", "<leader>rtr", function()
+  vim.fn.feedkeys(":TmuxCapturePane logs:.");
+end, { desc = "Tmux re-run" })
