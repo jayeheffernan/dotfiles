@@ -1,3 +1,8 @@
+--- Pads str to length len with char from right
+str_lpad = function(str, len, char)
+  return string.rep(char, len - #str) .. str
+end
+
 return {
   {
     "mfussenegger/nvim-dap",
@@ -11,137 +16,87 @@ return {
       },
     },
 
-    keys = function()
-      return {
-        {
-          "<leader>dB",
-          function()
-            require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
-          end,
-          desc = "Breakpoint Condition",
-        },
-        {
-          "<leader>db",
-          function()
-            require("dap").toggle_breakpoint()
-          end,
-          desc = "Toggle Breakpoint",
-        },
-        {
-          "<leader>dc",
-          function()
-            require("dap").continue()
-          end,
-          desc = "Continue",
-        },
-        {
-          "<leader>dC",
-          function()
-            require("dap").run_to_cursor()
-          end,
-          desc = "Run to Cursor",
-        },
-        {
-          "<leader>di",
-          function()
-            require("dap").step_into()
-          end,
-          desc = "Step Into",
-        },
-        {
-          "<leader>do",
-          function()
-            require("dap").step_out()
-          end,
-          desc = "Step Out",
-        },
-        {
-          "<leader>dr",
-          function()
-            require("dap").repl.toggle()
-          end,
-          desc = "Toggle REPL",
-        },
-        {
-          "<leader>ds",
-          function()
-            require("dap").session()
-          end,
-          desc = "Session",
-        },
-        {
-          "<leader>dt",
-          function()
-            require("dap").terminate()
-          end,
-          desc = "Terminate",
-        },
-        {
-          "<leader>dn",
-          function()
-            require("dap").step_over()
-          end,
-          desc = 'Step over ("next")',
-        },
-        {
-          "<leader>dlb",
-          function()
-            require("dap").list_breakpoints()
-            vim.cmd("copen")
-          end,
-          desc = "Breakpoints",
-        },
-        {
-          "<leader>dD",
-          function()
-            require("dap").clear_breakpoints()
-          end,
-          desc = "Delete breakpoints",
-        },
-        {
-          "<leader>dff",
-          function()
-            require("dap").focus_frame()
-          end,
-          desc = "Current frame",
-        },
-        {
-          "<leader>dh",
-          function()
-            require("dap.ui.widgets").hover()
-          end,
-          desc = "Hover",
-        },
-        {
-          "<leader>dp",
-          function()
-            require("dap.ui.widgets").preview()
-          end,
-          desc = "Preview",
-        },
-        {
-          "<leader>dP",
-          function()
-            require("dap").pause()
-          end,
-          desc = "Pause",
-        },
-        {
-          "<leader>dwp",
-          function()
-            require("dap.ui.widgets").preview()
-          end,
-          desc = "Preview",
-        },
-        {
-          "<leader>dwh",
-          function()
-            require("dap.ui.widgets").hover()
-          end,
-          desc = "Hover",
-        },
-      }
-    end,
+    keys = {
+      {
+        "<leader>dBc",
+        function()
+          local condition = vim.fn.input("Conditional breakpoint")
+          if condition == ''
+          then
+            return
+          end
+          require("dap").set_breakpoint()
+        end,
+        desc = "Breakpoint Condition",
+      },
+      {
+        "<leader>dn",
+        function()
+          require("dap").step_over()
+        end,
+        desc = 'Step over ("next")',
+      },
+      {
+        "<leader>dBl",
+        function()
+          require("dap").list_breakpoints()
+          vim.cmd("copen")
+        end,
+        desc = "list",
+      },
+      {
+        "<leader>dD",
+        function()
+          require("dap").clear_breakpoints()
+        end,
+        desc = "Delete breakpoints",
+      },
+      {
+        "<leader>dff",
+        function()
+          require("dap").focus_frame()
+        end,
+        desc = "current frame",
+      },
+      {
+        "<leader>dBl",
+        function()
+          local log_message = vim.fn.input("Log message: ",
+            "jayelp " .. str_lpad(tostring(vim.fn.line(".")), 4, "0") .. " ");
+          if log_message == ''
+          then
+            return
+          end
+          require("dap").set_breakpoint("true", nil, log_message)
+        end,
+        desc = "Log-point",
+      },
+      {
+        "<leader>dBL",
+        function()
+          local condition = vim.fn.input("Log condition: ", "true");
+          if condition == ''
+          then
+            return
+          end
+          local log_message = vim.fn.input("Log message: ",
+            "jayelp " .. str_lpad(tostring(vim.fn.line(".")), 4, "0") .. " ");
+          if log_message == ''
+          then
+            return
+          end
+          require("dap").set_breakpoint(condition, nil, log_message);
+        end,
+        desc = "Conditional log-point",
+      },
+      {
+        "<leader>dBB",
+        function()
+          vim.fn.feedkeys(':lua require("dap").set_breakpoint(--[[cond, hcond, logm]] "true", nil, nil)')
+        end,
+        desc = "set_breakpoint()",
+      },
+    },
 
     opts = function()
       local dap = require("dap")
@@ -155,7 +110,7 @@ return {
             -- 💀 Make sure to update this path to point to your installation
             args = {
               require("mason-registry").get_package("js-debug-adapter"):get_install_path()
-                .. "/js-debug/src/dapDebugServer.js",
+              .. "/js-debug/src/dapDebugServer.js",
               "${port}",
             },
           },
@@ -269,5 +224,55 @@ return {
         end
       end
     end,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    opts = {
+      controls = {
+        element = "stacks",
+        enabled = true,
+        icons = {
+          disconnect = "",
+          pause = "",
+          play = "",
+          run_last = "",
+          step_back = "",
+          step_into = "",
+          step_out = "",
+          step_over = "",
+          terminate = ""
+        }
+      },
+      layouts = {
+        {
+          elements = { {
+            id = "scopes",
+            size = 0.45
+          }, {
+            id = "breakpoints",
+            size = 0.15
+          }, {
+            id = "stacks",
+            size = 0.30
+          }, {
+            id = "watches",
+            size = 0.10
+          } },
+          position = "left",
+          size = 50
+        },
+        -- {
+        --   elements = { {
+        --     id = "repl",
+        --     size = 0.5
+        --   }, {
+        --     id = "console",
+        --     size = 0.5
+        --   } },
+        --   position = "bottom",
+        --   size = 10
+        -- }
+      },
+    }
   },
 }

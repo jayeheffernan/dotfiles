@@ -46,6 +46,7 @@ return {
         --  * "notes_subdir" - put new notes in the default notes subdirectory.
         new_notes_location = "notes_subdir",
       },
+      mappings = {},
 
       -- Optional, customize how names/IDs for new notes are created.
       note_id_func = function(title)

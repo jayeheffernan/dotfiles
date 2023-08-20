@@ -75,6 +75,15 @@ export FZF_DEFAULT_OPTS="
 export FZF_CTRL_T_COMMAND='fd --no-ignore --hidden --follow --ignore-file ~/.ignore ""'
 export FZF_ALT_C_COMMAND='fd --no-ignore --hidden --follow --ignore-file ~/.ignore --type d ""'
 
+# Syntax-highlighted preview for FZF shell-history
+export FZF_CTRL_R_OPTS='--preview "echo {} | sed '"'"'s/ *[0-9][0-9]*  *//'"'"' | bat -p -l zsh --color always"'
+
+# Define an init function and append to zvm_after_init_commands
+function my_init() {
+  # Put this keybinding back, after Vim-mode plugin overrides it
+  bindkey '^R' fzf-history-widget
+}
+
 # Use fd  instead of the default find command for listing path candidates.
 # The first argument to the function ($1) is the base path to start traversal
 _fzf_compgen_path() {
@@ -91,16 +100,14 @@ _fzf_compgen_dir() {
 source ${ZDOTDIR:-~}/.antidote/antidote.zsh
 antidote load
 
+alias plugin_reload="antidote bundle <~/.zsh_plugins.txt >~/.zsh_plugins.zsh"
+
 # # Force using aliases
 # export ZSH_PLUGINS_ALIAS_TIPS_FORCE=1
 export ZSH_PLUGINS_ALIAS_TIPS_REVEAL_TEXT="Alias expanded to: "
 export ZSH_PLUGINS_ALIAS_TIPS_TEXT="YSK alias: "
 # export ZSH_PLUGINS_ALIAS_TIPS_REVEAL=1
-#
-# Define an init function and append to zvm_after_init_commands
-function my_init() {
-  bindkey $ZSH_FZF_HISTORY_SEARCH_BIND fzf_history_search
-}
+
 zvm_after_init_commands+=(my_init)
 
 ################################################################################

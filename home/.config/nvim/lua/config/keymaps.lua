@@ -126,6 +126,9 @@ if not Util.has("trouble.nvim") then
   map("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
 end
 
+map("n", "[Q", vim.cmd.colder, { desc = "Previous quickfix list" })
+map("n", "]Q", vim.cmd.cnewer, { desc = "Next quickfix list" })
+
 -- toggle options
 map("n", "<leader>uf", require("lazyvim.plugins.lsp.format").toggle, { desc = "Toggle format on Save" })
 map("n", "<leader>us", function()
@@ -230,6 +233,11 @@ wk.register({
   ["<leader>o"] = { name = "+open" },
   ["<leader>z"] = { name = "+zet/wiki" },
   ["<leader>r"] = { name = "+run" },
+  ["<leader>ug"] = { name = "+git" },
+  ["<leader>uF"] = { name = "+fzf" },
+  ["<leader>uL"] = { name = "+List" },
+  ["<leader>gh"] = { name = "+hunk" },
+  ["<leader>gt"] = { name = "+toggle" },
 })
 
 keymap("n", "<leader>wo", "<C-W>o", { desc = "Only window (close others)" })
