@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 ################################################################################
 # EXPORTS
 ################################################################################
@@ -48,7 +41,6 @@ setopt INC_APPEND_HISTORY
 
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
-export HISTORY_SUBSTRING_SEARCH_FUZZY=1
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
@@ -92,29 +84,24 @@ _fzf_compgen_dir() {
     fd --no-ignore --hidden --follow --ignore-file ~/.ignore --type d '' "$1"
 }
 
-# https://superuser.com/a/1051787
-to-history() { print -S $BUFFER ; BUFFER= }
-zle -N to-history
-bindkey 'œ' to-history # my terminal outputs this character when pressing Option-Q
-
 ################################################################################
 # PLUGIN MANAGER
 ################################################################################
 
-# TODO not sure if still need this
-# setopt promptsubst
-# PS1="❯ " # provide a simple prompt til the theme loads
-#
 source ${ZDOTDIR:-~}/.antidote/antidote.zsh
 antidote load
-
-bindkey '^P' history-substring-search-up; bindkey '^N' history-substring-search-down; bindkey '^R' fzf-history-widget
 
 # # Force using aliases
 # export ZSH_PLUGINS_ALIAS_TIPS_FORCE=1
 export ZSH_PLUGINS_ALIAS_TIPS_REVEAL_TEXT="Alias expanded to: "
 export ZSH_PLUGINS_ALIAS_TIPS_TEXT="YSK alias: "
 # export ZSH_PLUGINS_ALIAS_TIPS_REVEAL=1
+#
+# Define an init function and append to zvm_after_init_commands
+function my_init() {
+  bindkey $ZSH_FZF_HISTORY_SEARCH_BIND fzf_history_search
+}
+zvm_after_init_commands+=(my_init)
 
 ################################################################################
 # ALIASES

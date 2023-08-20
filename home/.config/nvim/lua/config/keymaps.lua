@@ -49,6 +49,10 @@ map("n", "<leader>wJ", "<cmd>resize -2<cr>", { desc = "Decrease window height" }
 map("n", "<leader>wK", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
 map("n", "<leader>wL", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
+-- "Zoom" window, i.e. open it in a new tab
+map("n", "<leader>wz", function() vim.cmd("tabnew | b#") end, { desc = "Zoom" })
+map("n", "<leader>wZ", function() vim.cmd("tabnext 1 | tabonly") end, { desc = "Close extra tabs" })
+
 -- -- Move Lines
 -- map("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move down" })
 -- map("n", "<A-k>", "<cmd>m .-2<cr>==", { desc = "Move up" })
