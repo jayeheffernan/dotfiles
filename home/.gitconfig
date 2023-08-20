@@ -12,6 +12,7 @@
 	s = status
 	st = stash
 	a = add
+	ap = add --patch
 	ta = add
 	d = diff -w
 	dm = diff -w master

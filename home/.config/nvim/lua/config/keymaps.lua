@@ -256,6 +256,12 @@ keymap({ "n", "x" }, "<leader>fE", function()
   require("oil").toggle_float(require("lazyvim.util").get_root())
 end, { desc = "Explore (root dir)" })
 
+keymap("n", "<leader>gb", function() vim.cmd("Git blame") end, { desc = "Blame" })
+keymap({ "n", "x" }, "<leader>gw", function() vim.cmd("GBrowse") end, { desc = "Web browse" })
+keymap({ "n", "x" }, "<leader>gW", function() vim.cmd("GBrowse") end, { desc = "Web link" })
+keymap("n", "<leader>ge", function() vim.fn.feedkeys(":Gedit ") end, { desc = "Edit" })
+keymap("n", "<leader>gg", ":Git ", { desc = "Git" })
+
 keymap("n", "<leader>gb", function()
   vim.cmd("Git blame")
 end, { desc = "Blame" })
@@ -314,9 +320,6 @@ end, { desc = "Set 4" })
 
 
 -- lazygit
-map("n", "<leader>gl",
-  function() Util.float_term({ "lazygit" }, { cwd = Util.get_root(), esc_esc = false, ctrl_hjkl = false }) end,
-  { desc = "Lazygit (root dir)" })
 map("n", "<leader>gL", function() Util.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end,
   { desc = "Lazygit (cwd)" })
 
