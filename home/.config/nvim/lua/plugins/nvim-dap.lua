@@ -14,6 +14,21 @@ return {
           table.insert(opts.ensure_installed, "js-debug-adapter")
         end,
       },
+      {
+        'mxsdev/nvim-dap-vscode-js',
+        config = function()
+          require("dap-vscode-js").setup({
+            node_path = "node",                                              -- Path of node executable. Defaults to $NODE_PATH, and then "node"
+            debugger_path = "/Users/jaye.heffernan/.builds/vscode-js-debug", -- Path to vscode-js-debug installation.
+            -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
+            -- adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' }, -- which adapters to register in nvim-dap
+            adapters = { 'pwa-chrome' }, -- which adapters to register in nvim-dap
+            -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
+            -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
+            -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
+          })
+        end
+      },
     },
 
     keys = {
@@ -129,9 +144,20 @@ return {
         end
         local configs = {
           {
+            name = "1. Launch file with ts-node",
+            type = "vscode-node-2",
+            request = "launch",
+            cwd = vim.loop.cwd(),
+            runtimeArgs = { "-r", "ts-node/register" },
+            runtimeExecutable = "node",
+            args = { "--inspect", "${file}" },
+            sourceMaps = true,
+            skipFiles = { "<node_internals>/**", "node_modules/**" },
+          },
+          {
             type = "vscode-node-2",
             request = "attach",
-            name = "Attach Ludwig server",
+            name = "2. Attach Ludwig server",
             cwd = "${workspaceFolder}",
             sourceMaps = true,
             protocol = "inspector",
@@ -154,7 +180,7 @@ return {
           {
             type = "vscode-node-2",
             request = "attach",
-            name = "Attach Ludwig worker",
+            name = "3. Attach Ludwig worker",
             cwd = "${workspaceFolder}",
             sourceMaps = true,
             protocol = "inspector",
@@ -178,7 +204,7 @@ return {
           {
             type = "vscode-node-2",
             request = "attach",
-            name = "Attach Jest",
+            name = "4. Attach Jest",
             cwd = "${workspaceFolder}",
             sourceMaps = true,
             protocol = "inspector",
@@ -199,28 +225,82 @@ return {
             },
           },
           {
-            type = "pwa-node",
+            type = "pwa-chrome",
             request = "launch",
-            name = "Launch file",
-            program = "${file}",
-            cwd = "${workspaceFolder}",
+            name = "Launch Chrome with Admin",
+            url = "https://admin.sleepingduck.localhost:3000/orders/",
+            userDataDir = "${workspaceFolder}/.vscode/nvim-chrome-ludwig",
+            webRoot = "${workspaceFolder}/dist/ui/admin",
+            skipFiles = {
+              "<node_internals>/**",
+              "node_modules/**",
+              "${workspaceFolder}/<node_internals>/**",
+              "${workspaceFolder}/node_modules/**",
+              "${workspaceFolder}/lib/cls/**",
+              "${workspaceFolder}/backends/index.js",
+              "${workspaceFolder}/backends/*/index.js",
+              "${workspaceFolder}/backends/_integrations/*/index.js",
+            },
+            sourceMapPathOverrides = {
+              ["webpack:///./*"] = "${workspaceFolder}/*",
+              ["webpack:///src/*"] = "${workspaceFolder}/*",
+              ["webpack:///*"] = "*",
+              ["webpack:///./~/*"] = "${workspaceFolder}/node_modules/*"
+            }
           },
           {
-            type = "pwa-node",
+            type = "pwa-chrome",
             request = "attach",
-            name = "Attach",
-            processId = require("dap.utils").pick_process,
-            cwd = "${workspaceFolder}",
+            name = "Attach Chrome with Admin",
+            userDataDir = "${workspaceFolder}/.vscode/nvim-chrome-ludwig",
+            webRoot = "${workspaceFolder}/dist/ui/admin",
+            port = 9333,
+            smartStep = true,
+            skipFiles = {
+              "<node_internals>/**",
+              "node_modules/**",
+              "${workspaceFolder}/<node_internals>/**",
+              "${workspaceFolder}/node_modules/**",
+              "${workspaceFolder}/lib/cls/**",
+              "${workspaceFolder}/backends/index.js",
+              "${workspaceFolder}/backends/*/index.js",
+              "${workspaceFolder}/backends/_integrations/*/index.js",
+            },
+            sourceMapPathOverrides = {
+              ["webpack:///./*"] = "${workspaceFolder}/*",
+              ["webpack:///src/*"] = "${workspaceFolder}/*",
+              ["webpack:///*"] = "*",
+              ["webpack:///./~/*"] = "${workspaceFolder}/node_modules/*"
+            }
           },
+          -- {
+          --   type = "pwa-node",
+          --   request = "launch",
+          --   name = "Launch file",
+          --   program = "${file}",
+          --   cwd = "${workspaceFolder}",
+          -- },
+          -- {
+          --   type = "pwa-node",
+          --   request = "attach",
+          --   name = "Attach",
+          --   processId = require("dap.utils").pick_process,
+          --   cwd = "${workspaceFolder}",
+          -- },
         }
         local confExists = {}
         for _, existingConf in ipairs(dap.configurations[language]) do
           confExists[existingConf["name"]] = true
         end
+        local before = dap.configurations[language];
+        dap.configurations[language] = {}
         for _, conf in ipairs(configs) do
           if not confExists[conf["name"]] then
             table.insert(dap.configurations[language], conf)
           end
+        end
+        for _, conf in ipairs(before) do
+          table.insert(dap.configurations[language], conf)
         end
       end
     end,
@@ -260,7 +340,7 @@ return {
             size = 0.10
           } },
           position = "left",
-          size = 50
+          size = 100
         },
         -- {
         --   elements = { {

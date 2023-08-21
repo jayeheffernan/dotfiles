@@ -24,6 +24,17 @@ return {
   },
   {
     "hrsh7th/nvim-cmp",
+    dependencies = {
+      {
+        'rcarriga/cmp-dap'
+      },
+      {
+        'LiadOz/nvim-dap-repl-highlights',
+        config = function()
+          require('nvim-dap-repl-highlights').setup()
+        end
+      }
+    },
     opts = function(_, opts)
       local cmp = require("cmp")
       opts.mapping = cmp.mapping.preset.insert({
@@ -42,7 +53,19 @@ return {
       opts.completion = {
         completeopt = "noselect",
       }
+      opts.enabled = function()
+        return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+            or require("cmp_dap").is_dap_buffer()
+      end
       return opts
     end,
+    config = function(_, opts)
+      require("cmp").setup(opts);
+      require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+        sources = {
+          { name = "dap" },
+        },
+      })
+    end
   },
 }

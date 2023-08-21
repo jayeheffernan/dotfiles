@@ -5,6 +5,7 @@
 	default = simple
 [alias]
 	co = checkout
+	cop = checkout --patch
 	com = checkout master
 	coom = checkout origin/master
 	b = branch
