@@ -322,6 +322,9 @@ end, { desc = "Set 4" })
 -- lazygit
 map("n", "<leader>gL", function() Util.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end,
   { desc = "Lazygit (cwd)" })
+map("n", "<leader>gl",
+  function() Util.float_term({ "lazygit" }, { cwd = Util.get_root(), esc_esc = false, ctrl_hjkl = false }) end,
+  { desc = "Lazygit (root dir)" })
 
 vim.api.nvim_create_user_command("LuaSnipEdit", function()
   require("luasnip.loaders").edit_snippet_files()

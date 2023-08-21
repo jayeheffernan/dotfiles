@@ -13,7 +13,7 @@ return {
         dashboard.button("r", " " .. " Recent files", ":History <CR>"),
         -- Kind of works, but requires "s" twice :/ will leave off for now
         -- dashboard.button("s", " " .. " Search", ":Rg "),
-        dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
+        dashboard.button("c", " " .. " Config", ":e ~/.config/nvim/lua/config/keymaps.lua <CR>"),
         dashboard.button("<CR>", " " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
         dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
         dashboard.button("q", " " .. " Quit", ":q<CR>"),

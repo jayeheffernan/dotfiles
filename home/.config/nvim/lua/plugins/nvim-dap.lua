@@ -227,6 +227,7 @@ return {
   },
   {
     "rcarriga/nvim-dap-ui",
+    -- Find defaults at :h dapui.setup()
     opts = {
       controls = {
         element = "stacks",

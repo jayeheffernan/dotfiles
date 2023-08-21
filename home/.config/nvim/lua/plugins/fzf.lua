@@ -77,6 +77,20 @@ return {
         --   desc = "Find Files (cwd)",
         -- },
         {
+          "<localleader>fc",
+          function()
+            vim.cmd({ cmd = "Files", args = { "~/.config/nvim/lua/" }, bang = isFullscreen })
+          end,
+          desc = "Find config (plugin) files",
+        },
+        {
+          "<localleader>fd",
+          function()
+            vim.cmd({ cmd = "Files", args = { "~/.dotfiles" }, bang = isFullscreen })
+          end,
+          desc = "Find dotfiles",
+        },
+        {
           "<localleader>ff",
           function()
             vim.cmd({ cmd = "Files", bang = isFullscreen })
