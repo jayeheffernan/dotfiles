@@ -257,8 +257,8 @@ keymap({ "n", "x" }, "<leader>fE", function()
 end, { desc = "Explore (root dir)" })
 
 keymap("n", "<leader>gb", function() vim.cmd("Git blame") end, { desc = "Blame" })
-keymap({ "n", "x" }, "<leader>gw", function() vim.cmd("GBrowse") end, { desc = "Web browse" })
-keymap({ "n", "x" }, "<leader>gW", function() vim.cmd("GBrowse") end, { desc = "Web link" })
+keymap({ "n", "x" }, "<leader>gw", function() vim.cmd("GBrowse %") end, { desc = "Web browse" })
+keymap({ "n", "x" }, "<leader>gW", function() vim.cmd("GBrowse! %") end, { desc = "Web link" })
 keymap("n", "<leader>ge", function() vim.fn.feedkeys(":Gedit ") end, { desc = "Edit" })
 keymap("n", "<leader>gg", ":Git ", { desc = "Git" })
 
@@ -347,3 +347,7 @@ end, { nargs = 1 })
 keymap("n", "<leader>rtr", function()
   vim.fn.feedkeys(":TmuxCapturePane logs:.");
 end, { desc = "Tmux re-run" })
+
+keymap("n", "<leader>ch", function()
+  vim.lsp.buf.incoming_calls()
+end, { desc = "call Hierarchy" })

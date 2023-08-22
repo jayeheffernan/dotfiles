@@ -54,4 +54,27 @@ return {
       },
     },
   },
+  {
+    "ldelossa/litee-calltree.nvim",
+    enabled = false,
+    config = function()
+      require('litee.calltree').setup({})
+    end,
+    dependencies = {
+      {
+        'ldelossa/litee.nvim',
+        config = function()
+          require('litee.lib').setup({
+            tree = {
+              icon_set = "codicons"
+            },
+            panel = {
+              orientation = "left",
+              panel_size  = 100
+            }
+          })
+        end
+      }
+    }
+  }
 }
