@@ -115,6 +115,7 @@ zvm_after_init_commands+=(my_init)
 ################################################################################
 
 alias vim='nvim'
+alias vI='nvim'
 
 # Typos
 alias gi="git"

@@ -131,7 +131,7 @@ map("n", "]Q", vim.cmd.cnewer, { desc = "Next quickfix list" })
 
 -- toggle options
 map("n", "<leader>uf", require("lazyvim.plugins.lsp.format").toggle, { desc = "Toggle format on Save" })
-map("n", "<leader>us", function()
+map("n", "<leader>uS", function()
   Util.toggle("spell")
 end, { desc = "Toggle Spelling" })
 map("n", "<leader>uw", function()
@@ -336,7 +336,7 @@ vim.api.nvim_create_user_command("TmuxCapturePane", function(opts)
   vim.cmd.new();
   -- Mark as temporary, so no warning on close
   vim.cmd.setlocal("buftype=nofile");
-  -- Dump apne contents
+  -- Dump pane contents
   vim.cmd("read ! tmux capture-pane -p -S -100 -t '" .. (opts.args or "") .. "'");
   -- Remove blank lines at end of file
   vim.cmd("silent! keeppattern %s#\\($\\n\\s*\\)\\+\\%$##");
@@ -351,3 +351,12 @@ end, { desc = "Tmux re-run" })
 keymap("n", "<leader>ch", function()
   vim.lsp.buf.incoming_calls()
 end, { desc = "call Hierarchy" })
+
+keymap({ "n", "v" }, "<leader>us", function() vim.cmd("NoNeckPain") end, { desc = "No neck pain" })
+
+keymap({ "n", "v" }, "<leader>ut", function() vim.cmd("TSContextToggle") end,
+  { desc = "Toggle Treesitter context lines" })
+
+keymap({ "n", "v" }, "<leader>x/", function()
+  vim.cmd.vimgrep("//g %"); vim.cmd.copen();
+end, { desc = "Search results to quickfix" })

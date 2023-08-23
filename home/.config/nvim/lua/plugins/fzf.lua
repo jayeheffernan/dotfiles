@@ -179,6 +179,13 @@ return {
           end,
           desc = "Find files",
         },
+        {
+          "gr",
+          function()
+            vim.cmd({ cmd = "References", bang = isFullscreen })
+          end,
+          desc = "Find references",
+        },
 
         -- Left-over mappings, not ported from LazyVim's Telescope equivalents
         -- { "<localleader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },

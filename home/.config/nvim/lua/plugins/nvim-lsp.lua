@@ -1,6 +1,11 @@
 return {
   {
     "neovim/nvim-lspconfig",
+    init = function()
+      local keys = require("lazyvim.plugins.lsp.keymaps").get()
+      -- disable a keymap
+      keys[#keys + 1] = { "gr", false }
+    end,
     ---@class PluginLspOpts
     opts = {
       -- options for vim.lsp.buf.format
@@ -38,7 +43,8 @@ return {
             documentFormattingProvider = false,
             documentRangeFormattingProvider = false,
           }
-        }
+        },
+
       },
       setup = {
         efm = function(_, opts)
@@ -56,7 +62,6 @@ return {
   },
   {
     "ldelossa/litee-calltree.nvim",
-    enabled = false,
     config = function()
       require('litee.calltree').setup({})
     end,
