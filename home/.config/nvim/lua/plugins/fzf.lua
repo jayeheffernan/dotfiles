@@ -50,12 +50,27 @@ return {
         {
           "<localleader>sw",
           function()
-            vim.fn.feedkeys(":Rg" .. getBang() .. " " .. vim.fn.expand("<cword>"))
+            vim.fn.feedkeys(":Rg" .. getBang() .. " \\b" .. vim.fn.expand("<cword>") .. "\\b")
           end,
           desc = "Word (cwd)",
         },
         {
           "<localleader>sW",
+          function()
+            vim.fn.feedkeys(":PRg" .. getBang() .. " \\b" .. vim.fn.expand("<cword>") .. "\\b")
+          end,
+          desc = "Word (root dir)",
+        },
+        {
+          -- analogous to "g*" - don't include word boundaries in search
+          "<localleader>sgw",
+          function()
+            vim.fn.feedkeys(":Rg" .. getBang() .. " " .. vim.fn.expand("<cword>"))
+          end,
+          desc = "Word (cwd)",
+        },
+        {
+          "<localleader>sgW",
           function()
             vim.fn.feedkeys(":PRg" .. getBang() .. " " .. vim.fn.expand("<cword>"))
           end,
@@ -182,7 +197,8 @@ return {
         {
           "gr",
           function()
-            vim.cmd({ cmd = "References", bang = isFullscreen })
+            vim.cmd({ cmd = "References", bang = isFullscreen });
+            vim.fn.feedkeys("!import ");
           end,
           desc = "Find references",
         },

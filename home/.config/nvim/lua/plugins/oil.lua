@@ -5,6 +5,7 @@ return {
       columns = {
         "icon",
       },
+      skip_confirm_for_simple_edits = true,
       keymaps = {
         ["?"] = "actions.show_help",
         ["<CR>"] = "actions.select",

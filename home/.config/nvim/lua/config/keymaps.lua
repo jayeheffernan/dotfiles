@@ -201,7 +201,15 @@ local keymap = vim.keymap.set
 keymap({ "n", "x" }, "'", ":")
 keymap("n", "<localleader>w", ":update<return>", { desc = "Save file" })
 
-keymap("n", "<leader>v", "gd", { remap = true, desc = "Go to definition" })
+-- Default gd gD mappings from LazyVIm are here
+-- ~/.local/share/nvim/lazy/LazyVim/lua/lazyvim/plugins/lsp/keymaps.lua:17
+-- { "gd", function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end, desc = "Goto Definition", has = "definition" },
+-- { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
+-- We disable them in LSP config, and reenable (with different keys) here
+keymap("n", "<leader>v", function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end,
+  { desc = "Go to definition" })
+keymap("n", "<leader>V", vim.lsp.buf.declaration, { desc = "Go to declaration" })
+-- keymap("n", "gD", "gd", { remap = false, desc = "Go to definition (orig)" })
 
 -- Next/previous mapping prefixes, but easier to type
 keymap("n", "<leader>N", "[", { remap = true })
@@ -260,6 +268,7 @@ keymap("n", "<leader>gb", function() vim.cmd("Git blame") end, { desc = "Blame" 
 keymap({ "n", "x" }, "<leader>gw", function() vim.cmd("GBrowse %") end, { desc = "Web browse" })
 keymap({ "n", "x" }, "<leader>gW", function() vim.cmd("GBrowse! %") end, { desc = "Web link" })
 keymap("n", "<leader>ge", function() vim.fn.feedkeys(":Gedit ") end, { desc = "Edit" })
+keymap("n", "<leader>gE", function() vim.fn.feedkeys(":Gedit origin/master:%") end, { desc = "Edit origin/master" })
 keymap("n", "<leader>gg", ":Git ", { desc = "Git" })
 
 keymap("n", "<leader>gb", function()
@@ -281,43 +290,48 @@ keymap("n", "<leader>rtt", function()
   J.run_cmd({ "tmux", "send-keys", "-t", "logs", "C-l", "Up", "Enter" })
 end, { desc = "Tmux re-run" })
 
-keymap("n", "<leader>mm", function() vim.cmd("GrapplePopup tags") end, { desc = "List tags" })
-
 keymap("n", "<leader>mM", require("grapple").toggle, { desc = "Toggle anon" })
 
 -- trsa keys are used as 1234 tags
 keymap("n", "<leader>mt", function()
-  require("grapple").select({ key = "m1" })
-end, { desc = "Select 1" })
+  require("grapple").select({ key = 1 })
+end, { desc = "Jump 1" })
 
 keymap("n", "<leader>mT", function()
-  require("grapple").toggle({ key = "m1" })
+  require("grapple").tag({ key = 1 })
 end, { desc = "Set 1" })
 
 keymap("n", "<leader>ms", function()
-  require("grapple").select({ key = "m2" })
-end, { desc = "Select 2" })
+  require("grapple").select({ key = 2 })
+end, { desc = "Jump 2" })
 
 keymap("n", "<leader>mS", function()
-  require("grapple").toggle({ key = "m2" })
+  require("grapple").tag({ key = 2 })
 end, { desc = "Set 2" })
 
 keymap("n", "<leader>mr", function()
-  require("grapple").select({ key = "m3" })
-end, { desc = "Select 3" })
+  require("grapple").select({ key = 3 })
+end, { desc = "Jump 3" })
 
 keymap("n", "<leader>mR", function()
-  require("grapple").toggle({ key = "m3" })
+  require("grapple").tag({ key = 3 })
 end, { desc = "Set 3" })
 
 keymap("n", "<leader>ma", function()
-  require("grapple").select({ key = "m4" })
-end, { desc = "Select 4" })
+  require("grapple").select({ key = 4 })
+end, { desc = "Jump 4" })
 
 keymap("n", "<leader>mA", function()
-  require("grapple").toggle({ key = "m4" })
+  require("grapple").tag({ key = 4 })
 end, { desc = "Set 4" })
 
+keymap("n", "<leader>mA", function()
+  require("grapple").tag({ key = 4 })
+end, { desc = "Set 4" })
+
+keymap("n", "<leader>mm", function() require("grapple").tag() end, { desc = "Tag" })
+keymap("n", "<leader>mM", function() require("grapple").untag() end, { desc = "Untag" })
+keymap("n", "<leader>me", function() vim.cmd("GrapplePopup tags") end, { desc = "Edit tags" })
 
 -- lazygit
 map("n", "<leader>gL", function() Util.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end,

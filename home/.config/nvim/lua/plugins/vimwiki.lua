@@ -4,6 +4,7 @@ local imghack = false
 local function go_to_md_link()
   local s, e = require("obsidian").util.cursor_on_markdown_link()
   if e then
+    -- NB: are these return value names right? Not sure that's how pcall works
     local res, err = pcall(function()
       imghack = true
       return vim.cmd("ObsidianFollowLink")

@@ -138,7 +138,7 @@ return {
           args = { os.getenv("HOME") .. "/.builds/vscode-node-debug2/out/src/nodeDebug.js" },
         }
       end
-      for _, language in ipairs({ "typescript", "javascript", "javascriptreact" }) do
+      for _, language in ipairs({ "typescript", "javascript", "javascriptreact", "typescriptreact" }) do
         if not dap.configurations[language] then
           dap.configurations[language] = {}
         end
