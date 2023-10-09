@@ -113,7 +113,7 @@ map("v", "<", "<gv")
 map("v", ">", ">gv")
 
 -- lazy
-map("n", "<leader>l", "<cmd>:Lazy<cr>", { desc = "Lazy" })
+map("n", "<leader>ll", "<cmd>:Lazy<cr>", { desc = "Lazy" })
 
 -- new file
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
@@ -216,6 +216,7 @@ keymap("n", "<leader>N", "[", { remap = true })
 keymap("n", "<leader>n", "]", { remap = true })
 
 -- Copy/paste stuff
+keymap({ "n", "x" }, "Y", '"+y', { desc = "Yank" })
 keymap({ "n", "x" }, "<leader>yy", '"+y', { desc = "Yank" })
 keymap({ "n", "x" }, "<leader>yd", '"+d', { desc = "Delete" })
 keymap({ "n", "x" }, "<leader>yp", '"+p', { desc = "Paste" })
@@ -265,8 +266,8 @@ keymap({ "n", "x" }, "<leader>fE", function()
 end, { desc = "Explore (root dir)" })
 
 keymap("n", "<leader>gb", function() vim.cmd("Git blame") end, { desc = "Blame" })
-keymap({ "n", "x" }, "<leader>gw", function() vim.cmd("GBrowse %") end, { desc = "Web browse" })
-keymap({ "n", "x" }, "<leader>gW", function() vim.cmd("GBrowse! %") end, { desc = "Web link" })
+keymap({ "n", "x" }, "<leader>gw", ":GBrowse<CR>", { desc = "Web browse" })
+keymap({ "n", "x" }, "<leader>gW", ":GBrowse!<CR>", { desc = "Web link" })
 keymap("n", "<leader>ge", function() vim.fn.feedkeys(":Gedit ") end, { desc = "Edit" })
 keymap("n", "<leader>gE", function() vim.fn.feedkeys(":Gedit origin/master:%") end, { desc = "Edit origin/master" })
 keymap("n", "<leader>gg", ":Git ", { desc = "Git" })
@@ -344,6 +345,8 @@ vim.api.nvim_create_user_command("LuaSnipEdit", function()
   require("luasnip.loaders").edit_snippet_files()
 end, { nargs = "*" })
 
+keymap({ "n", "x" }, "<leader>fs", function() vim.cmd("LuaSnipEdit") end, { desc = "Snippets" });
+
 -- Capture tmux pane contents to temporary buffer
 vim.api.nvim_create_user_command("TmuxCapturePane", function(opts)
   -- New buffer
@@ -374,3 +377,20 @@ keymap({ "n", "v" }, "<leader>ut", function() vim.cmd("TSContextToggle") end,
 keymap({ "n", "v" }, "<leader>x/", function()
   vim.cmd.vimgrep("//g %"); vim.cmd.copen();
 end, { desc = "Search results to quickfix" })
+
+
+keymap({ "n", "v" }, "<leader>dd", function()
+  vim.cmd("DevdocsOpen")
+end, { desc = "Search devdocs" })
+
+keymap({ "n", "v" }, "U", function()
+  vim.cmd("UndotreeToggle")
+end, { desc = "Undotree" })
+
+vim.api.nvim_create_user_command("Browse", function(opts)
+  vim.cmd("!open '" .. vim.fn.escape(opts.args, "'\\#%") .. "'");
+end, { nargs = 1 })
+
+keymap({ "n", "x" }, "<leader>ld", ":Linediff<CR>", { desc = "Line diff" })
+keymap({ "n", "x" }, "<leader>lD", ":LinediffReset<CR>", { desc = "Line diff reset" })
+keymap({ "n", "x" }, "<leader>lD", ":LinediffReset<CR>", { desc = "Line diff reset" })

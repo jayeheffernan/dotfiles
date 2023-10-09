@@ -67,6 +67,13 @@ return {
         desc = "Delete breakpoints",
       },
       {
+        "<leader>dR",
+        function()
+          require("dap").run_last()
+        end,
+        desc = "Re-run last config",
+      },
+      {
         "<leader>dff",
         function()
           require("dap").focus_frame()

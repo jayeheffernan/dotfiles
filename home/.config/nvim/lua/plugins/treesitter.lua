@@ -7,7 +7,9 @@ return {
         -- Run a debug config for typescript
         -- Open and switch into the REPL
         -- THEN run :TSInstall dap_repl
-        "dap_repl"
+        "dap_repl",
+        "html",
+        "sql"
       },
     },
   },

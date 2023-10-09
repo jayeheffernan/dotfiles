@@ -15,8 +15,12 @@ return {
 
       -- friendly-snippets - enable standardized comments snippets
       require("luasnip").filetype_extend("typescript",
-        { "tsdoc", "typescripreact", "react-ts", "javascript", "javascriptreact", "react", "react-es7" })
-      require("luasnip").filetype_extend("javascript", { "jsdoc", "javascriptreact", "react", "react-es7" })
+        { "tsdoc", "typescripreact", "react-ts", "javascript", "javascriptreact", "react", "react-es7", "typescript" })
+      require("luasnip").filetype_extend("typescriptreact",
+        { "tsdoc", "typescripreact", "react-ts", "javascript", "javascriptreact", "react", "react-es7", "typescript" })
+      require("luasnip").filetype_extend("javascript", { "jsdoc", "javascriptreact", "react", "react-es7", "javascript" })
+      require("luasnip").filetype_extend("javascriptreact",
+        { "jsdoc", "javascriptreact", "react", "react-es7", "javascript" })
       require("luasnip").filetype_extend("lua", { "luadoc" })
       require("luasnip").filetype_extend("rust", { "rustdoc" })
       require("luasnip").filetype_extend("sh", { "shelldoc" })

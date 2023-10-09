@@ -55,6 +55,24 @@ return {
           desc = "Word (cwd)",
         },
         {
+          "<localleader>fw",
+          function()
+            local search = "" .. vim.fn.expand("<cword>") .. " "
+            vim.cmd({ cmd = "Files", bang = isFullscreen })
+            vim.fn.feedkeys(search)
+          end,
+          desc = "Find Files by word (cwd)",
+        },
+        {
+          "<localleader>fW",
+          function()
+            local search = "" .. vim.fn.expand("<cword>") .. " "
+            vim.cmd({ cmd = "Files", args = { Util.get_root() }, bang = isFullscreen })
+            vim.fn.feedkeys(search)
+          end,
+          desc = "Find Files by word (root dir)",
+        },
+        {
           "<localleader>sW",
           function()
             vim.fn.feedkeys(":PRg" .. getBang() .. " \\b" .. vim.fn.expand("<cword>") .. "\\b")

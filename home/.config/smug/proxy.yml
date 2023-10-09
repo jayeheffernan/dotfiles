@@ -10,10 +10,13 @@ windows:
     panes:
       - type: vertical
         commands:
-          - mitmproxy -p 40403 # explicit proxy
+          - mitmproxy -p 40404 --mode reverse:http://localhost:3001 --set ssl_insecure=true # reverse proxy for worker, for Ludwig to call
       - type: vertical
         commands:
-          - mitmproxy -p 40402 --mode reverse:http://localhost:3000 # reverse proxy to local Ludwig API
+          - mitmproxy -p 40402 --mode reverse:https://headless.sleepingduck.localhost:3000 --set ssl_insecure=true # reverse proxy for headless, for Website SSR to call
+      - type: vertical
+        commands:
+          - mitmproxy -p 40403 --set ssl_insecure=true --set allow_hosts=admin.sleepingduck.localhost --set allow_hosts=localhost # explicit proxy for Admin and website
 
   - name: mocks
     commands:

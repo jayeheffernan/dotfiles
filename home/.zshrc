@@ -115,6 +115,7 @@ zvm_after_init_commands+=(my_init)
 ################################################################################
 
 alias vim='nvim'
+alias vimdiff='nvim -d'
 alias vI='nvim'
 
 # Typos
@@ -536,7 +537,11 @@ alias ghfpr='fzf_github_pr_select'
 alias ghfco='fzf_github_pr_checkout'
 alias ghf='fzf_github_pr_checkout'
 
-alias vimpr='vim "./.scratch/prs/$(git rev-parse --abbrev-ref HEAD).md"'
+prf() {
+  echo -n "./.scratch/prs/$(git rev-parse --abbrev-ref HEAD).md"
+}
+alias vimpr='vim "$(prf)"'
+alias catpr='cat "$(prf)"'
 
 fzf_cd() {
     local selection=$(fd --no-ignore --hidden --follow --ignore-file ~/.ignore '' --type d "${1-.}" | fzf)
@@ -548,7 +553,6 @@ alias cdf=fzf_cd
 alias c=fzf_cd
 
 alias gdo='git d "origin/$(git branch --show-current)" "$(git branch --show-current)"'
-alias gpushup='git push --set-upstream origin "$(git branch --show-current)"'
 alias gri=git_rebase_interactive_n
 
 alias dh='dirs -v'
