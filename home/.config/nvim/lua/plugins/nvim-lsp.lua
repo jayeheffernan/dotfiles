@@ -33,13 +33,13 @@ return {
             definitionProvider = false,
           },
         },
-        efm = {
-          mason = false,
-          capabilities = {
-            documentFormattingProvider = true,
-            documentRangeFormattingProvider = true,
-          }
-        },
+        -- efm = {
+        --   mason = false,
+        --   capabilities = {
+        --     documentFormattingProvider = true,
+        --     documentRangeFormattingProvider = true,
+        --   }
+        -- },
         tsserver = {
           capabilities = {
             documentFormattingProvider = false,
@@ -48,18 +48,18 @@ return {
         },
 
       },
-      setup = {
-        efm = function(_, opts)
-          require("lspconfig").efm.setup({
-            filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-            cmd = { "efm-langserver", "-c", "/Users/jaye.heffernan/.config/efm-langserver/config.yaml" },
-            init_options = { documentFormatting = true, documentRangeFormatting = true },
-          })
-          return true
-        end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
-      },
+      -- setup = {
+      --   efm = function(_, opts)
+      --     require("lspconfig").efm.setup({
+      --       filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+      --       cmd = { "efm-langserver", "-c", "/Users/jaye.heffernan/.config/efm-langserver/config.yaml" },
+      --       init_options = { documentFormatting = true, documentRangeFormatting = true },
+      --     })
+      --     return true
+      --   end,
+      -- Specify * to use this function as a fallback for any server
+      -- ["*"] = function(server, opts) end,
+      -- },
     },
   },
   {
