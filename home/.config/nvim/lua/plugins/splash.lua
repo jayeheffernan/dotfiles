@@ -1,5 +1,9 @@
 return {
   {
+    "glepnir/dashboard-nvim",
+    enabled = false,
+  },
+  {
     "goolord/alpha-nvim",
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
@@ -28,5 +32,5 @@ return {
       dashboard.opts.layout[1].val = 8
       return dashboard
     end,
-  }
+  },
 }

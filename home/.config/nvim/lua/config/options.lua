@@ -10,3 +10,5 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
 vim.g.nvim_tree_disable_netrw = 0
+
+vim.g.autoformat = true

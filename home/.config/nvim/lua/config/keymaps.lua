@@ -130,7 +130,7 @@ map("n", "[Q", vim.cmd.colder, { desc = "Previous quickfix list" })
 map("n", "]Q", vim.cmd.cnewer, { desc = "Next quickfix list" })
 
 -- toggle options
-map("n", "<leader>uf", require("lazyvim.plugins.lsp.format").toggle, { desc = "Toggle format on Save" })
+map("n", "<leader>uf", function() require("lazyvim.plugins.lsp.format").toggle(); end, { desc = "Toggle format on Save" })
 map("n", "<leader>uS", function()
   Util.toggle("spell")
 end, { desc = "Toggle Spelling" })
@@ -141,7 +141,7 @@ map("n", "<leader>ul", function()
   Util.toggle("relativenumber", true)
   Util.toggle("number")
 end, { desc = "Toggle Line Numbers" })
-map("n", "<leader>ud", Util.toggle_diagnostics, { desc = "Toggle Diagnostics" })
+map("n", "<leader>ud", Util.toggle.diagnostics, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 map("n", "<leader>uc", function()
   Util.toggle("conceallevel", false, { 0, conceallevel })
