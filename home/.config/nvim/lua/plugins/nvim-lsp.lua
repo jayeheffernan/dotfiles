@@ -1,3 +1,18 @@
+local lspconfig = require('lspconfig')
+local configs = require('lspconfig.configs')
+
+if not configs.ludwig_lsp then
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  configs.ludwig_lsp = {
+    default_config = {
+      name = "JayeLsp",                                                                               -- Name of the server
+      cmd = { "node", "/Users/jaye.heffernan/duck/ludwig-lsp/main/server/out/server.js", "--stdio" }, -- Command used to start the server
+      root_dir = lspconfig.util.root_pattern('.git'),
+      filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+    },
+  }
+end
+
 return {
   {
     "stevearc/conform.nvim",
@@ -49,6 +64,13 @@ return {
             documentRangeFormattingProvider = false,
           }
         },
+        ludwig_lsp = {
+          mason = false,
+          capabilities = {
+            definitionProvider = true,
+            completionProvider = true,
+          },
+        }
 
       },
       setup = {
@@ -60,6 +82,12 @@ return {
           })
           return true
         end,
+        ludwig_lsp = function()
+          require("lspconfig").ludwig_lsp.setup({
+            init_options = {},
+          })
+          return true
+        end
         -- Specify * to use this function as a fallback for any server
         -- ["*"] = function(server, opts) end,
       },
