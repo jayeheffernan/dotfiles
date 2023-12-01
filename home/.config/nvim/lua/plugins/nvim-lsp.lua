@@ -58,12 +58,6 @@ return {
             documentRangeFormattingProvider = true,
           }
         },
-        tsserver = {
-          capabilities = {
-            documentFormattingProvider = false,
-            documentRangeFormattingProvider = false,
-          }
-        },
         ludwig_lsp = {
           mason = false,
           capabilities = {
@@ -87,6 +81,15 @@ return {
             init_options = {},
           })
           return true
+        end,
+        tsserver = function(_, opts)
+          -- https://www.lazyvim.org/configuration/recipes#add-eslint-and-use-it-for-formatting
+          -- Disable tsserver formatting, use EFM instead
+          require("lazyvim.util").lsp.on_attach(function(client)
+            if client.name == "tsserver" then
+              client.server_capabilities.documentFormattingProvider = false
+            end
+          end)
         end
         -- Specify * to use this function as a fallback for any server
         -- ["*"] = function(server, opts) end,
