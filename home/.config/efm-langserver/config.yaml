@@ -14,9 +14,9 @@ tools:
     format-command: "./node_modules/.bin/prettier ${--tab-width:tabWidth} ${--single-quote:singleQuote} --parser html"
 
   javascript-eslint: &javascript-eslint
-    format-command: "npx --no-install prettier --stdin-filepath ${INPUT}"
+    format-command: "./node_modules/.bin/prettier --stdin-filepath ${INPUT}"
     format-stdin: true
-    lint-command: "npx --no-install eslint -f unix --stdin --stdin-filename ${INPUT}"
+    lint-command: "./node_modules/.bin/prettier -f unix --stdin --stdin-filename ${INPUT}"
     lint-ignore-exit-code: true
     lint-stdin: true
 
