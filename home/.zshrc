@@ -14,7 +14,9 @@ TWILIO_AC_ZSH_SETUP_PATH=/Users/jaye.heffernan/.twilio-cli/autocomplete/zsh_setu
 export DIRENV_LOG_FORMAT=''
 
 export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jaye.heffernan/.scripts:/Users/jaye.heffernan/Library/Python/3.7/bin:/Users/jaye.heffernan/.cargo/bin"
+export PATH="$VOLTA_HOME/bin:$HOME/.builds/bin:$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/jaye.heffernan/.scripts:/Users/jaye.heffernan/Library/Python/3.7/bin:/Users/jaye.heffernan/.cargo/bin"
+
+source ~/.secrets.zshrc
 
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 export EDITOR='nvim'

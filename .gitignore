@@ -9,6 +9,11 @@ home/.tmux/plugins
 **/*.netrwhist
 home/.tmux/plugins
 
+secrets*
+.secrets*
+!.secrets.example*
+!secrets.example*
+
 home/.config/coc/*
 !home/.config/coc/ultisnips
 
