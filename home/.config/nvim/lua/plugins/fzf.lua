@@ -277,4 +277,5 @@ return {
   },
   { "junegunn/fzf.vim" },
   { "gfanto/fzf-lsp.nvim" },
+  { "zackhsi/fzf-tags" },
 }

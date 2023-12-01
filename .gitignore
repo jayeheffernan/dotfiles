@@ -11,3 +11,5 @@ home/.tmux/plugins
 
 home/.config/coc/*
 !home/.config/coc/ultisnips
+
+tags
