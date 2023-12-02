@@ -12,3 +12,5 @@ vim.g.maplocalleader = ","
 vim.g.nvim_tree_disable_netrw = 0
 
 vim.g.autoformat = true
+
+vim.g.gutentags_ctags_executable = "~/.builds/bin/ctags"
