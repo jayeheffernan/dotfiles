@@ -14,9 +14,15 @@ tools:
     format-command: "./node_modules/.bin/prettier ${--tab-width:tabWidth} ${--single-quote:singleQuote} --parser html"
 
   javascript-eslint: &javascript-eslint
-    format-command: "./node_modules/.bin/prettier --stdin --stdin-filepath '${INPUT}' ${--range-start:charStart} ${--range-end:charEnd}"
+    format-command: "npx prettier --stdin --stdin-filepath '${INPUT}' ${--range-start:charStart} ${--range-end:charEnd}"
     format-stdin: true
     format-can-range: true
+    lint-command: 'npx eslint -f visualstudio --stdin --stdin-filename ${INPUT}'
+    lint-ignore-exit-code: true
+    lint-stdin: true
+    lint-formats:
+      - "%f(%l,%c): %tarning %m"
+      - "%f(%l,%c): %rror %m"
 
   json-fixjson: &json-fixjson
     format-command: "fixjson"
