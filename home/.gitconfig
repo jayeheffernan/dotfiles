@@ -62,8 +62,8 @@
 	f = fetch
 	rs = restore --staged
   p = pull
-  P = push
-  Pu = "!f() { git push --set-upstream origin """$(git branch --show-current)"""; }; f"
+  pp = push
+  ppu = "!f() { git push --set-upstream origin """$(git branch --show-current)"""; }; f"
   pushup = "!f() { git push --set-upstream origin """$(git branch --show-current)"""; }; f"
 [core]
 	editor = /usr/local/bin/nvim
