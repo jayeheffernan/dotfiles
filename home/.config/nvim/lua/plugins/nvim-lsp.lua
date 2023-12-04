@@ -64,8 +64,34 @@ return {
             definitionProvider = true,
             completionProvider = true,
           },
-        }
+        },
+        jsonls = {
+          -- lazy-load schemastore when needed
+          on_new_config = function(new_config)
+            new_config.settings.json.schemas = new_config.settings.json.schemas or {}
+            vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas({
+              extra = {
+                -- List extra custom schemas here
+                -- https://github.com/b0o/SchemaStore.nvim
+                {
+                  description = "Local JSON example schema",
+                  fileMatch = { "example.product.json" },
+                  name = "Example .json",
+                  url = "/Users/jaye.heffernan/duck/website/main/product.schema.json",
+                },
+              }
 
+            }))
+          end,
+          settings = {
+            json = {
+              format = {
+                enable = true,
+              },
+              validate = { enable = true },
+            },
+          },
+        },
       },
       setup = {
         efm = function(_, opts)
@@ -90,7 +116,8 @@ return {
               client.server_capabilities.documentFormattingProvider = false
             end
           end)
-        end
+        end,
+
         -- Specify * to use this function as a fallback for any server
         -- ["*"] = function(server, opts) end,
       },
@@ -115,6 +142,9 @@ return {
             }
           })
         end
+      },
+      {
+        'b0o/SchemaStore.nvim',
       }
     }
   }

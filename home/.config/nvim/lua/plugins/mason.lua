@@ -12,6 +12,7 @@ return {
         "sqlls",
         "sqlfluff",
         "marksman",
+        "json-lsp"
       },
     },
   },

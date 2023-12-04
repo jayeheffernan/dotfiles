@@ -9,7 +9,8 @@ return {
         -- THEN run :TSInstall dap_repl
         "dap_repl",
         "html",
-        "sql"
+        "sql",
+        "json"
       },
     },
   },
