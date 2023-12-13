@@ -12,12 +12,12 @@ return {
     },
     keys = {
       -- Override search for "symbols"
-      { "<leader>ss", function() Util.telescope("grep_string", { use_regex = true, search = vim.fn.input("search") })() end, desc = "Grep (root dir)" },
+      { "<leader>ss", function() Util.telescope("grep_string", { use_regex = true, search = vim.fn.input("search: ") })() end, desc = "Grep (root dir)" },
       {
         "<leader>sS",
         function()
           Util.telescope("grep_string",
-            { cwd = false, use_regex = true, search = vim.fn.input("search") })()
+            { cwd = false, use_regex = true, search = vim.fn.input("search: ") })()
         end,
         desc = "Grep (cwd)"
       },
