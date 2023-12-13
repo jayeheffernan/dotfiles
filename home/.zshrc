@@ -62,7 +62,12 @@ export FZF_DEFAULT_COMMAND="fd --no-ignore --hidden --type f --follow --ignore-f
 export FZF_DEFAULT_OPTS="
 --preview='""$FZF_DEFAULT_PREVIEW""'
 --preview-window=right:50%
---bind '?:toggle-preview'
+--layout=reverse
+--bind 'ctrl-j:next-history'
+--bind 'ctrl-k:prev-history'
+--bind 'ctrl-n:down'
+--bind 'ctrl-p:up'
+--bind 'ctrl-h:toggle-preview'
 --bind 'ctrl-a:select-all'
 --bind 'ctrl-d:deselect-all'
 --bind 'ctrl-e:execute(vim {+} < /dev/tty > /dev/tty)'

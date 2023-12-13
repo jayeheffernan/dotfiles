@@ -44,15 +44,17 @@ return {
     opts = {
       defaults = {
         layout_strategy = "flex",
+        sorting_strategy = "ascending",
         layout_config = {
-          flip_columns = 160,
-          height = { padding = 0 },
-          width = { padding = 0 },
+          prompt_position = "top",
+          flip_columns = 140,
+          height = 40,
+          width = 160,
           horizontal = {
-            preview_width = 0.35,
+            preview_width = 0.50,
           },
           vertical = {
-            preview_height = 0.3,
+            preview_height = 0.5,
           },
         },
         prompt_prefix = " ",
@@ -84,12 +86,12 @@ return {
             --   local line = action_state.get_current_line()
             --   Util.telescope("find_files", { hidden = true, default_text = line })()
             -- end,
-            -- ["<C-Down>"] = function(...)
-            --   return require("telescope.actions").cycle_history_next(...)
-            -- end,
-            -- ["<C-Up>"] = function(...)
-            --   return require("telescope.actions").cycle_history_prev(...)
-            -- end,
+            ["<C-j>"] = function(...)
+              return require("telescope.actions").cycle_history_next(...)
+            end,
+            ["<C-k>"] = function(...)
+              return require("telescope.actions").cycle_history_prev(...)
+            end,
             ["<C-f>"] = function(...)
               return require("telescope.actions").preview_scrolling_down(...)
             end,
@@ -101,9 +103,9 @@ return {
             end,
           },
           n = {
-            -- ["q"] = function(...)
-            --   return require("telescope.actions").close(...)
-            -- end,
+            ["<C-c>"] = function(...)
+              return require("telescope.actions").close(...)
+            end,
           },
         },
       },
