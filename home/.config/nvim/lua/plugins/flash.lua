@@ -32,6 +32,18 @@ return {
           "S",
           mode = { "n", "o" },
           function()
+            require("flash").jump({
+              search = { mode = "search", max_length = 0 },
+              label = { after = { 0, 0 } },
+              pattern = "^"
+            })
+          end,
+          desc = "Flash lines",
+        },
+        {
+          "<C-S>",
+          mode = { "n", "o" },
+          function()
             require("flash").treesitter()
           end,
           desc = "Flash Treesitter",
@@ -54,7 +66,7 @@ return {
                   -- Move cursor to match location
                   vim.api.nvim_win_set_cursor(match.win, match.pos)
                   -- Go to definition under cursor
-                  vim.cmd("normal gd")
+                  require("telescope.builtin").lsp_definitions({ reuse_win = true })
                 end)
               end,
             })
