@@ -1,9 +1,15 @@
+local keymap = vim.keymap.set
+
 return {
   {
     "L3MON4D3/LuaSnip",
     keys = function()
       return {}
     end,
+    opts = {
+      -- required to make snippets work from visual mode
+      store_selection_keys = "<C-Space>"
+    },
     config = function(_, opts)
       if opts then require("luasnip").config.setup(opts) end
       vim.tbl_map(
@@ -24,6 +30,14 @@ return {
       require("luasnip").filetype_extend("lua", { "luadoc" })
       require("luasnip").filetype_extend("rust", { "rustdoc" })
       require("luasnip").filetype_extend("sh", { "shelldoc" })
+
+      keymap({ "i", "s" }, "<C-Space>", function()
+        require("luasnip").expand_or_jump()
+      end, { desc = "LuaSnip expand/forward jump" })
+
+      keymap({ "i", "s" }, "<C-h>", function()
+        require("luasnip").jump(-1)
+      end, { desc = "LuaSnip backward jump" })
     end,
   },
   {

@@ -251,13 +251,6 @@ wk.register({
 
 keymap("n", "<leader>wo", "<C-W>o", { desc = "Only window (close others)" })
 
-keymap({ "i", "s" }, "<C-Space>", function()
-  require("luasnip").expand_or_jump(1)
-end, { desc = "LuaSnip expand/forward jump" })
-keymap({ "i", "s" }, "<C-h>", function()
-  require("luasnip").jump(-1)
-end, { desc = "LuaSnip backward jump" })
-
 keymap({ "n", "x" }, "<leader>fe", function()
   require("oil").toggle_float()
 end, { desc = "Explore (file dir)" })

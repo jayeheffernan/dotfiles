@@ -12,6 +12,9 @@ return {
         "sql",
         "json"
       },
+      incremental_selection = {
+        enable = false,
+      }
     },
   },
   {
