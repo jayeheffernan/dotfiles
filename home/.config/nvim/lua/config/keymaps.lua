@@ -291,49 +291,6 @@ keymap("n", "<leader>rtt", function()
   J.run_cmd({ "tmux", "send-keys", "-t", "logs", "C-l", "Up", "Enter" })
 end, { desc = "Tmux re-run" })
 
-keymap("n", "<leader>mM", require("grapple").toggle, { desc = "Toggle anon" })
-
--- trsa keys are used as 1234 tags
-keymap("n", "<leader>mt", function()
-  require("grapple").select({ key = 1 })
-end, { desc = "Jump 1" })
-
-keymap("n", "<leader>mT", function()
-  require("grapple").tag({ key = 1 })
-end, { desc = "Set 1" })
-
-keymap("n", "<leader>ms", function()
-  require("grapple").select({ key = 2 })
-end, { desc = "Jump 2" })
-
-keymap("n", "<leader>mS", function()
-  require("grapple").tag({ key = 2 })
-end, { desc = "Set 2" })
-
-keymap("n", "<leader>mr", function()
-  require("grapple").select({ key = 3 })
-end, { desc = "Jump 3" })
-
-keymap("n", "<leader>mR", function()
-  require("grapple").tag({ key = 3 })
-end, { desc = "Set 3" })
-
-keymap("n", "<leader>ma", function()
-  require("grapple").select({ key = 4 })
-end, { desc = "Jump 4" })
-
-keymap("n", "<leader>mA", function()
-  require("grapple").tag({ key = 4 })
-end, { desc = "Set 4" })
-
-keymap("n", "<leader>mA", function()
-  require("grapple").tag({ key = 4 })
-end, { desc = "Set 4" })
-
-keymap("n", "<leader>mm", function() require("grapple").tag() end, { desc = "Tag" })
-keymap("n", "<leader>mM", function() require("grapple").untag() end, { desc = "Untag" })
-keymap("n", "<leader>me", function() vim.cmd("GrapplePopup tags") end, { desc = "Edit tags" })
-
 -- lazygit
 map("n", "<leader>gL", function() Util.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end,
   { desc = "Lazygit (cwd)" })
