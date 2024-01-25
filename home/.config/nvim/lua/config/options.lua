@@ -5,6 +5,7 @@ vim.opt.clipboard = ""
 vim.opt.wrap = true
 vim.opt.timeoutlen = 100
 vim.opt.relativenumber = false
+vim.opt.conceallevel = 2
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","

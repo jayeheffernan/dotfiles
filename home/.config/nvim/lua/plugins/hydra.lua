@@ -3,6 +3,8 @@ local keymap = vim.keymap.set
 return {
   {
     "anuvyklack/hydra.nvim",
+    enabled = false,
+    disabled = true,
     config = function()
       local Hydra = require('hydra')
       Hydra({

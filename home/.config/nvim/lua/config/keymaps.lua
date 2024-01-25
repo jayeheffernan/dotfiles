@@ -201,6 +201,8 @@ local keymap = vim.keymap.set
 keymap({ "n", "x" }, "'", ":")
 keymap("n", "<localleader>w", ":update<return>", { desc = "Save file" })
 
+keymap({ "n", "x", "i" }, "<C-l>", ":GpWhisper<CR>", { desc = "Whisper" })
+
 -- Default gd gD mappings from LazyVIm are here
 -- ~/.local/share/nvim/lazy/LazyVim/lua/lazyvim/plugins/lsp/keymaps.lua:17
 -- { "gd", function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end, desc = "Goto Definition", has = "definition" },

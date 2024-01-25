@@ -6,6 +6,7 @@ return {
     main = "grapple",
     opts = function(_, opts)
       opts.scope = require("grapple").resolvers.git_branch
+      -- opts.scope = require("grapple").resolvers.git_branch_suffix
     end,
     init = function()
       -- trsa keys are used as 1234 tags
