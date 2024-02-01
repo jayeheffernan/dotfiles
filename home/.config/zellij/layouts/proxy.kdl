@@ -11,9 +11,21 @@ layout cwd="~/duck/mocks-server/main" {
     }
 
     tab name="logs" {
-      pane command="mitmproxy -p 40401 --mode reverse:http://localhost:40400" // reverse proxy to mocks-server
-      pane command="mitmproxy -p 40404 --mode reverse:http://localhost:3001 --set ssl_insecure=true" // reverse proxy for worker, for Ludwig to call
-      pane command="mitmproxy -p 40402 --mode reverse:https://headless.sleepingduck.localhost:3000 --set ssl_insecure=true" // reverse proxy for headless, for Website SSR to call
-      pane command="mitmproxy -p 40403 --set ssl_insecure=true --set allow_hosts=admin.sleepingduck.localhost --set allow_hosts=localhost" // explicit proxy for Admin and website
+      pane command="mitmproxy" {
+          // reverse proxy to mocks-server
+          args "-p" "40401" "--mode" "reverse:http://localhost:40400"
+        }
+      pane command="mitmproxy" {
+        // reverse proxy for worker, for Ludwig to call
+        args "-p" "40404" "--mode" "reverse:http://localhost:3001" "--set" "ssl_insecure=true"
+      }
+      pane command="mitmproxy" {
+        // reverse proxy for headless, for Website SSR to call
+        args "-p" "40402" "--mode" "reverse:https://headless.sleepingduck.localhost:3000" "--set" "ssl_insecure=true"
+      }
+      pane command="mitmproxy" {
+        // explicit proxy for Admin and website
+        args "-p" "40403" "--set" "ssl_insecure=true" "--set" "allow_hosts=admin.sleepingduck.localhost" "--set" "allow_hosts=localhost"
+      }
     }
 }
