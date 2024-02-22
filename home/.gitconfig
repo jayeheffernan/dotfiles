@@ -1,8 +1,11 @@
 [user]
 	name = Jaye Heffernan
 	email = jpeheffernan@gmail.com
+
 [push]
 	default = simple
+	autoSetupRemote = true
+
 [alias]
 	co = checkout
 	cop = checkout --patch
@@ -65,19 +68,35 @@
   pp = push
   ppu = "!f() { git push --set-upstream origin """$(git branch --show-current)"""; }; f"
   pushup = "!f() { git push --set-upstream origin """$(git branch --show-current)"""; }; f"
+
 [core]
 	editor = /usr/local/bin/nvim
+  pager = delta
 	excludesfile = /Users/jaye.heffernan/.gitignore_global
+
 [interactive]
 	singlekey = true
+  diffFilter = delta --color-only
+
 [diff]
 	tool = vimdiff
 	algorithm = histogram
+  colorMoved = default
+
 [difftool]
 	prompt = false
+
 [advice]
 	detachedHead = false
+
 [log]
 	date = format-local:%Y-%m-%d %H:%M:%S
+
 [blame]
 	date = format-local:%Y-%m-%d %H:%M:%S
+
+[merge]
+	conflictStyle = zdiff3
+
+[delta]
+    navigate = true # use n and N to move between diff sections
