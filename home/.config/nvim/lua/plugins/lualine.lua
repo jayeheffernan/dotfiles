@@ -1,5 +1,48 @@
 local Util = require("lazyvim.util")
 
+-- todo submit PR to lualine to add this feature
+local function shortenPath(path)
+  local PATH_TRUNCATION_LENGTH_START = 3
+  local PATH_TRUNCATION_LENGTH_END = 3
+  local len = #path
+  if len <= (PATH_TRUNCATION_LENGTH_START + PATH_TRUNCATION_LENGTH_END) then
+    return path
+  else
+    local combined = {}
+
+    for i = 1, PATH_TRUNCATION_LENGTH_START do
+      table.insert(combined, path[i])
+    end
+
+    table.insert(combined, "…")
+
+    for i = len - PATH_TRUNCATION_LENGTH_END + 1, len do
+      table.insert(combined, path[i])
+    end
+
+
+    return combined
+  end
+end
+
+-- Modified version fo lualine.pretty_path(), to show longer paths
+local function my_pretty_path()
+  local path = vim.fn.expand("%:p")
+
+  if path == "" then
+    return ""
+  end
+  local cwd = Util.root.cwd()
+
+  path = path:sub(#cwd + 2)
+
+  local sep = "/"
+  local parts = vim.split(path, "[\\/]")
+  parts = shortenPath(parts)
+  local s = table.concat(parts, sep)
+  return s;
+end
+
 return { {
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
@@ -62,8 +105,8 @@ return { {
             -- cond = require("grapple").exists,
           },
           Util.lualine.root_dir(),
-          { "filetype",                icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-          { Util.lualine.pretty_path() },
+          { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+          my_pretty_path
         },
         lualine_x = {
           {
