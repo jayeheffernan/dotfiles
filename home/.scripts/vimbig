@@ -1,0 +1,2 @@
+#! /bin/sh
+nvim -u ~/.config/nvim/lua/variants/largefiles.lua "$@"

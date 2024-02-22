@@ -270,7 +270,6 @@ function vim_scratch_latest() {
 }
 alias vims=vim_scratch
 alias vimsl=vim_scratch_latest
-alias vimbig="vim -u ~/.config/nvim/lua/variants/largefiles.lua"
 alias vimb=vimbig
 
 function strip_sql_semicolon() {
