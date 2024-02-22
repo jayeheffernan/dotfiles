@@ -1,0 +1,15 @@
+session: dotfiles
+
+root: ~/.dotfiles
+
+windows:
+  - name: logs
+    layout: even-vertical
+    commands:
+      - git status
+      - y dev
+
+  - name: root
+
+  - name: nvim
+    root: ./home/.config/nvim
