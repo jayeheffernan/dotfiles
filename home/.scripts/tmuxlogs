@@ -37,25 +37,37 @@ const run = (command) =>
     });
   });
 
-const selectLogWindow = async () => {
-  const [sessionName] = await run("tmux display-message -p '#{session_name}'");
-  const changeLogWindow = `select-window -t "${LOG_SESSION}:${sessionName}"`;
-  await run(`tmux ${changeLogWindow}`);
+const selectLogWindow = async (force = false) => {
+  try {
+    const [sessionName] = await run(
+      "tmux display-message -p '#{session_name}'",
+    );
+    const changeLogWindow = `select-window -t "${LOG_SESSION}:${sessionName}"`;
+    await run(`tmux ${changeLogWindow}`);
+  } catch (e) {
+    if (force) {
+      // console.error(e);
+    } else {
+      throw e;
+    }
+  }
 };
 
 // TODO: seems like this needs to be run within each session? Can we make that
 // more automatic?
 // Answer: yes, I put these in my .tmux.conf instead
 const initHooks = async () => {
-  await run(`tmux set-hook -g client-attached 'run-shell "tmuxlogs select"'`);
   await run(
-    `tmux set-hook -g client-session-changed 'run-shell "tmuxlogs select"'`
+    `tmux set-hook -g client-attached 'run-shell "tmuxlogs try-select"'`,
+  );
+  await run(
+    `tmux set-hook -g client-session-changed 'run-shell "tmuxlogs try-select"'`,
   );
 };
 
 const getSessions = async () => {
   const lines = await run(
-    `tmux list-sessions -F '#{session_id}|#{session_name}'`
+    `tmux list-sessions -F '#{session_id}|#{session_name}'`,
   );
   return lines
     .map((line) => line.split("|"))
@@ -75,7 +87,7 @@ const getSessions = async () => {
 
 const getWindows = async (session) => {
   const lines = await run(
-    `tmux list-windows -t '${session}' -F '#{window_index}|#{window_name}'`
+    `tmux list-windows -t '${session}' -F '#{window_index}|#{window_name}'`,
   );
 
   return lines
@@ -103,7 +115,7 @@ const splitLogWindows = async () => {
     const targetWindow = `${LOG_SESSION}:${session.index + OFFSET}`;
 
     await run(
-      `tmux move-window -d -s '${session.name}:${logWindow.index}' -t '${targetWindow}'`
+      `tmux move-window -d -s '${session.name}:${logWindow.index}' -t '${targetWindow}'`,
     );
 
     await run(`tmux rename-window -t ${targetWindow} ${session.name}`);
@@ -129,11 +141,11 @@ const mergeLogWindows = async () => {
     }
 
     await run(
-      `tmux rename-window -t ${logSession.name}:${window.index} ${LOG_WINDOW}`
+      `tmux rename-window -t ${logSession.name}:${window.index} ${LOG_WINDOW}`,
     );
 
     await run(
-      `tmux move-window -d -s '${logSession.name}:${window.index}' -t '${targetSession.name}'`
+      `tmux move-window -d -s '${logSession.name}:${window.index}' -t '${targetSession.name}'`,
     );
   }
 };
@@ -147,6 +159,8 @@ const main = async () => {
       await initHooks();
     } else if (command === "select") {
       await selectLogWindow();
+    } else if (command === "try-select") {
+      await selectLogWindow(true);
     } else if (command === "split") {
       await splitLogWindows();
     } else if (command === "merge") {
