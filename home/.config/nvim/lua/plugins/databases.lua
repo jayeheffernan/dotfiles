@@ -21,10 +21,13 @@ return {
         callback = function()
           local cmp = require("cmp")
           cmp.setup.buffer({ sources = { { name = "vim-dadbod-completion" } } })
-          vim.keymap.set("n", "<leader>rr", function()
-            vim.cmd("%DB")
+
+          vim.keymap.set("n", "<leader>rR", function()
+            vim.cmd("vert %DB")
           end, { desc = "Run file as query" })
-          vim.keymap.set("x", "<leader>rr", ":'<,'>DB<CR>", { desc = "Run selection as query" })
+          vim.keymap.set("x", "<leader>rr", ":tab '<,'>DB<CR>", { desc = "Run selection as query" })
+          vim.keymap.set("n", "<leader>rr", "db#op_exec()", { desc = "Run as query", expr = true })
+          vim.keymap.set("n", "<leader>rn", "vap:tab '<,'>DB<CR>", { desc = "Run query" })
         end,
       })
 
