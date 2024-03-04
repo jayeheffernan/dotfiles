@@ -12,7 +12,7 @@
           <key>foreground</key>
           <string>#cdd6f4</string>
           <key>background</key>
-          <string>#1e1e2e</string>
+          <string>#000000</string>
           <key>caret</key>
           <string>#bac2de</string>
           <key>invisibles</key>
