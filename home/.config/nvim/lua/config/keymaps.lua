@@ -275,10 +275,12 @@ wk.register({
 keymap("n", "<leader>wo", "<C-W>o", { desc = "Only window (close others)" })
 
 keymap({ "n", "x" }, "<leader>fe", function()
-  require("oil").toggle_float()
+  -- Would prefer `.toggle_float()`, so it's togglable, but it has a bug with
+  -- setting alternate file that is too annoying atm
+  require("oil").open()
 end, { desc = "Explore (file dir)" })
 keymap({ "n", "x" }, "<leader>fE", function()
-  require("oil").toggle_float(require("lazyvim.util").get_root())
+  require("oil").open(require("lazyvim.util").get_root())
 end, { desc = "Explore (root dir)" })
 
 keymap("n", "<leader>gb", function() vim.cmd("Git blame") end, { desc = "Blame" })
