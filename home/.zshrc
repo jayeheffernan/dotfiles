@@ -581,7 +581,7 @@ alias   z="cd ~/.vimwiki/notes"
 alias v="vim ."
 
 set_wallpaper() {
-  osascript -e 'tell application "System Events" to tell every desktop to set picture to "/Users/jaye.heffernan/ivory-black.jpg"'
+  osascript -e 'tell application "System Events" to tell every desktop to set picture to "/Users/jaye.heffernan/.wallpaper.png"'
 }
 
 # pspg: a pager for tabular data. 16 = "simple" theme

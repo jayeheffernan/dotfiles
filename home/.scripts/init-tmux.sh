@@ -5,3 +5,4 @@ smug start ludwig --detach
 smug start website --detach --detach
 smug start chrome-extension --detach
 tmuxlogs split
+set_wallpaper

@@ -4,7 +4,8 @@ local act = wezterm.action
 local colors = wezterm.get_builtin_color_schemes()['Catppuccin Mocha'];
 
 -- Customize the default background color
-colors.background = "#000000";
+-- colors.background = "rgba(0, 0, 0, 0)";
+colors.background = "rgba(0, 0, 0, 1)";
 
 return {
   font = wezterm.font("Fira Code"),
