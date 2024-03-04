@@ -23,6 +23,7 @@ return {
         "json",
         "lua",
         "make",
+        "markdown",
         "python",
         "rust",
         "scss",
