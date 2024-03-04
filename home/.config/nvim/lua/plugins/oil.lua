@@ -1,10 +1,12 @@
+local show_hidden = false;
+local default_columns = {
+  "icon",
+};
 return {
   {
     "stevearc/oil.nvim",
     opts = {
-      columns = {
-        "icon",
-      },
+      columns = default_columns,
       skip_confirm_for_simple_edits = true,
       keymaps = {
         ["?"] = "actions.show_help",
@@ -17,7 +19,19 @@ return {
         ["<"] = "actions.parent",
         [">"] = "actions.select",
         ["."] = "actions.cd",
-        ["~"] = "actions.toggle_hidden",
+        ["~"] = {
+          desc = "Toggle detail view",
+          callback = function()
+            local oil = require("oil")
+            local config = require("oil.config")
+            oil.toggle_hidden();
+            if #config.columns == #default_columns then
+              oil.set_columns({ "permissions", "size", "mtime", "icon", })
+            else
+              oil.set_columns(default_columns)
+            end
+          end,
+        },
       },
       use_default_keymaps = false,
     },
