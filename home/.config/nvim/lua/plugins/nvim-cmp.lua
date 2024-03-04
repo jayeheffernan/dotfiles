@@ -11,7 +11,15 @@ return {
       store_selection_keys = "<C-Space>"
     },
     config = function(_, opts)
+      local cmp_window = require "cmp.config.window"
+      local window = {
+        completion = cmp_window.bordered(),
+        documentation = cmp_window.bordered(),
+      }
+      opts.window = window;
+
       if opts then require("luasnip").config.setup(opts) end
+
       vim.tbl_map(
         function(type) require("luasnip.loaders.from_" .. type).lazy_load() end,
         { "vscode" }
