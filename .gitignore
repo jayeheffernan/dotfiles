@@ -18,3 +18,5 @@ home/.config/coc/*
 !home/.config/coc/ultisnips
 
 tags
+
+venv
