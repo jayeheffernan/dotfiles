@@ -8,6 +8,9 @@ description = """Bucket images into subdirectories with one key press.
 This will show you each image. Use j/k for next/previous, q to quit and confirm. Any other letter or number will tag that image to go to a subdirectory of that name. E.g. hit "a" to put the image under `a/`.
 """
 
+def debug(*args):
+    print(*args)
+
 def parse_args():
     parser = argparse.ArgumentParser(prog='image_bucket', description=description)
     parser.add_argument('files', nargs='*')
@@ -35,20 +38,27 @@ def bucket(image_files):
         return
 
     def jump(step):
-        index = (index + step) % len(image_files)
+        nonlocal index
+        next = (index + step) % (len(image_files))
+        debug("jumping from", index, "to", next)
+        index = next
+
+    debug("looping files", image_files)
 
     # Go through each image
     while True:
+        debug("looping")
         image_file = image_files[index]
+        debug("reading", image_file)
         image = cv2.imread(image_file)
+        debug("showing", image_file)
         cv2.imshow('image', image)
+        debug("waiting")
         ch = get_chr()
         if ch == 'j':
             jump(1)
-            index = (index + 1) % len(image_files)
         elif ch == 'k':
             jump(-1)
-            index = (index - 1) % len(image_files)
         elif ch == 'q':
             save = True
             break
