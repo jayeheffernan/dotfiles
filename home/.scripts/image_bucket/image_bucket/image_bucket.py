@@ -40,9 +40,9 @@ def bucket(image_files):
         cv2.imshow('image', image)
         ch = get_chr()
         if ch == 'j':
-            index += 1
+            index = (index + 1) % len(image_files)
         elif ch == 'k':
-            index -= 1
+            index = (index - 1) % len(image_files)
         elif ch == 'q':
             save = True
             break
