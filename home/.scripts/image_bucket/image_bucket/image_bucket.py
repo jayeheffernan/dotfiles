@@ -3,8 +3,13 @@ import cv2
 import os
 import shutil
 
+description = """Bucket images into subdirectories with one key press
+
+This will show you each image. Use j/k for next/previous, q to quit and confirm. Any other letter or number will tag that image to go to a subdirectory of that name. E.g. hit "a" to put the image under `a/`.
+"""
+
 def parse_args():
-    parser = argparse.ArgumentParser(prog='image_bucket', description='Bucket images into different subdirectories')
+    parser = argparse.ArgumentParser(prog='image_bucket', description=description)
     parser.add_argument('files', nargs='*')
     parsed = parser.parse_args()
     return parsed
