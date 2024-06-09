@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="image-bucket",
+    name="image_bucket",
     version="0.1",
     packages=find_packages(),
     install_requires=[
@@ -9,7 +9,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'image-bucket = image-bucket.main:main',
+            'image_bucket = image_bucket.image_bucket:main',
         ],
     },
 )

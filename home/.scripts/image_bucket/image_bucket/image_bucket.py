@@ -4,7 +4,7 @@ import os
 import shutil
 
 def parse_args():
-    parser = argparse.ArgumentParser(prog='image-bucket', description='Bucket images into different subdirectories')
+    parser = argparse.ArgumentParser(prog='image_bucket', description='Bucket images into different subdirectories')
     parser.add_argument('files', nargs='*')
     parsed = parser.parse_args()
     return parsed
