@@ -21,14 +21,10 @@ def get_chr():
 
         return False
 
-def main():
-    args = parse_args()
-    image_files = args.files
-
-    mapped = {}
-
+def bucket(image_files):
     index = 0
     save = False
+    mapped = {}
 
     # Go through each image
     while True:
@@ -61,6 +57,11 @@ def main():
                 os.makedirs(target_dir)
             print(f"Moving {image_file} to {target_file}")
             shutil.move(image_file, target_file)
+
+def main():
+    args = parse_args()
+    image_files = args.files
+    bucket(image_files)
 
 if __name__ == "__main__":
     main()
