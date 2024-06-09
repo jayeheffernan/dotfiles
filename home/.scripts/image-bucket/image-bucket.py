@@ -4,11 +4,7 @@ import os
 import shutil
 
 def parse_args():
-    parser = argparse.ArgumentParser(prog='image-classify', description='Organise images into directories')
-    # parser.add_argument('filename')           # positional argument
-    # parser.add_argument('-c', '--count')      # option that takes a value
-    # parser.add_argument('-v', '--verbose',
-    #                     action='store_true')  # on/off flag
+    parser = argparse.ArgumentParser(prog='image-bucket', description='Bucket images into different subdirectories')
     parser.add_argument('files', nargs='*')
     parsed = parser.parse_args()
     return parsed
@@ -20,7 +16,6 @@ def get_chr():
         if key == -1:
             continue
 
-        # If the key is one of the defined keys, move the image to the corresponding directory
         if chr(key) in "abcdefghijklmnopqrstuvwxyz0123456789":
             return chr(key)
 
@@ -50,9 +45,10 @@ def main():
             break
         elif not ch:
             break
-
-        mapped[image_file] = ch
-        index += 1
+        else
+            # If the key is one of the defined keys, move the image to the corresponding directory
+            mapped[image_file] = ch
+            index += 1
 
     # Close all active window
     cv2.destroyAllWindows()
