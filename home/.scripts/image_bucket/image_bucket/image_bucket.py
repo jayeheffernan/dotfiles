@@ -29,9 +29,13 @@ def get_chr():
 def bucket(image_files):
     index = 0
     save = False
+    # Map image files to subdirectories
     mapped = {}
     if len(image_files) == 0:
         return
+
+    def jump(step):
+        index = (index + step) % len(image_files)
 
     # Go through each image
     while True:
@@ -40,8 +44,10 @@ def bucket(image_files):
         cv2.imshow('image', image)
         ch = get_chr()
         if ch == 'j':
+            jump(1)
             index = (index + 1) % len(image_files)
         elif ch == 'k':
+            jump(-1)
             index = (index - 1) % len(image_files)
         elif ch == 'q':
             save = True
@@ -49,9 +55,9 @@ def bucket(image_files):
         elif not ch:
             break
         else:
-            # If the key is one of the defined keys, move the image to the corresponding directory
+            # If the key is one of the defined keys, plan to move the image to the corresponding directory
             mapped[image_file] = ch
-            index += 1
+            jump(1)
 
     # Close all active window
     cv2.destroyAllWindows()
