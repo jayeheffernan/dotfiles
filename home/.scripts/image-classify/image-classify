@@ -1,3 +1,3 @@
 #! /usr/bin/env sh
-script_dir="$(dirname "$0")"../'image-classify'
+script_dir="$(dirname "$0")"/../'image-classify'
 "$script_dir"/venv/bin/python "$script_dir"/'image-classify.py' "$@"

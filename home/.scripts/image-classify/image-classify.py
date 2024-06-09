@@ -1,8 +1,7 @@
-# importing the tkinter module and PIL
-# that is pillow module
-from tkinter import *
-from PIL import ImageTk, Image
 import argparse
+import cv2
+import os
+import shutil
 
 def parse_args():
     parser = argparse.ArgumentParser(prog='image-classify', description='Organise images into directories')
@@ -14,82 +13,58 @@ def parse_args():
     parsed = parser.parse_args()
     return parsed
 
-def forward(img_no):
-    global label
-    global button_forward
-    global button_back
-    global button_exit
-    global image_list
+def get_chr():
+    while True:
+        # Wait for a key press
+        key = cv2.waitKey(1)
+        if key == -1:
+            continue
 
-    label.grid_forget()
+        # If the key is one of the defined keys, move the image to the corresponding directory
+        if chr(key) in "abcdefghijklmnopqrstuvwxyz0123456789":
+            return chr(key)
 
-    label = Label(image=image_list[img_no-1])
-    label.grid(row=1, column=0, columnspan=3)
-    button_forward = Button(root, text="forward",
-                        command=lambda: forward(img_no+1))
-
-    if img_no == 4:
-        button_forward = Button(root, text="Forward",
-                                state=DISABLED)
-
-    button_back = Button(root, text="Back",
-                         command=lambda: back(img_no-1))
-
-    button_back.grid(row=5, column=0)
-    button_exit.grid(row=5, column=1)
-    button_forward.grid(row=5, column=2)
-
-def back(img_no):
-    global label
-    global button_forward
-    global button_back
-    global button_exit
-    global image_list
-
-    label.grid_forget()
-
-    label = Label(image=image_list[img_no - 1])
-    label.grid(row=1, column=0, columnspan=3)
-    button_forward = Button(root, text="forward",
-                            command=lambda: forward(img_no + 1))
-    button_back = Button(root, text="Back",
-                         command=lambda: back(img_no - 1))
-
-    if img_no == 1:
-        button_back = Button(root, text="Back", state=DISABLED)
-
-    label.grid(row=1, column=0, columnspan=3)
-    button_back.grid(row=5, column=0)
-    button_exit.grid(row=5, column=1)
-    button_forward.grid(row=5, column=2)
+        return False
 
 def main():
-    global label
-    global button_forward
-    global button_back
-    global button_exit
-    global image_list
-
     args = parse_args()
-    root = Tk()
-    root.title("Image Classifier")
-    root.geometry("700x700")
+    image_files = args.files
 
-    image_list = [ImageTk.PhotoImage(Image.open(fname)) for fname in args.files];
+    mapped = {}
 
-    label = Label(image=image_no_1)
-    label.grid(row=1, column=0, columnspan=3)
+    index = 0
+    save = False
 
-    button_back = Button(root, text="Back", command=back,
-                        state=DISABLED)
-    button_exit = Button(root, text="Exit", command=root.quit)
-    button_forward = Button(root, text="Forward", command=lambda: forward(1))
+    # Go through each image
+    while True:
+        image_file = image_files[index]
+        image = cv2.imread(image_file)
+        cv2.imshow('image', image)
+        ch = get_chr()
+        if ch == 'j':
+            index += 1
+        elif ch == 'k':
+            index -= 1
+        elif ch == 'q':
+            save = True
+            break
+        elif not ch:
+            break
 
-    button_back.grid(row=5, column=0)
-    button_exit.grid(row=5, column=1)
-    button_forward.grid(row=5, column=2)
+        mapped[image_file] = ch
+        index += 1
 
-    root.mainloop()
+    # Close all active window
+    cv2.destroyAllWindows()
+
+    if save:
+        for image_file, ch in mapped.items():
+            target_dir = os.path.join(os.path.dirname(image_file), ch)
+            target_file = os.path.join(target_dir, os.path.basename(image_file))
+            if not os.path.exists(target_dir):
+                os.makedirs(target_dir)
+            print(f"Moving {image_file} to {target_file}")
+            shutil.move(image_file, target_file)
 
 if __name__ == "__main__":
     main()
