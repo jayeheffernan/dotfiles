@@ -3,7 +3,7 @@ import cv2
 import os
 import shutil
 
-description = """Bucket images into subdirectories with one key press
+description = """Bucket images into subdirectories with one key press.
 
 This will show you each image. Use j/k for next/previous, q to quit and confirm. Any other letter or number will tag that image to go to a subdirectory of that name. E.g. hit "a" to put the image under `a/`.
 """
@@ -30,6 +30,8 @@ def bucket(image_files):
     index = 0
     save = False
     mapped = {}
+    if len(image_files) == 0:
+        return
 
     # Go through each image
     while True:
@@ -46,7 +48,7 @@ def bucket(image_files):
             break
         elif not ch:
             break
-        else
+        else:
             # If the key is one of the defined keys, move the image to the corresponding directory
             mapped[image_file] = ch
             index += 1
@@ -60,7 +62,6 @@ def bucket(image_files):
             target_file = os.path.join(target_dir, os.path.basename(image_file))
             if not os.path.exists(target_dir):
                 os.makedirs(target_dir)
-            print(f"Moving {image_file} to {target_file}")
             shutil.move(image_file, target_file)
 
 def main():
