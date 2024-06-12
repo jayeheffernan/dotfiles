@@ -52,6 +52,23 @@ def bucket(image_files):
         image_file = image_files[index]
         debug("reading", image_file)
         image = cv2.imread(image_file)
+
+        # Define your text and position
+        text = mapped.get(image_file, "")
+        position = (4, 4)
+        font_scale = 4
+        font_color = (255, 255, 255) # BGR, not RGB. White color here.
+        line_type = 2
+
+        # Overlay the text on the image
+        cv2.putText(image,
+                    text,
+                    position,
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    font_scale,
+                    font_color,
+                    line_type)
+
         debug("showing", image_file)
         cv2.imshow('image', image)
         debug("waiting")
