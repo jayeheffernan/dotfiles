@@ -5,7 +5,7 @@ import shutil
 
 description = """Bucket images into subdirectories with one key press.
 
-This will show you each image. Use j/k for next/previous, q to quit and confirm, x to clear selection for current image. Any other letter or number will tag that image to go to a subdirectory of that name. E.g. hit "a" to put the image under `a/`.
+This will show you each image. Use arrow keys for next/previous, Enter to quit and confirm, Escape to quit and cancel, or Backspace to clear selection for current image. Letter or number keys will tag that image to go to a subdirectory of that name. E.g. hit "a" to put the image under `a/`.
 """
 
 def debug(*args):
