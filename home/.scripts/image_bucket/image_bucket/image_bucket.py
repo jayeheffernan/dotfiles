@@ -80,8 +80,14 @@ def bucket(image_files):
         elif ch == 'q':
             save = True
             break
-        elif not ch:
+        elif ch == 'x':
+            # clear it
+            mapped[image_file] == ""
+            break;
+        elif ch == 27: # Escape key
             break
+        elif not ch:
+            pass
         else:
             # If the key is one of the defined keys, plan to move the image to the corresponding directory
             mapped[image_file] = ch
