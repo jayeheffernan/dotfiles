@@ -9,7 +9,8 @@ This will show you each image. Use j/k for next/previous, q to quit and confirm.
 """
 
 def debug(*args):
-    print(*args)
+    # print(*args)
+    pass
 
 def parse_args():
     parser = argparse.ArgumentParser(prog='image_bucket', description=description)
