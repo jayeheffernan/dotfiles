@@ -15,6 +15,7 @@ def debug(*args):
 def parse_args():
     parser = argparse.ArgumentParser(prog='image_bucket', description=description)
     parser.add_argument('files', nargs='*')
+    parser.add_argument( '-d', '--dry', action='store_true')
     parsed = parser.parse_args()
     return parsed
 
@@ -128,7 +129,7 @@ def classify_inputs(filenames):
 
     return (can_show, associated)
 
-def move(mapped, associated):
+def move(mapped, associated, dry):
     for mapped_image_file, ch in mapped.items():
         to_move = associated[os.path.splitext(mapped_image_file)[0]]
         to_move.append(mapped_image_file)
@@ -137,14 +138,17 @@ def move(mapped, associated):
             target_file = os.path.join(target_dir, os.path.basename(image_file))
             if not os.path.exists(target_dir):
                 os.makedirs(target_dir)
-            shutil.move(image_file, target_file)
+            if dry:
+                print(image_file, "\t->\t", target_file)
+            else:
+                shutil.move(image_file, target_file)
 
 def main():
     args = parse_args()
     (image_files, associated) = classify_inputs(args.files)
     mapped = bucket(image_files)
     if mapped:
-        move(mapped, associated)
+        move(mapped, associated, args.dry)
 
 if __name__ == "__main__":
     main()
