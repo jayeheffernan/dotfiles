@@ -5,7 +5,7 @@ import shutil
 
 description = """Bucket images into subdirectories with one key press.
 
-This will show you each image. Use j/k for next/previous, q to quit and confirm. Any other letter or number will tag that image to go to a subdirectory of that name. E.g. hit "a" to put the image under `a/`.
+This will show you each image. Use j/k for next/previous, q to quit and confirm, x to clear selection for current image. Any other letter or number will tag that image to go to a subdirectory of that name. E.g. hit "a" to put the image under `a/`.
 """
 
 def debug(*args):
@@ -28,7 +28,22 @@ def get_chr():
 
         if chr(key) in "abcdefghijklmnopqrstuvwxyz0123456789":
             return chr(key)
+        elif key == 27: # Escape key
+            return "Cancel"
+        elif key == 13: # Enter key
+            return "Save"
+        elif key == 2: # Left arrow key
+            return "Previous"
+        elif key == 0: # Up arrow key
+            return "Previous"
+        elif key == 3: # Right arrow key
+            return "Next"
+        elif key == 1: # Down arrow key
+            return "Next"
+        elif key == 127: # Backspace key
+            return "Clear"
 
+        debug("Unknown key", key)
         return False
 
 def bucket(image_files):
@@ -47,51 +62,44 @@ def bucket(image_files):
 
     debug("looping files", image_files)
 
-    # Go through each image
+    # Input loop: go through each image
     while True:
-        debug("looping")
         image_file = image_files[index]
-        debug("reading", image_file)
         image = cv2.imread(image_file)
 
-        # Define your text and position
+        # Customise overlay text to indicate current selection
         text = mapped.get(image_file, "")
-        position = (4, 4)
-        font_scale = 4
-        font_color = (255, 255, 255) # BGR, not RGB. White color here.
-        line_type = 2
+        position = (8, 40)
+        font_scale = 2
+        font_color = (200, 0, 200) # BGR, not RGB. White color here.
+        thickness = 3
+        line_type = cv2.LINE_AA
 
         # Overlay the text on the image
-        cv2.putText(image,
-                    text,
-                    position,
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    font_scale,
-                    font_color,
-                    line_type)
+        cv2.putText(image, text, position, cv2.FONT_HERSHEY_DUPLEX, font_scale, font_color, thickness, line_type)
 
         debug("showing", image_file)
         cv2.imshow('image', image)
-        debug("waiting")
+        debug("mapped", mapped)
+
         ch = get_chr()
-        if ch == 'j':
+        if ch == "Next":
             jump(1)
-        elif ch == 'k':
+        elif ch == "Previous":
             jump(-1)
-        elif ch == 'q':
+        elif ch == "Save":
             save = True
             break
-        elif ch == 'x':
+        elif ch == "Clear":
             # clear it
-            mapped[image_file] == ""
-            break;
-        elif ch == 27: # Escape key
+            mapped[image_file] = ""
+        elif ch == "Cancel": # Escape key
             break
         elif not ch:
             pass
         else:
             # If the key is one of the defined keys, plan to move the image to the corresponding directory
-            mapped[image_file] = ch
+            mapped[image_file] = str(ch)
             jump(1)
 
     # Close all active window
@@ -100,7 +108,7 @@ def bucket(image_files):
     if save:
         return mapped
 
-    return Null
+    return None
 
 image_file_exts = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'}
 def classify_inputs(filenames):
@@ -130,11 +138,13 @@ def classify_inputs(filenames):
     return (can_show, associated)
 
 def move(mapped, associated, dry):
-    for mapped_image_file, ch in mapped.items():
+    for mapped_image_file, sub in mapped.items():
+        if sub == "":
+            continue
         to_move = associated[os.path.splitext(mapped_image_file)[0]]
         to_move.append(mapped_image_file)
         for image_file in to_move:
-            target_dir = os.path.join(os.path.dirname(image_file), ch)
+            target_dir = os.path.join(os.path.dirname(image_file), sub)
             target_file = os.path.join(target_dir, os.path.basename(image_file))
             if not os.path.exists(target_dir):
                 os.makedirs(target_dir)
