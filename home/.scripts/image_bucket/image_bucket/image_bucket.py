@@ -97,7 +97,42 @@ def bucket(image_files):
     cv2.destroyAllWindows()
 
     if save:
-        for image_file, ch in mapped.items():
+        return mapped
+
+    return Null
+
+image_file_exts = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'}
+def classify_inputs(filenames):
+    can_show = []
+    associated = {}
+    ignore = []
+    cant_show = []
+
+    for filename in filenames:
+        basename, ext = os.path.splitext(filename)
+        ext = ext.lower()
+        if ext in image_file_exts:
+            can_show.append(filename)
+            associated[basename] = []
+        elif ext == '': # probs a dir, don't worry about it
+            ignore.append(filename)
+        else:
+            cant_show.append(filename)
+
+    for filename in cant_show:
+        basename, ext = os.path.splitext(filename)
+        if basename in associated:
+            associated[basename].append(filename)
+        else:
+            raise ValueError("Don't know what to do with extra file", filename)
+
+    return (can_show, associated)
+
+def move(mapped, associated):
+    for mapped_image_file, ch in mapped.items():
+        to_move = associated[os.path.splitext(mapped_image_file)[0]]
+        to_move.append(mapped_image_file)
+        for image_file in to_move:
             target_dir = os.path.join(os.path.dirname(image_file), ch)
             target_file = os.path.join(target_dir, os.path.basename(image_file))
             if not os.path.exists(target_dir):
@@ -106,8 +141,10 @@ def bucket(image_files):
 
 def main():
     args = parse_args()
-    image_files = args.files
-    bucket(image_files)
+    (image_files, associated) = classify_inputs(args.files)
+    mapped = bucket(image_files)
+    if mapped:
+        move(mapped, associated)
 
 if __name__ == "__main__":
     main()
