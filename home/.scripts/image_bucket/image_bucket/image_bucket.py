@@ -1,6 +1,7 @@
 import argparse
 import cv2
 import os
+import math
 import shutil
 
 description = """Bucket images into subdirectories with one key press.
@@ -69,11 +70,20 @@ def bucket(image_files):
 
         # Customise overlay text to indicate current selection
         text = mapped.get(image_file, "")
-        position = (8, 40)
-        font_scale = 2
-        font_color = (200, 0, 200) # BGR, not RGB. White color here.
-        thickness = 3
-        line_type = cv2.LINE_AA
+        font_color = (200, 0, 200)
+        line_type = cv2.LINE_AA # anti-aliased looks best
+
+        # Determine the image's size
+        height, width = image.shape[:2]
+        font_scale = width * 0.0025
+        font_scale = max(font_scale, 1)
+        position = (4, 4 + math.ceil(font_scale * 24))
+        thickness = math.ceil(2 * font_scale)
+
+        shadow_color = (0, 200, 0)
+        shadow_offset = 2
+        for pos in [(position[0] + shadow_offset, position[1] + shadow_offset), (position[0] + shadow_offset, position[1] - shadow_offset), (position[0] - shadow_offset, position[1] + shadow_offset), (position[0] - shadow_offset, position[1] - shadow_offset)]:
+            cv2.putText(image, text, pos, cv2.FONT_HERSHEY_DUPLEX, font_scale, shadow_color, thickness + 4, line_type)
 
         # Overlay the text on the image
         cv2.putText(image, text, position, cv2.FONT_HERSHEY_DUPLEX, font_scale, font_color, thickness, line_type)
