@@ -69,19 +69,24 @@ def bucket(image_files):
         image = cv2.imread(image_file)
 
         # Customise overlay text to indicate current selection
-        text = mapped.get(image_file, "")
+        tag = mapped.get(image_file, "_")
+        num_len = len(str(len(image_files)))
+        text = f"{tag} {str(index + 1).zfill(num_len)}/{str(len(image_files)).zfill(num_len)} ({str(len(mapped)).zfill(num_len)})"
         font_color = (200, 0, 200)
         line_type = cv2.LINE_AA # anti-aliased looks best
 
         # Determine the image's size
         height, width = image.shape[:2]
-        font_scale = width * 0.0025
+        font_scale = width * 0.0005
         font_scale = max(font_scale, 1)
-        position = (4, 4 + math.ceil(font_scale * 24))
         thickness = math.ceil(2 * font_scale)
 
         shadow_color = (0, 200, 0)
-        shadow_offset = 2
+        shadow_offset = math.ceil(1 * font_scale)
+        # Offset of text from bottom-left corner
+        offset = shadow_offset * 10
+        position = (offset, height - offset)
+
         for pos in [(position[0] + shadow_offset, position[1] + shadow_offset), (position[0] + shadow_offset, position[1] - shadow_offset), (position[0] - shadow_offset, position[1] + shadow_offset), (position[0] - shadow_offset, position[1] - shadow_offset)]:
             cv2.putText(image, text, pos, cv2.FONT_HERSHEY_DUPLEX, font_scale, shadow_color, thickness + 4, line_type)
 
@@ -102,7 +107,7 @@ def bucket(image_files):
             break
         elif ch == "Clear":
             # clear it
-            mapped[image_file] = ""
+            del mapped[image_file]
         elif ch == "Cancel": # Escape key
             break
         elif not ch:
