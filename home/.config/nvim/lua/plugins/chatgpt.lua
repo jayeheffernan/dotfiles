@@ -14,14 +14,12 @@ return {
     "robitx/gp.nvim",
     config = function()
       require("gp").setup({
-        whisper_dir = "/tmp/gp_whisper",
-        whisper_rec_cmd = { "ffmpeg", "-y", "-f", "avfoundation", "-i", ":1", "-t", "3600", "rec.wav" },
-        agents = {
+        whisper = { store_dir = "/tmp/gp_whisper", rec_cmd = { "ffmpeg", "-y", "-f", "avfoundation", "-i", ":1", "-t", "3600", "rec.wav" } },
+        agents  = {
           -- Disable ChatGPT 3.5
           {
             name = "ChatGPT3-5",
-            chat = false,    -- just name would suffice
-            command = false, -- just name would suffice
+            disable = true,
           },
           {
             name = "ChatGPT4",

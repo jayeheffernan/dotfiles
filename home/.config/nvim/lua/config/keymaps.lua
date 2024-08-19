@@ -162,7 +162,7 @@ map("n", "<leader>ul", function()
   Util.toggle("relativenumber", true)
   Util.toggle("number")
 end, { desc = "Toggle Line Numbers" })
-map("n", "<leader>uD", Util.toggle.diagnostics, { desc = "Toggle Diagnostics" })
+-- map("n", "<leader>uD", Util.toggle.diagnostics, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 map("n", "<leader>uc", function()
   Util.toggle("conceallevel", false, { 0, conceallevel })
@@ -260,24 +260,24 @@ keymap({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
 keymap("n", "]p", "<Plug>(YankyCycleForward)", { desc = "Next paste option" })
 keymap("n", "[p", "<Plug>(YankyCycleBackward)", { desc = "Previous paste option" })
 
-local wk = require("which-key")
-wk.register({
-  ["<leader>m"] = { name = "+grapple" },
-  ["<leader>n"] = { name = "+next" },
-  ["<leader>N"] = { name = "+Previous" },
-  ["<leader>dl"] = { name = "+list" },
-  ["<leader>df"] = { name = "+focus" },
-  ["<leader>dw"] = { name = "+widgets" },
-  ["<leader>o"] = { name = "+open" },
-  ["<leader>z"] = { name = "+zet/wiki" },
-  ["<leader>r"] = { name = "+run" },
-  ["<leader>ug"] = { name = "+git" },
-  ["<leader>uF"] = { name = "+fzf" },
-  ["<leader>uL"] = { name = "+List" },
-  ["<leader>gh"] = { name = "+hunk" },
-  ["<leader>gt"] = { name = "+toggle" },
-})
-
+-- local wk = require("which-key")
+-- wk.register({
+--   ["<leader>m"] = { name = "+grapple" },
+--   ["<leader>n"] = { name = "+next" },
+--   ["<leader>N"] = { name = "+Previous" },
+--   ["<leader>dl"] = { name = "+list" },
+--   ["<leader>df"] = { name = "+focus" },
+--   ["<leader>dw"] = { name = "+widgets" },
+--   ["<leader>o"] = { name = "+open" },
+--   ["<leader>z"] = { name = "+zet/wiki" },
+--   ["<leader>r"] = { name = "+run" },
+--   ["<leader>ug"] = { name = "+git" },
+--   ["<leader>uF"] = { name = "+fzf" },
+--   ["<leader>uL"] = { name = "+List" },
+--   ["<leader>gh"] = { name = "+hunk" },
+--   ["<leader>gt"] = { name = "+toggle" },
+-- })
+--
 keymap("n", "<leader>wo", "<C-W>o", { desc = "Only window (close others)" })
 
 keymap({ "n", "x" }, "<leader>fe", function()
