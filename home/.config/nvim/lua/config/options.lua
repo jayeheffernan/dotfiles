@@ -15,3 +15,9 @@ vim.g.nvim_tree_disable_netrw = 0
 vim.g.autoformat = true
 
 vim.g.gutentags_ctags_executable = "~/.builds/bin/ctags"
+
+vim.filetype.add({
+  extension = {
+    hurl = "hurl"
+  }
+})

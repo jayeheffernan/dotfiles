@@ -77,32 +77,7 @@ return { {
 
         lualine_c = {
           {
-            function()
-              local settings = require("grapple.settings")
-              local scope = require("grapple.state").ensure_loaded(settings.scope)
-
-              local tags = require("grapple.tags").full_tags(scope)
-
-              local key = require("grapple").key()
-
-              local keys = vim.tbl_map(function(item)
-                if item.key == key then
-                  return "[" .. item.key .. "]"
-                end
-                return item.key
-              end, tags)
-
-              local keys_str = table.concat(keys, "")
-
-              if string.len(keys_str) == 0 then
-                keys_str = "?"
-              end
-
-              local indicator = " " .. keys_str
-
-              return indicator
-            end,
-            -- cond = require("grapple").exists,
+            require("grapple").statusline
           },
           Util.lualine.root_dir(),
           { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },

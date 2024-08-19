@@ -20,19 +20,12 @@ return {
 
       if opts then require("luasnip").config.setup(opts) end
 
-      vim.tbl_map(
-        function(type) require("luasnip.loaders.from_" .. type).lazy_load() end,
-        { "vscode" }
-      -- { "vscode", "snipmate", "lua" }
-      )
-      require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/LuaSnip/" })
-
       -- friendly-snippets - enable standardized comments snippets
       require("luasnip").filetype_extend("typescript",
-        { "tsdoc", "typescripreact", "react-ts", "javascript", "javascriptreact", "react", "react-es7", "typescript" })
+        { "tsdoc", "javascript", "typescript" })
       require("luasnip").filetype_extend("typescriptreact",
         { "tsdoc", "typescripreact", "react-ts", "javascript", "javascriptreact", "react", "react-es7", "typescript" })
-      require("luasnip").filetype_extend("javascript", { "jsdoc", "javascriptreact", "react", "react-es7", "javascript" })
+      require("luasnip").filetype_extend("javascript", { "jsdoc", "javascript" })
       require("luasnip").filetype_extend("javascriptreact",
         { "jsdoc", "javascriptreact", "react", "react-es7", "javascript" })
       require("luasnip").filetype_extend("lua", { "luadoc" })
@@ -46,6 +39,10 @@ return {
       keymap({ "i", "s" }, "<C-h>", function()
         require("luasnip").jump(-1)
       end, { desc = "LuaSnip backward jump" })
+
+      -- Higher priority number will be preferred
+      require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/LuaSnip/", default_priority = 2 })
+      require("luasnip.loaders.from_vscode").lazy_load({ default_priority = 1 });
     end,
   },
   {

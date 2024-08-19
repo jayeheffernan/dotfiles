@@ -209,6 +209,12 @@ map("n", "<leader>w|", "<C-W>v", { desc = "Split window right", remap = true })
 -- map("n", "<leader>|", "<C-W>v", { desc = "Split window right", remap = true })
 
 -- tabs
+map("n", "<leader>tl", "<cmd>tablast<cr>", { desc = "Last Tab" })
+map("n", "<leader>tf", "<cmd>tabfirst<cr>", { desc = "First Tab" })
+map("n", "<leader>t<tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
+map("n", "<leader>t]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
+map("n", "<leader>td", "<cmd>tabclose<cr>", { desc = "Close Tab" })
+map("n", "<leader>t[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 -- map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
 -- map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
 -- map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
@@ -367,5 +373,4 @@ vim.api.nvim_create_user_command("Browse", function(opts)
 end, { nargs = 1 })
 
 keymap({ "n", "x" }, "<leader>ld", ":Linediff<CR>", { desc = "Line diff" })
-keymap({ "n", "x" }, "<leader>lD", ":LinediffReset<CR>", { desc = "Line diff reset" })
 keymap({ "n", "x" }, "<leader>lD", ":LinediffReset<CR>", { desc = "Line diff reset" })

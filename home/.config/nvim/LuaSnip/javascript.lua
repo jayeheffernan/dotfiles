@@ -40,4 +40,20 @@ return {
     { t("console.log(\"jaye "), i(2), f(function() return shortId(4) end, {}, {}),
       t("\", { "), i(1, "foo"), t(" });") }
   ),
+
+  s( -- Insert over-line command
+    { trig = "tc", dscr = "autosnippet" },
+    fmt(
+      [[
+        try {
+          <>
+        } catch (err) {
+          <>
+        }
+      ]],
+      { i(0), i(1, "throw err;") },
+      { delimiters = "<>" }
+    )
+  ),
+
 }

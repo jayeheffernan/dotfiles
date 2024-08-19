@@ -14,12 +14,15 @@ TWILIO_AC_ZSH_SETUP_PATH=/Users/jaye.heffernan/.twilio-cli/autocomplete/zsh_setu
 export DIRENV_LOG_FORMAT=''
 
 export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$HOME/.builds/bin:$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.scripts/bin:$HOME/Library/Python/3.7/bin:$HOME/.cargo/bin"
+export PATH="/usr/local/opt/postgresql@16/bin:/usr/local/opt/ruby/bin:$VOLTA_HOME/bin:$HOME/.builds/bin:$HOME/.local/bin:$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.scripts/bin:$HOME/Library/Python/3.7/bin:$HOME/.cargo/bin"
 
 source ~/.secrets.zshrc
 
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 export EDITOR='nvim'
+
+# Support #comments in the interactive shell
+setopt interactivecomments
 
 export DIRSTACKSIZE=12
 setopt autopushd pushdminus pushdsilent pushdtohome
@@ -188,9 +191,9 @@ function ffmweba() {
 # Make/build/run common things
 make-it() {
 if [ -x build ]; then
-    ./build
+    ./build "$@"
 elif [ -f Makefile ]; then
-    make
+    make "$@"
 elif [ -f Cargo.toml ]; then
     cargo run
 else
@@ -579,10 +582,6 @@ alias cdz="cd ~/.vimwiki/notes"
 alias   z="cd ~/.vimwiki/notes"
 
 alias v="vim ."
-
-set_wallpaper() {
-  osascript -e 'tell application "System Events" to tell every desktop to set picture to "/Users/jaye.heffernan/.wallpaper.png"'
-}
 
 # pspg: a pager for tabular data. 16 = "simple" theme
 export PSPG='--style=16 --no-mouse --on-sigint-exit'

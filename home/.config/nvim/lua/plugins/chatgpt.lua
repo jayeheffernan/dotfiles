@@ -16,11 +16,37 @@ return {
       require("gp").setup({
         whisper_dir = "/tmp/gp_whisper",
         whisper_rec_cmd = { "ffmpeg", "-y", "-f", "avfoundation", "-i", ":1", "-t", "3600", "rec.wav" },
+        agents = {
+          -- Disable ChatGPT 3.5
+          {
+            name = "ChatGPT3-5",
+            chat = false,    -- just name would suffice
+            command = false, -- just name would suffice
+          },
+          {
+            name = "ChatGPT4",
+            chat = true,
+            command = true,
+            -- chat_template = require("gp.defaults").chat_template,
+            -- string with model name or table with model name and parameters
+            model = "gpt-4",
+            -- system prompt (use this to specify the persona/role of the AI)
+            system_prompt = "You are a general AI assistant.\n\n"
+                .. "The user provided the additional info about how they would like you to respond:\n\n"
+                .. "- If you're unsure don't guess and say you don't know instead.\n"
+                .. "- Ask question if you need clarification to provide better answer.\n"
+                -- .. "- Think deeply and carefully from first principles step by step.\n"
+                -- .. "- Zoom out first to see the big picture and then zoom in to details.\n"
+                -- .. "- Use Socratic method to improve your thinking and coding skills.\n"
+                .. "- Don't elide any code from your output if the answer requires coding.\n"
+                .. "- Take a deep breath; You've got this!\n",
+          },
+        },
       })
       -- keymap("n", "<leader>aa", ":GpChatNew<CR>", { desc = "New" })
       -- keymap("n", "<leader>at", ":GpChatToggle<CR>", { desc = "Toggle" })
       -- keymap("n", "<leader>af", ":GpChatFind<CR>", { desc = "Find" })
-      -- keymap("n", "<leader>a<Space>", ":GpChatRespond<CR>", { desc = "Respond" })
+      keymap("n", "<leader>a<Space>", ":GpChatRespond<CR>", { desc = "Respond" })
       --
       -- keymap("n", "<leader>as", ":GpStop<CR>", { desc = "Stop" })
       --
