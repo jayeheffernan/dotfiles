@@ -1,0 +1,11 @@
+#! /usr/bin/env bash
+
+for f in "$@"; do
+	newf=~/.vimwiki/notes/a/"$(basename "$f")"
+	if test -f "$newf"; then
+		echo "already exists: $newf" >&2
+	else
+		cp "$f" "$newf"
+		echo "![[a/$(basename "$f")]]"
+	fi
+done

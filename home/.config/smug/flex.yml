@@ -1,0 +1,10 @@
+session: flex
+
+root: ~/duck/flex/main
+
+windows:
+  - name: logs
+    commands:
+      - git status
+
+  - name: code

@@ -1,0 +1,15 @@
+session: admin-poc
+
+root: ~/Duck/admin-poc/main
+
+windows:
+  - name: logs
+    layout: even-vertical
+    commands:
+      - git status
+    panes:
+      - type: vertical
+
+  - name: code
+    commands:
+      - vim

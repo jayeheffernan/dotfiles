@@ -1,0 +1,17 @@
+session: exercism_${track}_${exercise}
+
+before_start:
+  - ~/.scripts/ensure-exercism ${track} ${exercise}
+
+root: ~/Documents/Projects/Exercism
+
+windows:
+  - name: edit
+    root: ${track}/${exercise}
+    commands:
+      - vim README.md
+
+  - name: test
+    root: ${track}/${exercise}
+    commands:
+      - t

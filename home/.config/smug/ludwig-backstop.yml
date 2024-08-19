@@ -1,0 +1,9 @@
+session: ludwig-backstop
+
+root: ~/duck/ludwig-backstop/main
+
+windows:
+  - name: ludwig
+  - name: website
+    root: ~/duck/website/main
+

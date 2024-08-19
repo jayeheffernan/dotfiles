@@ -1,0 +1,12 @@
+session: website
+
+root: ~/duck/website/main
+
+windows:
+  - name: logs
+    commands:
+      - git status
+
+  - name: code
+    commands:
+      - vim

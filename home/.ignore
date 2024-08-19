@@ -1,14 +1,27 @@
+out
+tags
+
+.obsidian
 #
 # Ignore file for vim search
 #
+
+.DS_Store
 
 .git
 node_modules
 target
 .next
+.netlify
 out_publish
 out_functions
 .vim/plugged
+worktrees
+.vscode
+dist
+.exercism
+Cargo.lock
+.scratch
 
 yarn.lock
 package-lock.json
@@ -28,14 +41,14 @@ package-lock.json
 *.gif
 *.gifv
 *.ico
-*.jng
+# *.jng
 *.jp2
 *.jpg
 *.jpeg
 *.jpx
 *.jxr
 *.pdf
-*.png
+# *.png
 *.psb
 *.psd
 *.svg
@@ -53,6 +66,7 @@ package-lock.json
 *.mp3
 *.ogg
 *.ra
+*.flac
 
 # Video
 *.3gpp
@@ -72,6 +86,9 @@ package-lock.json
 *.swc
 *.swf
 *.webm
+
+# Audacity files
+*.au
 
 # Archives
 *.7z

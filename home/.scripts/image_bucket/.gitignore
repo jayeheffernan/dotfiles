@@ -1,0 +1,37 @@
+*.pyc
+scratch
+
+# Distribution / packaging
+dist/*
+build/*
+*.egg-info/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Logs
+logs/
+*.log
+
+# Pytest
+.pytest_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn

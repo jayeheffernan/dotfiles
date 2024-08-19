@@ -1,0 +1,6 @@
+session: logs
+
+root: ~/duck
+
+windows:
+  - name: logs

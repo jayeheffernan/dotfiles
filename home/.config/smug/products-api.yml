@@ -1,0 +1,13 @@
+session: products-api
+
+root: ~/Duck/products-api/main
+
+windows:
+  - name: logs
+    layout: even-vertical
+    commands:
+      - git status
+    panes:
+      - type: vertical
+
+  - name: code

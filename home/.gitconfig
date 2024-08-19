@@ -1,25 +1,107 @@
 [user]
 	name = Jaye Heffernan
 	email = jpeheffernan@gmail.com
+
 [push]
 	default = simple
+	autoSetupRemote = true
+
 [alias]
 	co = checkout
-	tco = checkout
+	cop = checkout --patch
+	com = checkout master
+	coom = checkout origin/master
 	b = branch
 	tb = branch
 	s = status
-	ts = status
-	tl = log --oneline
+	st = stash
 	a = add
+	ap = add --patch
 	ta = add
 	d = diff -w
-	td = diff -w
+	dm = diff -w master
+	dmno = diff -w master --name-only
+	dom = diff -w origin/master
+	domno = diff -w origin/master --name-only
+	dt = difftool
+	dc = diff -w --cached
 	c = commit
 	ca = commit --amend
 	cane = commit --amend --no-edit
+	cnv = commit --no-verify
+	canv = commit --amend --no-verify
+	canenv = commit --amend --no-edit --no-verify
+	ap = add --patch
 	g = log --graph --oneline --decorate
 	ga = log --graph --oneline --decorate --all
 	l = log --oneline
+	ll = log --graph --format='%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)'
+	lm = log --oneline master
+	lom = log --oneline origin/master
+	llom = log --graph --format='%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)' origin/master
+	lp = log --patch
+	recent = for-each-ref --sort=-committerdate refs/heads/
+	r = recent --count 12
+	pushnv = push --no-verify
+	rb = rebase
+	rbi = rebase --interactive
+	rbm = rebase master
+	rbim = rebase --interactive master
+	rbom = rebase origin/master
+	rbiom = rebase --interactive origin/master
+	rbiu = rebase --interactive @{u}
+	rbc = rebase --continue
+	m = merge
+	RHm = reset --hard master
+	RHom = reset --hard origin/master
+	RHu = reset --hard @{u}
+	RH = reset --hard
+	mm = merge master
+	mom = merge origin/master
+	cp = cherry-pick
+	cpc = cherry-pick --continue
+	fix = "!f() { ${EDITOR} $(git diff --name-only | sort | uniq | grep -e '\\w'); }; f"
+	add-fixed = "!f() { git add $(git diff --name-only --diff-filter=U | sort | uniq | grep -e '\\w'); }; f"
+	f = fetch
+	rs = restore --staged
+  p = pull
+  pp = push
+  ppu = "!f() { git push --set-upstream origin """$(git branch --show-current)"""; }; f"
+  pushup = "!f() { git push --set-upstream origin """$(git branch --show-current)"""; }; f"
+
 [core]
 	editor = /usr/bin/nvim
+        pager = delta
+	excludesfile = /Users/jaye.heffernan/.gitignore_global
+
+[interactive]
+	singlekey = true
+        diffFilter = delta --color-only
+
+[diff]
+	tool = vimdiff
+	algorithm = histogram
+        colorMoved = default
+
+[difftool]
+	prompt = false
+
+[advice]
+	detachedHead = false
+
+[log]
+	date = format-local:%Y-%m-%d %H:%M:%S
+
+[blame]
+	date = format-local:%Y-%m-%d %H:%M:%S
+
+[merge]
+	conflictStyle = zdiff3
+
+[delta]
+    navigate = true # use n and N to move between diff sections
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
