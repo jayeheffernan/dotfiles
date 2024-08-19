@@ -11,7 +11,7 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 export NVM_DIR="$HOME/.nvm"
-export PATH="$PATH:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME.scripts:$HOMELibrary/Python/3.7/bin:$HOME/.cargo/bin"
+export PATH="$PATH:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH:/usr/bin:/usr/local/bin:/bin:/usr/sbin:/sbin:$HOME.scripts:$HOMELibrary/Python/3.7/bin:$HOME/.cargo/bin"
 
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 export FZF_DEFAULT_COMMAND='rg --files'
@@ -175,9 +175,9 @@ zinit wait lucid light-mode for \
 zinit wait lucid light-mode for \
     OMZP::colored-man-pages \
     OMZP::fancy-ctrl-z \
-    OMZP::history \
+    OMZL::history.zsh \
+    OMZL::clipboard.zsh \
     OMZP::autojump \
-    OMZP::aws \
     OMZP::nvm \
     OMZP::yarn \
     as"completion" \
@@ -195,3 +195,5 @@ zinit wait lucid light-mode for \
 zinit wait'!0' lucid light-mode for \
     pick"async.zsh" src"pure.zsh" \
     sindresorhus/pure
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"

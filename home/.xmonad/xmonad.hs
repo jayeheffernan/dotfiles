@@ -18,7 +18,7 @@ import XMonad.Hooks.EwmhDesktops
 main = do
 --    xmproc <- spawnPipe "xmobar"
 
-    xmonad $ defaultConfig
+    xmonad $ ewmh defaultConfig
         { manageHook = manageDocks <+> manageHook defaultConfig
         , modMask = mod4Mask
         , layoutHook = smartBorders $ avoidStruts  $  layoutHook defaultConfig
@@ -57,7 +57,7 @@ main = do
 myStartupHook :: X ()
 myStartupHook = do
     setDefaultCursor xC_arrow
-    runOrRaise "chromium" (className =? "chromium")
+    runOrRaise "firefox" (className =? "firefox")
     runOrRaise "stalonetray" (className =? "stalonetray")
     spawn "nm-applet"
     spawn "xxkb"
